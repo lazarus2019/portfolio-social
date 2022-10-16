@@ -1,9 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const logger = require("morgan");
+const dbConnect = require("./src/config/dbConnect");
 const app = express();
 
 const { PORT } = process.env;
+
+// Connect to MongoDB
+dbConnect();
 
 // Middleware
 app.use(logger("dev"));
