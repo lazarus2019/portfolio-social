@@ -6,6 +6,7 @@ const {
   notFound,
   errorHandler,
 } = require("./src/api/middleware/error/errorHandler");
+const userRoute = require("./src/api/routes/userRoute");
 const app = express();
 
 const { PORT } = process.env;
@@ -19,6 +20,9 @@ app.use(logger("dev"));
 // parse application/json (express >= 4.16)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Route
+app.use("/api/user", userRoute);
 
 // error handler: MUST below all the routes
 app.use(notFound); // error handle will take error from notfound so it must above

@@ -1,0 +1,13 @@
+### Register 
+POST http://localhost:5000/api/user/register
+Content-Type: application/json
+
+{
+    "firstName": "Krix",
+    "lastName": "Daniel",
+    "username": "laptrinhvien",
+    "password": "123",
+    "email": "ltv.aptech2019@gmail.com"
+}
+
+
