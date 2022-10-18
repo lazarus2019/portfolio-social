@@ -4,6 +4,8 @@ const {
   createUser,
   checkUsernameExist,
   checkPassword,
+  checkUserBanned,
+  updateProfile,
 } = require("../services/userService");
 const { generateToken } = require("../utils/tokenGenerate");
 
@@ -25,6 +27,8 @@ const userLoginCtrl = expressAsyncHandler(async (req, res) => {
     const { username, password } = req?.body;
     const user = await checkUsernameExist(username, true);
 
+    checkUserBanned(user);
+
     checkPassword(password, user);
 
     const token = generateToken({ username, id: user?._id });
@@ -36,7 +40,7 @@ const userLoginCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
-//// Profile
+//// Get Profile
 const userProfileCtrl = expressAsyncHandler(async (req, res) => {
   const { username } = req.params;
   try {
@@ -48,8 +52,25 @@ const userProfileCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Update Basic Info Profile
+const userUpdateProfileCtrl = expressAsyncHandler(async (req, res) => {
+  try {
+    const user = req?.user;
+    checkUserBanned(user);
+
+    const userUpdated = await updateProfile(user?._id, req?.body);
+    res.status(200).json({
+      firstName: userUpdated.firstName,
+      lastName: userUpdated.lastName,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
   userProfileCtrl,
+  userUpdateProfileCtrl,
 };

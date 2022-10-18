@@ -28,6 +28,17 @@ const createUser = async ({
   return user;
 };
 
+const updateProfile = async (id, newInfo) => {
+  const user = await User.findByIdAndUpdate(id, newInfo, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!user) throw new Error("Can not update || updateProfile");
+
+  return user;
+};
+
 const checkUsernameExist = async (username, needPass = false) => {
   if (!username) throw new Error("Username is required || checkUsernameExist");
   var user;
@@ -69,4 +80,5 @@ module.exports = {
   checkPassword,
   checkUserBanned,
   checkUserVerified,
+  updateProfile,
 };

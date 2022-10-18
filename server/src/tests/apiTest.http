@@ -21,3 +21,15 @@ Content-Type: application/json
 
 ### Profile
 GET http://localhost:5000/api/user/profile/tommy087
+
+### Update Profile
+PUT http://localhost:5000/api/user/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY2MTAxNzczLCJleHAiOjE2NjY1MzM3NzN9.htqinxC4FuDCXQ2b3wiKr5l13ItXgov87MWNP9IaQJg
+
+{
+    "info.bio": "No description, website, or topics provided.",
+    "setting.isPrivateAccount": true,
+    "firstName": "Post",
+    "lastName": "Malone"
+}

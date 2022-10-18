@@ -62,6 +62,7 @@ const userSchema = new mongoose.Schema(
     info: {
       bio: {
         type: String,
+        default: "",
       },
       projectCount: {
         type: Number,
