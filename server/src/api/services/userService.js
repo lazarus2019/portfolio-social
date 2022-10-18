@@ -73,6 +73,57 @@ const checkUserVerified = (user) => {
     );
 };
 
+const findById = async (id) => {
+  if (!id) throw new Error("id is required || findById");
+
+  const user = await User.findById(id).select("-password");
+  if (!user) throw new Error("User not found || findById");
+
+  return user;
+};
+
+const following = async (loginUserId, followId) => {
+  // 1. Find the user you want to follow and update it's followers field
+  await User.findByIdAndUpdate(
+    followId,
+    {
+      // append a specified value to an array
+      // Docs: https://www.mongodb.com/docs/manual/reference/operator/update/push/
+      $push: { "info.followers": loginUserId },
+    },
+    { new: true }
+  );
+
+  // 2. Update the login user following field
+  await User.findByIdAndUpdate(
+    loginUserId,
+    {
+      $push: { "info.following": followId },
+    },
+    { new: true }
+  );
+};
+
+const unFollowing = async (loginUserId, unFollowId) => {
+  await User.findByIdAndUpdate(
+    unFollowId,
+    {
+      // remove all instances of value match
+      // Docs: https://www.mongodb.com/docs/manual/reference/operator/update/pull/
+      $pull: { "info.followers": loginUserId },
+    },
+    { new: true }
+  );
+
+  await User.findByIdAndUpdate(
+    loginUserId,
+    {
+      $pull: { "info.following": unFollowId },
+    },
+    { new: true }
+  );
+};
+
 module.exports = {
   checkRegisterEmail,
   createUser,
@@ -81,4 +132,7 @@ module.exports = {
   checkUserBanned,
   checkUserVerified,
   updateProfile,
+  findById,
+  following,
+  unFollowing,
 };

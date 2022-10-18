@@ -86,7 +86,7 @@ const userSchema = new mongoose.Schema(
           },
         ],
       },
-      follower: {
+      followers: {
         type: [
           {
             type: mongoose.Schema.Types.ObjectId,

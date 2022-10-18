@@ -33,3 +33,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imxhc
     "firstName": "Post",
     "lastName": "Malone"
 }
+
+### Following user
+PUT http://localhost:5000/api/user/follow
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY2MTAxNzczLCJleHAiOjE2NjY1MzM3NzN9.htqinxC4FuDCXQ2b3wiKr5l13ItXgov87MWNP9IaQJg
+
+{
+    "followId": "634e6629de0153fa0ea05969"
+}

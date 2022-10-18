@@ -6,8 +6,12 @@ const {
   checkPassword,
   checkUserBanned,
   updateProfile,
+  following,
+  unFollowing,
 } = require("../services/userService");
 const { generateToken } = require("../utils/tokenGenerate");
+const mongoose = require("mongoose");
+const validateMongoDbID = require("../utils/validateMongoDbID");
 
 //// Register
 const userRegisterCtrl = expressAsyncHandler(async (req, res) => {
@@ -68,9 +72,30 @@ const userUpdateProfileCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Following other user
+const userFollowCtrl = expressAsyncHandler(async (req, res) => {
+  const { followId } = req?.body;
+  validateMongoDbID(new mongoose.Types.ObjectId(followId));
+  try {
+    const user = req?.user;
+
+    const alreadyFollowing = user?.info?.following?.find(
+      (user) => user?.toString() === followId.toString()
+    );
+
+    if (alreadyFollowing) {
+      unFollowing(user?._id, followId);
+    } else {
+      following(user?._id, followId);
+    }
+    res.status(200).json({ status: true });
+  } catch (error) {}
+});
+
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
   userProfileCtrl,
   userUpdateProfileCtrl,
+  userFollowCtrl,
 };
