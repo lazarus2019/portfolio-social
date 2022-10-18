@@ -128,6 +128,40 @@ const unFollowing = async (loginUserId, unFollowId) => {
   );
 };
 
+const getFollowersByUsername = async (username) => {
+  if (!username)
+    throw new Error("Username is required || getFollowersByUsername");
+  const user = await User.findOne({ username })
+    .select("info.followers")
+    .populate("info.followers");
+  if (!user) throw new Error("User not found || getFollowersByUsername");
+
+  return takeBasicInfo(user?.info?.followers);
+};
+
+const getFollowingByUsername = async (username) => {
+  if (!username)
+    throw new Error("Username is required || getFollowingByUsername");
+  const user = await User.findOne({ username })
+    .select("info.following")
+    .populate("info.following");
+  if (!user) throw new Error("User not found || getFollowingByUsername");
+
+  return takeBasicInfo(user?.info?.following);
+};
+
+const takeBasicInfo = (listUsers) => {
+  return listUsers?.map((user) => ({
+    bio: user?.info?.bio,
+    followers: user?.info?.followers,
+    following: user?.info?.following,
+    profilePhoto: user?.profilePhoto,
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    isPrivateAccount: user?.setting?.isPrivateAccount,
+  }));
+};
+
 module.exports = {
   checkRegisterEmail,
   createUser,
@@ -139,4 +173,6 @@ module.exports = {
   findById,
   following,
   unFollowing,
+  getFollowersByUsername,
+  getFollowingByUsername,
 };

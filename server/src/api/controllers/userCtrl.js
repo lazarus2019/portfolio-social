@@ -99,6 +99,27 @@ const userFollowCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Get list followers
+const userFollowersListCtrl = expressAsyncHandler(async (req, res) => {
+  const { username } = req.params;
+  try {
+    const listFollowers = await getFollowersByUsername(username);
+    res.status(200).json({ listFollowers });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Get list following
+const userFollowingListCtrl = expressAsyncHandler(async (req, res) => {
+  const { username } = req.params;
+  try {
+    const listFollowing = await getFollowingByUsername(username);
+    res.status(200).json({ listFollowing });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = {
   userRegisterCtrl,
@@ -106,4 +127,6 @@ module.exports = {
   userProfileCtrl,
   userUpdateProfileCtrl,
   userFollowCtrl,
+  userFollowersListCtrl,
+  userFollowingListCtrl,
 };

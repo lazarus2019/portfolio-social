@@ -42,3 +42,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impva
 {
     "followId": "634ec294d98584f7f16f6f6f"
 }
+
+### User's Followers 
+GET http://localhost:5000/api/user/followers/tommy087
+
+### User's Following 
+GET http://localhost:5000/api/user/following/tommy087
+
