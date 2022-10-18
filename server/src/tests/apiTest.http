@@ -19,3 +19,5 @@ Content-Type: application/json
     "password": "123"
 }
 
+### Profile
+GET http://localhost:5000/api/user/profile/tommy087

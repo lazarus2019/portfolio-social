@@ -2,6 +2,7 @@ const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const { ExtractJwt } = require("passport-jwt");
 const User = require("../../models/userModel");
+const validateMongoDbID = require("../../utils/validateMongoDbID");
 
 passport.use(
   new JwtStrategy(
@@ -10,6 +11,13 @@ passport.use(
       secretOrKey: process.env.TOKEN_SECRET_KEY,
     },
     (jwt_payload, done) => {
+      // Validation mongoDBId
+      try {
+        validateMongoDbID(jwt_payload.id);
+      } catch (error) {
+        return done(error, false);
+      }
+
       // Get user by id
       User.findOne({ id: jwt_payload.id }, (err, user) => {
         if (err) return done(err, false);

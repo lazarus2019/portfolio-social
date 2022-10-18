@@ -6,8 +6,9 @@ const {
   checkPassword,
 } = require("../services/userService");
 const { generateToken } = require("../utils/tokenGenerate");
+
 //// Register
-const registerUserCtrl = expressAsyncHandler(async (req, res) => {
+const userRegisterCtrl = expressAsyncHandler(async (req, res) => {
   try {
     await checkRegisterEmail(req?.body?.email);
 
@@ -19,10 +20,10 @@ const registerUserCtrl = expressAsyncHandler(async (req, res) => {
 });
 
 //// Login
-const loginUserCtrl = expressAsyncHandler(async (req, res) => {
+const userLoginCtrl = expressAsyncHandler(async (req, res) => {
   try {
     const { username, password } = req?.body;
-    const user = await checkUsernameExist(username);
+    const user = await checkUsernameExist(username, true);
 
     checkPassword(password, user);
 
@@ -35,7 +36,20 @@ const loginUserCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Profile
+const userProfileCtrl = expressAsyncHandler(async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await checkUsernameExist(username);
+
+    res.status(200).json({ user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = {
-  registerUserCtrl,
-  loginUserCtrl,
+  userRegisterCtrl,
+  userLoginCtrl,
+  userProfileCtrl,
 };

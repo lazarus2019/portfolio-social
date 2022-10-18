@@ -1,12 +1,15 @@
 const route = require("express").Router();
 const {
-  registerUserCtrl,
-  loginUserCtrl,
+  userRegisterCtrl,
+  userLoginCtrl,
+  userProfileCtrl,
 } = require("../controllers/userCtrl");
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
 
-route.post("/register", registerUserCtrl);
+route.post("/register", userRegisterCtrl);
 
-route.post("/login", loginUserCtrl);
+route.post("/login", userLoginCtrl);
+
+route.get("/profile/:username", userProfileCtrl);
 
 module.exports = route;
