@@ -3,11 +3,11 @@ POST http://localhost:5000/api/user/register
 Content-Type: application/json
 
 {
-    "firstName": "Krix",
-    "lastName": "Daniel",
-    "username": "laptrinhvien",
+    "firstName": "Thu",
+    "lastName": "Nguyen",
+    "username": "jokertn16",
     "password": "123",
-    "email": "ltv.aptech2019@gmail.com"
+    "email": "jokertn16@gmail.com"
 }
 
 ### Login 
@@ -15,7 +15,7 @@ POST http://localhost:5000/api/user/login
 Content-Type: application/json
 
 {
-    "username": "laptrinhvien",
+    "username": "jokertn16",
     "password": "123"
 }
 
@@ -37,8 +37,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imxhc
 ### Following user
 PUT http://localhost:5000/api/user/follow
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY2MTAxNzczLCJleHAiOjE2NjY1MzM3NzN9.htqinxC4FuDCXQ2b3wiKr5l13ItXgov87MWNP9IaQJg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impva2VydG4xNiIsImlkIjoiNjM0ZWMyOTRkOTg1ODRmN2YxNmY2ZjZmIiwiaWF0IjoxNjY2MTA4MjEwLCJleHAiOjE2NjY1NDAyMTB9.AV-zCSK6L_FesYo5pGTuYtMiyholHJIDaDRjY4_QJWE
 
 {
-    "followId": "634e6629de0153fa0ea05969"
+    "followId": "634ec294d98584f7f16f6f6f"
 }

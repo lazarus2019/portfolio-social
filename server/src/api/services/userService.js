@@ -83,6 +83,8 @@ const findById = async (id) => {
 };
 
 const following = async (loginUserId, followId) => {
+  if (!loginUserId || !followId)
+    throw new Error("loginUserId and followId is required || following");
   // 1. Find the user you want to follow and update it's followers field
   await User.findByIdAndUpdate(
     followId,
@@ -105,6 +107,8 @@ const following = async (loginUserId, followId) => {
 };
 
 const unFollowing = async (loginUserId, unFollowId) => {
+  if (!loginUserId || !unFollowId)
+    throw new Error("loginUserId and unFollowId is required || unFollowing");
   await User.findByIdAndUpdate(
     unFollowId,
     {

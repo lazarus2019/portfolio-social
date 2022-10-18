@@ -12,9 +12,9 @@ route.post("/register", userRegisterCtrl);
 
 route.post("/login", userLoginCtrl);
 
-route.get("/profile/:username", userProfileCtrl);
-
 route.put("/profile", passportAuthJwt, userUpdateProfileCtrl);
+
+route.get("/profile/:username", userProfileCtrl);
 
 route.put("/follow", passportAuthJwt, userFollowCtrl);
 

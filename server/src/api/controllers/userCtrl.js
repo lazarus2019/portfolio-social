@@ -8,6 +8,8 @@ const {
   updateProfile,
   following,
   unFollowing,
+  getFollowersByUsername,
+  getFollowingByUsername,
 } = require("../services/userService");
 const { generateToken } = require("../utils/tokenGenerate");
 const mongoose = require("mongoose");
@@ -79,6 +81,9 @@ const userFollowCtrl = expressAsyncHandler(async (req, res) => {
   try {
     const user = req?.user;
 
+    if (user?._id.toString() === followId.toString())
+      throw new Error("You can not following yourself");
+
     const alreadyFollowing = user?.info?.following?.find(
       (user) => user?.toString() === followId.toString()
     );
@@ -89,8 +94,11 @@ const userFollowCtrl = expressAsyncHandler(async (req, res) => {
       following(user?._id, followId);
     }
     res.status(200).json({ status: true });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
+
 
 module.exports = {
   userRegisterCtrl,
