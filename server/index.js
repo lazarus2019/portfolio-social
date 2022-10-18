@@ -7,6 +7,7 @@ const {
   errorHandler,
 } = require("./src/api/middleware/error/errorHandler");
 const userRoute = require("./src/api/routes/userRoute");
+const passportConfig = require("./src/api/middleware/passport/passport");
 const app = express();
 
 const { PORT } = process.env;

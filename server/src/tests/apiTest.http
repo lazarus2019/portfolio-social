@@ -10,4 +10,12 @@ Content-Type: application/json
     "email": "ltv.aptech2019@gmail.com"
 }
 
+### Login 
+POST http://localhost:5000/api/user/login
+Content-Type: application/json
+
+{
+    "username": "laptrinhvien",
+    "password": "123"
+}
 
