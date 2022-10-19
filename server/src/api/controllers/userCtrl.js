@@ -15,6 +15,8 @@ const {
 } = require("../services/userService");
 const {
   sendResetPasswordEmail,
+  sendFeedbackEmail,
+  sendVerificationEmail,
 } = require("../services/sendMailService");
 const { generateToken } = require("../utils/tokenGenerate");
 const mongoose = require("mongoose");
@@ -190,6 +192,19 @@ const userVerifyAccountCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Send feedback to admin contact
+const userFeedbackCtrl = expressAsyncHandler(async (req, res) => {
+  const { email, firstName, lastName } = req?.user;
+  const { content } = req?.body;
+  try {
+    await sendFeedbackEmail({ email, firstName, lastName }, content);
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
@@ -202,4 +217,5 @@ module.exports = {
   userResetPasswordCtrl,
   userVerifyTokenCtrl,
   userVerifyAccountCtrl,
+  userFeedbackCtrl,
 };

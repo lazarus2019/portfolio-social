@@ -11,6 +11,7 @@ const {
   userResetPasswordCtrl,
   userVerifyTokenCtrl,
   userVerifyAccountCtrl,
+  userFeedbackCtrl,
 } = require("../controllers/userCtrl");
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
 
@@ -35,5 +36,7 @@ route.put("/reset-password", userResetPasswordCtrl);
 route.post("/verify-account-token", passportAuthJwt, userVerifyTokenCtrl);
 
 route.put("/verify-account", userVerifyAccountCtrl);
+
+route.post("/send-feedback", passportAuthJwt,userFeedbackCtrl);
 
 module.exports = route;

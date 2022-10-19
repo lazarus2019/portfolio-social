@@ -9,7 +9,7 @@ const mailTypes = {
     from: 'Portfolio Social 👻" <foo@example.com>',
   },
   feedback: {
-    subject: "Reset Your Password",
+    subject: "User FeedBack",
     to: GG_EMAIL,
   },
   verifyAccount: {
@@ -41,6 +41,8 @@ const sendEmail = async (from, to, subject, htmlBody) => {
 };
 
 const sendResetPasswordEmail = async (email, url) => {
+  if (!email || !url)
+    throw new Error("email and url is required || sendResetPasswordEmail");
   const htmlBody = `
     <p>You have a new contact request</p>
     <h3>Contact Details</h3>
@@ -63,6 +65,8 @@ const sendResetPasswordEmail = async (email, url) => {
 };
 
 const sendVerificationEmail = async (email, url) => {
+  if (!email || !url)
+    throw new Error("email and url is required || sendVerificationEmail");
   const htmlBody = `
     <p>You have a new contact request</p>
     <h3>Contact Details</h3>
@@ -83,9 +87,33 @@ const sendVerificationEmail = async (email, url) => {
   }
 };
 
-const sendFeedbackEmail = async (email, content) => {};
+const sendFeedbackEmail = async (user, content) => {
+  if (!user || !content)
+    throw new Error("user and content is required || sendFeedbackEmail");
+  const htmlBody = `
+    <p>You have a new contact request</p>
+    <h3>Contact Details</h3>
+    <ul>  
+      <li>Email: ${user?.email}</li>
+    </ul>
+    <h3>Message</h3>
+    <p>${content}</p>
+  `;
+  const { to, subject } = mailTypes.feedback;
+
+  const from = `${user?.firstName} ${user?.lastName}`;
+
+  try {
+    await sendEmail(from, to, `${subject} from: ${from}`, htmlBody);
+  } catch {
+    throw new Error(
+      `Failed to send reset token to ${email} || sendFeedbackEmail`
+    );
+  }
+};
 
 module.exports = {
   sendResetPasswordEmail,
   sendVerificationEmail,
+  sendFeedbackEmail,
 };

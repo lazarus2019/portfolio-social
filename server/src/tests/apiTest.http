@@ -79,3 +79,12 @@ Content-Type: application/json
 {
     "token": "1d55c890d7b98636903611d651968ae6f5209798d18be75b3d8f8b4f1426986a"
 }
+
+### Send feedback to admin contact
+POST http://localhost:5000/api/user/send-feedback
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoYWlzb25iazIwMjAiLCJpZCI6IjYzNGZiMDliZmEwMWViOTk2MmZmMjAwMSIsImlhdCI6MTY2NjE3NjA0NCwiZXhwIjoxNjY2NjA4MDQ0fQ.HB0VNYociT3Ls3vStaS3MQcsEmOEJtLuLZ8n3MLy0GQ
+
+{
+    "content": "Some site has been crash"
+}
