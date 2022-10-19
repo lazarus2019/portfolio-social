@@ -12,6 +12,7 @@ const {
   getFollowingByUsername,
   checkEmail,
   resetPassword,
+  changeProfile,
 } = require("../services/userService");
 const {
   sendResetPasswordEmail,
@@ -205,6 +206,18 @@ const userFeedbackCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Upload & change profile photo
+const userProfilePhotoUploadCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id, profilePhoto } = req?.user;
+  try {
+    await changeProfile(_id, req.file, profilePhoto);
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
@@ -218,4 +231,5 @@ module.exports = {
   userVerifyTokenCtrl,
   userVerifyAccountCtrl,
   userFeedbackCtrl,
+  userProfilePhotoUploadCtrl,
 };

@@ -23,4 +23,15 @@ const uploadPhotoToCloudinary = async (fileUpload) => {
     throw new Error(error.toString());
   }
 };
-module.exports = uploadPhotoToCloudinary;
+
+const deleteCloudinaryPhotoById = async (id) => {
+  try {
+    await cloudinaryConfig.uploader.destroy(id, (result) => {
+      console.log({ result });
+    });
+  } catch (error) {
+    throw new Error(error.toString());
+  }
+};
+
+module.exports = { uploadPhotoToCloudinary, deleteCloudinaryPhotoById };

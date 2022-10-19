@@ -1,5 +1,9 @@
 const User = require("../models/userModel");
-const crypto = require("crypto");
+const {
+  uploadPhotoToCloudinary,
+  deleteCloudinaryPhotoById,
+} = require("../utils/cloudinaryUploadPhoto");
+const { getPublicId } = require("../utils/uploadFile");
 
 const checkRegisterEmail = async (email) => {
   if (!email)
@@ -211,6 +215,29 @@ const verifyAccount = async (token) => {
   await userFound.save();
 };
 
+const changeProfile = async (userId, file, oldProfilePhoto) => {
+  if (!userId || !file)
+    throw new Error("userId or file is required || changeProfile");
+
+  const imgUploaded = await uploadPhotoToCloudinary(file);
+
+  await User.findByIdAndUpdate(
+    userId,
+    {
+      profilePhoto: imgUploaded?.url,
+    },
+    {
+      new: true,
+    }
+  );
+
+  // Remove old profile photo from cloudinary
+  const fileName = getPublicId(oldProfilePhoto);
+  if (fileName?.startsWith("blank_profile")) return;
+
+  await deleteCloudinaryPhotoById(fileName);
+};
+
 module.exports = {
   checkRegisterEmail,
   createUser,
@@ -227,4 +254,5 @@ module.exports = {
   checkEmail,
   resetPassword,
   verifyAccount,
+  changeProfile,
 };
