@@ -158,6 +158,37 @@ const userResetPasswordCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Verify Account token generator
+const userVerifyTokenCtrl = expressAsyncHandler(async (req, res) => {
+  const { email } = req?.user;
+  try {
+    const user = await checkEmail(email);
+
+    const token = await user.createAccountVerificationToken();
+    const url = `reset-password/${token}`;
+
+    await user.save();
+
+    await sendVerificationEmail(email, url);
+    res.status(200).json({
+      msg: `A verification message is successfully send to ${email}`,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Verify Account by token
+const userVerifyAccountCtrl = expressAsyncHandler(async (req, res) => {
+  const { token } = req?.body;
+  try {
+    await verifyAccount(token);
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = {
   userRegisterCtrl,
@@ -169,4 +200,6 @@ module.exports = {
   userFollowingListCtrl,
   userForgetPasswordCtrl,
   userResetPasswordCtrl,
+  userVerifyTokenCtrl,
+  userVerifyAccountCtrl,
 };

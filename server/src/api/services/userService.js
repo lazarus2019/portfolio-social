@@ -193,6 +193,24 @@ const resetPassword = async (token, password) => {
   await user.save();
 };
 
+const verifyAccount = async (token) => {
+  if (!token) throw new Error("Token is required || verifyAccount");
+
+  // Find this user by token
+  const userFound = await User.findOne({
+    "verify.accountVerificationToken": token,
+    "verify.accountVerificationTokenExpires": { $gt: Date.now() },
+  });
+
+  if (!userFound)
+    throw new Error("Token expired or wrong, try again later || verifyAccount");
+
+  userFound.isAccountVerified = true;
+  userFound.verify.accountVerificationToken = undefined;
+  userFound.verify.accountVerificationTokenExpires = undefined;
+  await userFound.save();
+};
+
 module.exports = {
   checkRegisterEmail,
   createUser,
@@ -208,4 +226,5 @@ module.exports = {
   getFollowingByUsername,
   checkEmail,
   resetPassword,
+  verifyAccount,
 };

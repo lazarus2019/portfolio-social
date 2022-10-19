@@ -9,6 +9,8 @@ const {
   userFollowingListCtrl,
   userForgetPasswordCtrl,
   userResetPasswordCtrl,
+  userVerifyTokenCtrl,
+  userVerifyAccountCtrl,
 } = require("../controllers/userCtrl");
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
 
@@ -29,5 +31,9 @@ route.get("/following/:username", userFollowingListCtrl);
 route.post("/forget-password-token", userForgetPasswordCtrl);
 
 route.put("/reset-password", userResetPasswordCtrl);
+
+route.post("/verify-account-token", passportAuthJwt, userVerifyTokenCtrl);
+
+route.put("/verify-account", userVerifyAccountCtrl);
 
 module.exports = route;

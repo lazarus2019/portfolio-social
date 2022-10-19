@@ -62,8 +62,30 @@ const sendResetPasswordEmail = async (email, url) => {
   }
 };
 
+const sendVerificationEmail = async (email, url) => {
+  const htmlBody = `
+    <p>You have a new contact request</p>
+    <h3>Contact Details</h3>
+    <ul>  
+      <li>Email: ${email}</li>
+    </ul>
+    <a href="${url}">Click here to verify account</a>
+    <h3>Message</h3>
+  `;
+  const { from, subject } = mailTypes.verifyAccount;
+
+  try {
+    await sendEmail(from, email, subject, htmlBody);
+  } catch {
+    throw new Error(
+      `Failed to send reset token to ${email} || sendVerificationEmail`
+    );
+  }
+};
+
 const sendFeedbackEmail = async (email, content) => {};
 
 module.exports = {
   sendResetPasswordEmail,
+  sendVerificationEmail,
 };
