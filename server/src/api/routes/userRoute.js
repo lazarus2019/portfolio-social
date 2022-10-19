@@ -14,6 +14,10 @@ const {
   userFeedbackCtrl,
 } = require("../controllers/userCtrl");
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
+const {
+  profilePhotoMulter,
+  profilePhotoResizing,
+} = require("../middleware/uploads/photoUpload");
 
 route.post("/register", userRegisterCtrl);
 
@@ -38,5 +42,11 @@ route.post("/verify-account-token", passportAuthJwt, userVerifyTokenCtrl);
 route.put("/verify-account", userVerifyAccountCtrl);
 
 route.post("/send-feedback", passportAuthJwt,userFeedbackCtrl);
+
+route.put(
+  "/profilephoto-upload",
+  profilePhotoMulter.single("photo"),
+  profilePhotoResizing,
+);
 
 module.exports = route;
