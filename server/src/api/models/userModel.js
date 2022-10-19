@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const schemaOptions = require("../../config/schemaOptions");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema(
   {
@@ -137,6 +138,17 @@ userSchema.pre("save", async function (next) {
 // Note: MUST USE Expression function [function(){}], can not use arrow func
 userSchema.methods.isPasswordMatched = async function (enterPassword) {
   return await bcrypt.compare(enterPassword, this.password);
+};
+
+userSchema.methods.createPasswordResetToken = async function () {
+  const resetToken = await crypto.randomBytes(32).toString("hex");
+  this.verify.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.verify.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 mins
+  return resetToken;
 };
 
 const User = mongoose.model("User", userSchema);

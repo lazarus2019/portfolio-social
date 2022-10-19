@@ -10,7 +10,12 @@ const {
   unFollowing,
   getFollowersByUsername,
   getFollowingByUsername,
+  checkEmail,
+  resetPassword,
 } = require("../services/userService");
+const {
+  sendResetPasswordEmail,
+} = require("../services/sendMailService");
 const { generateToken } = require("../utils/tokenGenerate");
 const mongoose = require("mongoose");
 const validateMongoDbID = require("../utils/validateMongoDbID");
@@ -121,6 +126,39 @@ const userFollowingListCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Forget password token generator
+const userForgetPasswordCtrl = expressAsyncHandler(async (req, res) => {
+  const { email } = req?.body;
+  try {
+    const user = await checkEmail(email);
+
+    const token = await user.createPasswordResetToken();
+    const url = `reset-password/${token}`;
+
+    await user.save();
+
+    await sendResetPasswordEmail(email, url);
+
+    res.status(200).json({
+      msg: `A reset password message is successfully send to ${email}`,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Password reset
+const userResetPasswordCtrl = expressAsyncHandler(async (req, res) => {
+  const { token, password } = req?.body;
+  try {
+    await resetPassword(token, password);
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
@@ -129,4 +167,6 @@ module.exports = {
   userFollowCtrl,
   userFollowersListCtrl,
   userFollowingListCtrl,
+  userForgetPasswordCtrl,
+  userResetPasswordCtrl,
 };

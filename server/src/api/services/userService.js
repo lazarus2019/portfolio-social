@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const crypto = require("crypto");
 
 const checkRegisterEmail = async (email) => {
   if (!email)
@@ -162,6 +163,36 @@ const takeBasicInfo = (listUsers) => {
   }));
 };
 
+const checkEmail = async (email) => {
+  if (!email) throw new Error("Email Address is required || checkEmail");
+  const user = await User.findOne({ email }).select("-password");
+  if (!user) throw new Error("User Not Found || checkEmail");
+
+  return user;
+};
+
+const resetPassword = async (token, password) => {
+  if (!token || !password)
+    throw new Error("Token and password is required || verifyAccount");
+
+  const user = await User.findOne({
+    "verify.passwordResetToken": token,
+    "verify.passwordResetExpires": { $gt: Date.now() },
+  }).select("password");
+
+  if (!user)
+    throw new Error("Token expired or wrong, try again later || resetPassword");
+
+  // Check similar with old password
+  const isMatched = await user.isPasswordMatched(password);
+  if (isMatched)
+    throw new Error("Your new password is to similar to your current password");
+
+  user.password = password;
+  user.passwordChangeAt = new Date();
+  await user.save();
+};
+
 module.exports = {
   checkRegisterEmail,
   createUser,
@@ -175,4 +206,6 @@ module.exports = {
   unFollowing,
   getFollowersByUsername,
   getFollowingByUsername,
+  checkEmail,
+  resetPassword,
 };
