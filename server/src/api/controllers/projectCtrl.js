@@ -11,6 +11,7 @@ const {
   getOwnProject,
   getProjectByUsername,
   uploadPreviewVideo,
+  getAllProject,
 } = require("../services/projectService");
 
 //// Create
@@ -132,6 +133,18 @@ const projectPreviewVideoUploadCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// [AD] Get all projects
+const projectGetAllCtrl = expressAsyncHandler(async (req, res) => {
+  const { page } = req?.query;
+  try {
+    const projectList = await getAllProject(page);
+
+    res.status(200).json({ result: projectList });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = {
   projectCreateCtrl,
   projectGetBySlugCtrl,
@@ -141,4 +154,5 @@ module.exports = {
   projectGetSavedCtrl,
   projectHideCtrl,
   projectPreviewVideoUploadCtrl,
+  projectGetAllCtrl,
 };

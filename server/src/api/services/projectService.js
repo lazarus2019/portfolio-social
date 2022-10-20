@@ -185,6 +185,16 @@ const uploadPreviewVideo = async (
   // }
 };
 
+//// [ADMIN]
+const getAllProject = async (page) => {
+  const projectList = await Project.find()
+    .populate("user", "firstName lastName profilePhoto username info.bio")
+    .limit(10)
+    .skip(10 * (Number(page) - 1));
+
+  return projectList;
+};
+
 module.exports = {
   createProject,
   getProjectBySlug,
@@ -196,4 +206,5 @@ module.exports = {
   getSavedProject,
   hideProject,
   uploadPreviewVideo,
+  getAllProject,
 };

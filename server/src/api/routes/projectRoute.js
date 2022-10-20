@@ -1,5 +1,6 @@
 const route = require("express").Router();
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
+const adminMiddleware = require("../middleware/auth/adminMiddleware");
 const {
   projectCreateCtrl,
   projectGetBySlugCtrl,
@@ -9,12 +10,15 @@ const {
   projectGetSavedCtrl,
   projectHideCtrl,
   projectPreviewVideoUploadCtrl,
+  projectGetAllCtrl,
 } = require("../controllers/projectCtrl");
 const {
   projectThumbnailMulter,
   projectThumbnailResizing,
 } = require("../middleware/uploads/photoUpload");
 const { previewVideoMulter } = require("../middleware/uploads/videoUpload");
+
+route.get("/all", passportAuthJwt, adminMiddleware, projectGetAllCtrl);
 
 route.get("/saved", passportAuthJwt, projectGetSavedCtrl);
 
