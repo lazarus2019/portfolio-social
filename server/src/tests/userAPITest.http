@@ -15,7 +15,7 @@ POST http://localhost:5000/api/user/login
 Content-Type: application/json
 
 {
-    "username": "thaisonbk2020",
+    "username": "laptrinhvien",
     "password": "123"
 }
 
