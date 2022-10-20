@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const schemaOptions = require("../../config/schemaOptions");
+const slugify = require("../utils/slugify");
 
 const projectSchema = new mongoose.Schema(
   {
@@ -39,12 +40,13 @@ const projectSchema = new mongoose.Schema(
         type: Array,
       },
     },
-    viewCount: {
+    starCount: {
       type: Number,
       default: 0,
     },
     slug: {
       type: String,
+      unique: true,
     },
     isHide: {
       type: Boolean,
@@ -53,6 +55,16 @@ const projectSchema = new mongoose.Schema(
   },
   schemaOptions
 );
+
+// Automated create slug from the title
+projectSchema.pre("save", function (next) {
+  if (!this.isModified("slug")) {
+    next();
+  }
+
+  this.slug = slugify(this.title);
+  next();
+});
 
 const Project = mongoose.model("Project", projectSchema);
 module.exports = Project;

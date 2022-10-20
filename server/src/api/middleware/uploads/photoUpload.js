@@ -17,6 +17,7 @@ const multerFilter = (req, file, cb) => {
   }
 };
 
+//// Profile Photo
 const profilePhotoMulter = multer({
   fileFilter: multerFilter,
   limits: { fileSize: 1000000 }, // 1MB
@@ -35,7 +36,28 @@ const profilePhotoResizing = async (req, res, next) => {
   next();
 };
 
+//// Project thumbnail
+const projectThumbnailMulter = multer({
+  fileFilter: multerFilter,
+  limits: { fileSize: 4000000 }, // 4MB
+});
+
+const projectThumbnailResizing = async (req, res, next) => {
+  // Check if there is no file
+  if (!req.file) return next();
+  const buffer = await sharp(req.file.buffer)
+    .resize(640, 360)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toBuffer();
+
+  req.file.bufferResizing = buffer;
+  next();
+};
+
 module.exports = {
   profilePhotoMulter,
   profilePhotoResizing,
+  projectThumbnailMulter,
+  projectThumbnailResizing,
 };
