@@ -1,9 +1,19 @@
 const Project = require("../models/projectModel");
 const User = require("../models/userModel");
-const {
-  uploadPhotoToCloudinary,
-} = require("../utils/cloudinaryUploadPhoto");
+const { uploadPhotoToCloudinary } = require("../utils/cloudinaryUploadPhoto");
 const checkBadWords = require("../utils/badWords");
+
+const isOwnerProject = async (userId, projectId) => {
+  if (!projectId || !userId)
+    throw new Error("projectId or userId is required || isOwnerProject");
+
+  const project = await Project.findById(projectId).select("user");
+  if (!project) throw new Error("Project Not Found || isOwnerProject");
+
+  if (project?.user.toString() === userId.toString()) return;
+
+  throw new Error("You not own this project || isOwnerProject");
+};
 
 const createProject = async (userId, fileThumbnail, projectInfo) => {
   if (!projectInfo || !userId || !fileThumbnail)
@@ -122,12 +132,30 @@ const removeSavingProject = async (userId, projectId) => {
   );
 };
 
+const hideProject = async (projectId) => {
+  if (!projectId) throw new Error("projectId is required || hideProject");
+
+  const project = await Project.findById(projectId);
+
+  if (!project) throw new Error("Project Not Found || hideProject");
+
+  if (project?.isHide) {
+    project.isHide = false;
+  } else {
+    project.isHide = true;
+  }
+
+  await project.save();
+};
+
 module.exports = {
   createProject,
   getProjectBySlug,
   getOwnProject,
   getProjectByUsername,
+  isOwnerProject,
   savingProject,
   removeSavingProject,
   getSavedProject,
+  hideProject,
 };

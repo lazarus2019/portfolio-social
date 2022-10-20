@@ -7,6 +7,7 @@ const {
   projectGetByUsernameCtrl,
   projectAddToSaveCtrl,
   projectGetSavedCtrl,
+  projectHideCtrl,
 } = require("../controllers/projectCtrl");
 const {
   projectThumbnailMulter,
@@ -30,5 +31,6 @@ route.post(
   passportAuthJwt,
   projectCreateCtrl
 );
+route.put("/hide", passportAuthJwt, projectHideCtrl);
 
 module.exports = route;

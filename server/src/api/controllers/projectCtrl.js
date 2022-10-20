@@ -2,10 +2,12 @@ const expressAsyncHandler = require("express-async-handler");
 const validateMongoDbID = require("../utils/validateMongoDbID");
 const {
   createProject,
+  isOwnerProject,
   getProjectBySlug,
   savingProject,
   removeSavingProject,
   getSavedProject,
+  hideProject,
   getOwnProject,
   getProjectByUsername,
 } = require("../services/projectService");
@@ -95,6 +97,21 @@ const projectGetSavedCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Hide Project
+const projectHideCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id } = req?.user;
+  const { projectId } = req?.body;
+  validateMongoDbID(projectId);
+
+  try {
+    await isOwnerProject(_id, projectId);
+    await hideProject(projectId);
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = {
   projectCreateCtrl,
@@ -103,4 +120,5 @@ module.exports = {
   projectGetByUsernameCtrl,
   projectAddToSaveCtrl,
   projectGetSavedCtrl,
+  projectHideCtrl,
 };
