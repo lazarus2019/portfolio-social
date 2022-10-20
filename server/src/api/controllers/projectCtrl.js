@@ -1,7 +1,11 @@
 const expressAsyncHandler = require("express-async-handler");
+const validateMongoDbID = require("../utils/validateMongoDbID");
 const {
   createProject,
   getProjectBySlug,
+  savingProject,
+  removeSavingProject,
+  getSavedProject,
   getOwnProject,
   getProjectByUsername,
 } = require("../services/projectService");
@@ -56,9 +60,47 @@ const projectGetByUsernameCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Add & remove saved projects
+const projectAddToSaveCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id, info } = req?.user;
+  const { projectId } = req?.body;
+  validateMongoDbID(projectId);
+
+  try {
+    const alreadySaved = info?.savedProject?.find(
+      (project) => project.toString() === projectId.toString()
+    );
+
+    if (alreadySaved) {
+      await removeSavingProject(_id, projectId);
+    } else {
+      await savingProject(_id, projectId);
+    }
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Get saved project (skip hide project)
+const projectGetSavedCtrl = expressAsyncHandler(async (req, res) => {
+  const { info } = req?.user;
+  try {
+    const projectList = await getSavedProject(info?.savedProject);
+
+    res.status(200).json({ result: projectList });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
 module.exports = {
   projectCreateCtrl,
   projectGetBySlugCtrl,
   projectGetOwnCtrl,
   projectGetByUsernameCtrl,
+  projectAddToSaveCtrl,
+  projectGetSavedCtrl,
 };

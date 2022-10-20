@@ -18,3 +18,17 @@ GET http://localhost:5000/api/project/laptrinhvien
 
 ### Get single project by slug
 GET http://localhost:5000/api/project/s/create-a-slug-and-add-a-slug-to-mongoose-schema
+
+### Save project
+PUT http://localhost:5000/api/project/saved
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY2MTg5MjIzLCJleHAiOjE2NjY2MjEyMjN9.zS-KiwDDokAaHkW0Xh7w3o2Vd0EW-VjjebRZm67Dwik
+
+{
+    "projectId": "63500ea148a6ca6ff63f625b"
+}
+
+### Get saved project
+GET http://localhost:5000/api/project/saved
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY2MjQzMDM2LCJleHAiOjE2NjY2NzUwMzZ9.Kz6KYxDOvF1E0S8wxLBXt91WPfiu9SVKPAKtqgXs3-Q

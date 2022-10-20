@@ -64,9 +64,70 @@ const getProjectByUsername = async (username) => {
   return projectList;
 };
 
+const savingProject = async (userId, projectId) => {
+  if (!userId || !projectId)
+    throw new Error("userId and projectId is required || savingProject");
+
+  await User.findByIdAndUpdate(
+    userId,
+    {
+      // append a specified value to an array
+      // Docs: https://www.mongodb.com/docs/manual/reference/operator/update/push/
+      $push: { "info.savedProject": projectId },
+    },
+    { new: true }
+  );
+
+  await Project.findByIdAndUpdate(
+    projectId,
+    {
+      $inc: { starCount: 1 },
+    },
+    { new: true }
+  );
+};
+
+const getSavedProject = async (listProjectIds) => {
+  if (!listProjectIds)
+    throw new Error("listProjectIds is required || getSavedProject");
+
+  const projectList = await Project.find({
+    _id: { $in: listProjectIds },
+    isHide: false,
+  }).populate("user", "firstName lastName username profilePhoto");
+
+  return projectList;
+};
+
+const removeSavingProject = async (userId, projectId) => {
+  if (!userId || !projectId)
+    throw new Error("userId and projectId is required || savingProject");
+
+  await User.findByIdAndUpdate(
+    userId,
+    {
+      // append a specified value to an array
+      // Docs: https://www.mongodb.com/docs/manual/reference/operator/update/push/
+      $pull: { "info.savedProject": projectId },
+    },
+    { new: true }
+  );
+
+  await Project.findByIdAndUpdate(
+    projectId,
+    {
+      $inc: { starCount: -1 },
+    },
+    { new: true }
+  );
+};
+
 module.exports = {
   createProject,
   getProjectBySlug,
   getOwnProject,
   getProjectByUsername,
+  savingProject,
+  removeSavingProject,
+  getSavedProject,
 };

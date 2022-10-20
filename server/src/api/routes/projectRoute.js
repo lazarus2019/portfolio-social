@@ -5,12 +5,17 @@ const {
   projectGetBySlugCtrl,
   projectGetOwnCtrl,
   projectGetByUsernameCtrl,
+  projectAddToSaveCtrl,
+  projectGetSavedCtrl,
 } = require("../controllers/projectCtrl");
 const {
   projectThumbnailMulter,
   projectThumbnailResizing,
 } = require("../middleware/uploads/photoUpload");
 
+route.get("/saved", passportAuthJwt, projectGetSavedCtrl);
+
+route.put("/saved", passportAuthJwt, projectAddToSaveCtrl);
 
 route.get("/s/:slug", projectGetBySlugCtrl);
 
