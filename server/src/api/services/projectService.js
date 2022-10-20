@@ -1,7 +1,15 @@
 const Project = require("../models/projectModel");
 const User = require("../models/userModel");
-const { uploadPhotoToCloudinary } = require("../utils/cloudinaryUploadPhoto");
+const {
+  uploadPhotoToCloudinary,
+  deleteCloudinaryPhotoById,
+} = require("../utils/cloudinaryUploadPhoto");
+const { getPublicId } = require("../utils/uploadFile");
 const checkBadWords = require("../utils/badWords");
+const {
+  uploadVideoToCloudinary,
+  deleteCloudinaryVideoById,
+} = require("../utils/cloudinaryUploadVideo");
 
 const isOwnerProject = async (userId, projectId) => {
   if (!projectId || !userId)
@@ -148,6 +156,35 @@ const hideProject = async (projectId) => {
   await project.save();
 };
 
+const uploadPreviewVideo = async (
+  projectId,
+  previewVideo,
+  oldPreviewVideoUrl
+) => {
+  if (!projectId || !previewVideo)
+    throw new Error(
+      "projectId or previewVideo is required || uploadPreviewVideo"
+    );
+
+  const video = await uploadVideoToCloudinary(previewVideo);
+  if (!video)
+    throw new Error("Can not upload your preview video || uploadPreviewVideo");
+
+  await Project.findByIdAndUpdate(
+    projectId,
+    {
+      "library.previewVideo": video?.url,
+    },
+    { new: true }
+  );
+
+  // Remove the old video - ERROR
+  // if (oldPreviewVideoUrl) {
+  //   const videoId = getPublicId(oldPreviewVideoUrl);
+  //   await deleteCloudinaryVideoById(videoId);
+  // }
+};
+
 module.exports = {
   createProject,
   getProjectBySlug,
@@ -158,4 +195,5 @@ module.exports = {
   removeSavingProject,
   getSavedProject,
   hideProject,
+  uploadPreviewVideo,
 };

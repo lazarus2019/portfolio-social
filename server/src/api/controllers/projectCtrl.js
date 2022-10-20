@@ -10,6 +10,7 @@ const {
   hideProject,
   getOwnProject,
   getProjectByUsername,
+  uploadPreviewVideo,
 } = require("../services/projectService");
 
 //// Create
@@ -113,6 +114,24 @@ const projectHideCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Upload preview video
+const projectPreviewVideoUploadCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id } = req?.user;
+  const { projectId, oldPreviewVideoUrl } = req?.body;
+  validateMongoDbID(projectId);
+
+  try {
+    await isOwnerProject(_id, projectId);
+
+    // Remove the old video - ERROR
+    await uploadPreviewVideo(projectId, req?.file, oldPreviewVideoUrl);
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = {
   projectCreateCtrl,
   projectGetBySlugCtrl,
@@ -121,4 +140,5 @@ module.exports = {
   projectAddToSaveCtrl,
   projectGetSavedCtrl,
   projectHideCtrl,
+  projectPreviewVideoUploadCtrl,
 };
