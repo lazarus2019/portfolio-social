@@ -1,0 +1,14 @@
+### Create new project (Add file "thumbnail" to form-data)
+POST http://localhost:5000/api/project/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY2MTg5MjIzLCJleHAiOjE2NjY2MjEyMjN9.zS-KiwDDokAaHkW0Xh7w3o2Vd0EW-VjjebRZm67Dwik
+
+{
+    "title": "Create a slug and add a slug to mongoose schema",
+    "shortDescription": "Create a slug from a mongoose schema title (or any key really), store the slug in the title so you can use it to route route route"
+}
+
+### Get all Own Projects
+GET http://localhost:5000/api/project
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY2MTg5MjIzLCJleHAiOjE2NjY2MjEyMjN9.zS-KiwDDokAaHkW0Xh7w3o2Vd0EW-VjjebRZm67Dwik

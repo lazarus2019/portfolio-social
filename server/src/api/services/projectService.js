@@ -30,6 +30,14 @@ const createProject = async (userId, fileThumbnail, projectInfo) => {
   });
 };
 
+const getOwnProject = async (userId) => {
+  if (!userId) throw new Error("userId is required || getOwnProject");
+  const projectList = await Project.find({ user: userId });
+
+  return projectList;
+};
+
 module.exports = {
   createProject,
+  getOwnProject,
 };
