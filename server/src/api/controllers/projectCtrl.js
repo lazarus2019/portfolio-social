@@ -12,6 +12,7 @@ const {
   getProjectByUsername,
   uploadPreviewVideo,
   getAllProject,
+  changeThumbnail,
 } = require("../services/projectService");
 
 //// Create
@@ -21,6 +22,23 @@ const projectCreateCtrl = expressAsyncHandler(async (req, res) => {
 
   try {
     await createProject(_id, req.file, { title, shortDescription });
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Change thumbnail
+const projectUpdateThumbnailCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id } = req?.user;
+  const { projectId, oldThumbnailUrl } = req?.body;
+  validateMongoDbID(projectId);
+
+  try {
+    await isOwnerProject(_id, projectId);
+
+    await changeThumbnail(_id, req?.file, oldThumbnailUrl);
 
     res.status(200).json({ status: true });
   } catch (error) {
@@ -155,4 +173,5 @@ module.exports = {
   projectHideCtrl,
   projectPreviewVideoUploadCtrl,
   projectGetAllCtrl,
+  projectUpdateThumbnailCtrl,
 };

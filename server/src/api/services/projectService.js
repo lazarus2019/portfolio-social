@@ -49,6 +49,30 @@ const createProject = async (userId, fileThumbnail, projectInfo) => {
   });
 };
 
+const changeThumbnail = async (projectId, fileThumbnail, oldThumbnail) => {
+  if (!projectId || !fileThumbnail || !oldThumbnail)
+    throw new Error(
+      "projectId, fileThumbnail or oldThumbnail is required || changeProfile"
+    );
+
+  const imgUploaded = await uploadPhotoToCloudinary(fileThumbnail);
+
+  console.log(imgUploaded);
+
+  await Project.findByIdAndUpdate(
+    projectId,
+    {
+      thumbnail: imgUploaded?.url,
+    },
+    { new: true }
+  );
+
+  // Remove old project thumbnail from cloudinary
+  const fileName = getPublicId(oldThumbnail);
+  console.log(fileName)
+  await deleteCloudinaryPhotoById(fileName);
+};
+
 const getProjectBySlug = async (slug) => {
   if (!slug) throw new Error("slug is required || getProjectBySlug");
   const project = await Project.findOne({ slug, isHide: false }).populate(
@@ -207,4 +231,5 @@ module.exports = {
   hideProject,
   uploadPreviewVideo,
   getAllProject,
+  changeThumbnail,
 };
