@@ -14,6 +14,8 @@ const {
   userFeedbackCtrl,
   userProfilePhotoUploadCtrl,
   userBanningCtrl,
+  userGetByEmailCtrl,
+  userGetByIdCtrl,
 } = require("../controllers/userCtrl");
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
 const adminMiddleware = require("../middleware/auth/adminMiddleware");
@@ -56,5 +58,9 @@ route.put(
 
 //// [ADMIN]
 route.put("/banning", passportAuthJwt, adminMiddleware, userBanningCtrl);
+
+route.get("/get-by-email", passportAuthJwt, adminMiddleware, userGetByEmailCtrl);
+
+route.get("/get-by-id", passportAuthJwt, adminMiddleware, userGetByIdCtrl);
 
 module.exports = route;

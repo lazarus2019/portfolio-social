@@ -240,10 +240,31 @@ const changeProfile = async (userId, file, oldProfilePhoto) => {
 
 //// [ADMIN]
 const banUser = async (userId) => {
-    if (!userId)
-    throw new Error("userId is required || banUser");
+  if (!userId) throw new Error("userId is required || banUser");
 
-    await User.findOneAndUpdate({id: userId}, [{"$set": {isBan: {"$not": "$isBan"}}}])
+  await User.findOneAndUpdate({ id: userId }, [
+    { $set: { isBan: { $not: "$isBan" } } },
+  ]);
+};
+
+const getUserByEmail = async (email) => {
+  if (!email) throw new Error("email is required || banUser");
+  const user = await User.findOne({ email }).select(
+    "-password -info -setting -verify"
+  );
+  if (!user) throw new Error("User not found || getUserByEmail");
+
+  return user;
+};
+
+const getUserById = async (userId) => {
+  if (!userId) throw new Error("userId is required || banUser");
+  const user = await User.findById(userId).select(
+    "-password -info -setting -verify"
+  );
+  if (!user) throw new Error("User not found || getUserById");
+
+  return user;
 };
 
 module.exports = {
@@ -264,4 +285,6 @@ module.exports = {
   verifyAccount,
   changeProfile,
   banUser,
+  getUserByEmail,
+  getUserById,
 };
