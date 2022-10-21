@@ -238,6 +238,14 @@ const changeProfile = async (userId, file, oldProfilePhoto) => {
   await deleteCloudinaryPhotoById(fileName);
 };
 
+//// [ADMIN]
+const banUser = async (userId) => {
+    if (!userId)
+    throw new Error("userId is required || banUser");
+
+    await User.findOneAndUpdate({id: userId}, [{"$set": {isBan: {"$not": "$isBan"}}}])
+};
+
 module.exports = {
   checkRegisterEmail,
   createUser,
@@ -255,4 +263,5 @@ module.exports = {
   resetPassword,
   verifyAccount,
   changeProfile,
+  banUser,
 };

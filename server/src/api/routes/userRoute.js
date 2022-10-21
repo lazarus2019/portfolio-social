@@ -13,8 +13,10 @@ const {
   userVerifyAccountCtrl,
   userFeedbackCtrl,
   userProfilePhotoUploadCtrl,
+  userBanningCtrl,
 } = require("../controllers/userCtrl");
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
+const adminMiddleware = require("../middleware/auth/adminMiddleware");
 const {
   profilePhotoMulter,
   profilePhotoResizing,
@@ -51,5 +53,8 @@ route.put(
   profilePhotoResizing,
   userProfilePhotoUploadCtrl
 );
+
+//// [ADMIN]
+route.put("/banning", passportAuthJwt, adminMiddleware, userBanningCtrl);
 
 module.exports = route;

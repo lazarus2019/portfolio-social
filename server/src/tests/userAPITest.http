@@ -88,3 +88,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoY
 {
     "content": "Some site has been crash"
 }
+
+######## ADMIN ########
+### Banning user by id
+PUT http://localhost:5000/api/user/banning
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY2MzE5ODkzLCJleHAiOjE2NjY3NTE4OTN9.tSCuXB97Qy0ed5C8xcZxGAMaY-zx216KIp1fWRerwYI
+
+{
+    "userId": "634e643f1789a662fec7681d"
+}

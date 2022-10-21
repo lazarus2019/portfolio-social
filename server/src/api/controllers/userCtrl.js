@@ -13,6 +13,7 @@ const {
   checkEmail,
   resetPassword,
   changeProfile,
+  banUser,
 } = require("../services/userService");
 const {
   sendResetPasswordEmail,
@@ -218,6 +219,20 @@ const userProfilePhotoUploadCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const userBanningCtrl = expressAsyncHandler(async (req, res)=>{
+  const {_id} = req?.user
+  const {userId} = req?.body
+  try {
+    if(_id.toString() === userId.toString()) throw new Error("You can not banning yourself!")
+
+    await banUser(userId)
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });    
+  }
+})
+
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
@@ -232,4 +247,5 @@ module.exports = {
   userVerifyAccountCtrl,
   userFeedbackCtrl,
   userProfilePhotoUploadCtrl,
+  userBanningCtrl,
 };
