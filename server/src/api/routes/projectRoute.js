@@ -12,6 +12,8 @@ const {
   projectPreviewVideoUploadCtrl,
   projectGetAllCtrl,
   projectUpdateThumbnailCtrl,
+  projectDeleteCtrl,
+  projectUpdateCtrl,
 } = require("../controllers/projectCtrl");
 const {
   projectThumbnailMulter,
@@ -54,6 +56,10 @@ route.put(
   passportAuthJwt,
   projectPreviewVideoUploadCtrl
 );
+
+route.delete("/delete", passportAuthJwt, projectDeleteCtrl);
+
+route.put("/update", passportAuthJwt, projectUpdateCtrl);
 
 route.put("/hide", passportAuthJwt, projectHideCtrl);
 

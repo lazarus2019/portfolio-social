@@ -1,0 +1,17 @@
+.profile-container {
+  display: flex;
+}
+
+.left-content {
+  width: 256px;
+  padding: 2rem 1rem;
+}
+
+.right-content {
+  flex: 1;
+  padding: 2rem 1rem;
+}
+
+.profile-bottom {
+  margin-bottom: 4rem;
+}

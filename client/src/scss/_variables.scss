@@ -1,12 +1,22 @@
 $white: #fff;
 $black: #000;
-$homeBgGr: linear-gradient(180deg, #0c041e -8.41%, #4e21b7 98.85%);
+$homeBgGr: linear-gradient(90deg, #0c041e -8.41%, #4e21b7 98.85%);
 $btnColor: #2485fd;
+$optionHoverColor: #0969da;
 $greenColor: #28a745;
 $lightColor: #8193b2;
 $darkBgColor: #050d20;
-$borderColor: #dadee8;
-$gray: #56606b;
+$headerBg: #24292f;
+$borderColor: #384150;
+$gray: #57606a;
+$yellow: #fdbb2d;
+$inputBg: #c2c6ca;
 $lightBgColor: #0c162d;
 $lightBgColorHover: #19253c;
-$pinkToBlue: linear-gradient(-45deg, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+$pinkToBlue: linear-gradient(
+  -45deg,
+  rgba(63, 94, 251, 1) 0%,
+  rgba(252, 70, 107, 1) 100%
+);
+$box-shadow: rgba(149, 157, 165, 0.25) 0px 8px 24px;
+$numbers: (0, 1, 2, 3, 4, 5, 6, 7, 8);

@@ -82,6 +82,36 @@ const projectGetByUsernameCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Delete
+const projectDeleteCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id } = req?.user;
+  const { projectId } = req?.body;
+  validateMongoDbID(projectId);
+
+  try {
+    await isOwnerProject(_id, projectId);
+    //// Delete project here
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Update
+const projectUpdateCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id } = req?.user;
+  const { projectId } = req?.body;
+  validateMongoDbID(projectId);
+
+  try {
+    await isOwnerProject(_id, projectId);
+    //// Update project here
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //// Add & remove saved projects
 const projectAddToSaveCtrl = expressAsyncHandler(async (req, res) => {
   const { _id, info } = req?.user;
@@ -174,4 +204,6 @@ module.exports = {
   projectPreviewVideoUploadCtrl,
   projectGetAllCtrl,
   projectUpdateThumbnailCtrl,
+  projectDeleteCtrl,
+  projectUpdateCtrl,
 };

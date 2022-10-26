@@ -1,10 +1,16 @@
 @use "./mixins" as *;
+@use './variables' as *;
 .container {
   width: 1200px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+
+  &.wide {
+    width: 1320px;
+  }
+
   @include responsive(large) {
     max-width: 100%;
     padding: 0 5rem;
@@ -23,6 +29,16 @@
   }
 }
 
+@each $val in $numbers {
+  .grid-col-#{$val} {
+    grid-template-columns: repeat($val, 1fr);
+  }
+}
+
+.grid {
+  display: grid;
+}
+
 .redirect {
   cursor: pointer;
 }
@@ -39,9 +55,29 @@
   align-items: center;
 }
 
+.p-15 {
+  padding: 1.5rem;
+}
+
 .mr-minus-15 {
   margin-right: -1.5rem;
 }
 .ml-minus-15 {
   margin-left: -1.5rem;
+}
+.hr {
+  height: 1px;
+  width: 100%;
+  background-color: rgba($color: #fff, $alpha: 0.2);
+}
+
+.section {
+  margin-bottom: 70px;
+}
+
+.separate {
+  display: block;
+  height: 0;
+  margin: 8px 0;
+  border-top: 1px solid #d0d7de;
 }

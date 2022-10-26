@@ -1,0 +1,22 @@
+@use "@/scss/variables" as *;
+
+.statistic-container {
+  margin-top: 2rem;
+  display: flex;
+}
+
+.statistic-box {
+  & ~ .statistic-box {
+    margin-left: 8rem;
+  }
+
+  &__amount {
+    font-size: 2rem;
+    color: $white;
+  }
+  &__desc {
+      font-size: 1.2rem;
+      margin-top: 0.375rem;
+      color: $lightColor;
+  }
+}

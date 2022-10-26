@@ -17,6 +17,14 @@
   height: $height;
 }
 
+@mixin gradientText($background) {
+  background: $background;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone;
+}
+
 // Responsive
 @mixin responsive($breakpoint) {
   @if $breakpoint == large {

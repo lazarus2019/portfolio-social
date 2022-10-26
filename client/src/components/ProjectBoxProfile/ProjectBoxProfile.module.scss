@@ -1,0 +1,142 @@
+@use "@/scss/variables" as *;
+
+.project-container {
+  display: flex;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+  border-bottom: 1px solid #d0d7de;
+  user-select: none;
+
+  &__thumbnail {
+    width: 196px;
+    margin-right: 2rem;
+
+    > img {
+      width: 100%;
+      border-radius: 1rem;
+    }
+  }
+  .project-box {
+    flex: 1;
+
+    &__left {
+      flex: 1;
+    }
+
+    &__content {
+      display: flex;
+      height: 100%;
+    }
+
+    &__title {
+      color: $optionHoverColor;
+      font-size: 1.75rem;
+      line-height: 2rem;
+      margin-bottom: 1rem;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+      }
+    }
+
+    &__status {
+      display: inline-block;
+      margin-left: 1rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: #57606a;
+      padding: 0 0.5rem;
+      border: 1px solid #d0d7de;
+      border-radius: 1rem;
+      height: 1.6rem;
+      line-height: 1.4rem;
+    }
+
+    &__desc {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      line-height: 1.8rem;
+      color: #57606a;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+
+    &__tags {
+      display: flex;
+      margin-bottom: 1rem;
+
+      &__item {
+        color: #57606a;
+        padding: 0 0.5rem;
+        border: 1px solid #d0d7de;
+        border-radius: 1rem;
+        height: 1.6rem;
+        line-height: 1.4rem;
+        margin-right: 1rem;
+
+        &:hover {
+          border-color: $btnColor;
+          color: $btnColor;
+          cursor: pointer;
+        }
+      }
+    }
+
+    &__created-date {
+      margin-top: auto;
+      color: #57606a;
+      font-size: 1.2rem;
+    }
+
+    &__right {
+      width: 120px;
+    }
+    &__star {
+      display: flex;
+      justify-content: end;
+      &__btn {
+        font-size: 1.2rem;
+        padding: 0.5rem 0.75rem;
+        color: $black;
+        background-color: #f6f8fa;
+        border-width: 1px;
+        border-color: #1b1f2426;
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+        cursor: pointer;
+
+        > svg {
+          margin-right: 0.75rem;
+          color: $black;
+        }
+
+        &.active {
+          font-weight: 600;
+          > svg {
+            color: $yellow;
+          }
+        }
+
+        &:hover {
+          background-color: #f3f4f6;
+        }
+      }
+      &__count {
+        font-size: 1.2rem;
+        width: 32px;
+        text-align: center;
+        font-weight: 600;
+        padding: 0.5rem 0;
+        background-color: #f6f8fa;
+        border: 1px solid #1b1f2426;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        border-left-width: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+@use "@/scss/variables" as *;
+@use "@/scss/mixins" as *;
+
+.popular-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  * + * {
+    margin-left: 20px;
+  }
+
+  .ok {
+    color: red;
+  }
+
+  &__item {
+    position: relative;
+    padding: 1rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: $black;
+
+    &::after {
+      content: "";
+      position: absolute;
+      height: 1px;
+      width: 0;
+      background-color: $black;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: width 0.3s ease;
+    }
+
+    &:hover {
+      color: $btnColor;
+      &::after {
+        width: 50%;
+        background-color: $btnColor;
+      }
+    }
+
+    &.active {
+      &::after {
+        width: 50%;
+      }
+    }
+  }
+}
+
+.popular-container {
+  background: linear-gradient(
+    0deg,
+    rgba(4, 13, 33, 1) 0%,
+    rgba(9, 28, 71, 1) 100%
+  );
+  border-radius: 1.2rem;
+  padding: 2rem;
+
+  &__header {
+    text-align: center;
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 4rem;
+    @include gradientText(linear-gradient(-70deg, #a2facf 0%, #64acff 100%));
+  }
+}
+.popular-user-list {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.popular-project-list {
+  width: 80%;
+  margin: 0 auto;
+}
+

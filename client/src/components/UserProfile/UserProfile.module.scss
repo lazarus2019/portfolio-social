@@ -1,0 +1,60 @@
+@use "@/scss/variables" as *;
+
+.user {
+  &-photo {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 2rem;
+
+    > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1px solid #1b1f2426;
+    }
+  }
+  &-name {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+  &-username {
+    text-align: right;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+  &-bio {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  &-follow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    &__link {
+      margin: 0 0.5rem;
+      text-decoration: none;
+      font-size: 1.4rem;
+      color: $black;
+
+      &:hover {
+        color: $btnColor;
+      }
+    }
+  }
+  &-external-link {
+    font-size: 1.4rem;
+    word-wrap: break-word;
+    > a {
+      text-decoration: none;
+      color: $black;
+
+      &:hover {
+        text-decoration: underline;
+        color: $btnColor;
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+@use "@/scss/variables" as *;
+.input-field {
+  &__group {
+    &__label {
+      display: block;
+      font-weight: 600;
+      font-size: 1.6rem;
+      color: #00cfc8;
+      margin-bottom: 0.75rem;
+    }
+
+    &__input {
+      display: block;
+      color: $white;
+      font-size: 1.4rem;
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      outline: 0;
+      background-color: transparent;
+      border: 1px solid $lightColor;
+    }
+
+    &__error {
+      color: rgba(255, 0, 0, 0.789);
+      font-size: 1.2rem;
+    }
+  }
+
+  &__group + &__group {
+    margin-top: 1rem;
+  }
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+.mt-1 {
+  margin-top: 1rem !important;
+}
+
+.password-input__box {
+  position: relative;
+
+  > input {
+    padding-right: 3rem;
+  }
+  > svg {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: $lightColor;
+  }
+}

@@ -1,0 +1,55 @@
+@use "@/scss/variables"as *;
+@use "@/scss/mixins" as *;
+
+.route-container {
+}
+
+.timeline {
+  top: 55px;
+  width: 100%;
+  height: 2px;
+  background-color: $btnColor;
+  position: absolute;
+  z-index: -1;
+}
+
+.route-list {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.route-item {
+    user-select: none;
+  &__no {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid $btnColor;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: $white;
+    margin: 0 auto;
+  }
+  &__title {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    font-weight: 600;
+  }
+}
+
+.route-header {
+  font-size: 6rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 2rem;
+  .route-gradient {
+    @include gradientText(linear-gradient(-70deg, #2188ff 0%, #804eda 100%));
+  }
+}
