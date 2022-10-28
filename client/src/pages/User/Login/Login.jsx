@@ -4,32 +4,36 @@ import styles from "./Login.module.scss";
 import assets from "@/assets";
 
 const cx = classNames.bind(styles);
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import InputField from "@/components/FormFields/InputField/InputField";
-import PasswordField from "@/components/FormFields/InputField/PasswordField";
+import LoginForm from "@/components/Forms/LoginForm";
+import { toast } from "react-toastify";
+import userAPI from "@/api/userAPI";
+import keyStorage from "@/constants";
+import authUtils from "@/utils/authUtils";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/slices/userSlice";
 
-const formSchema = yup.object({
-  username: yup.string().required("Username is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(6, "Password must at least 6 characters"),
-});
+function Login() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
 
-function Login(props) {
-  // formik
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    onSubmit: (value) => {},
-    validationSchema: formSchema,
-  });
+  const handleSubmit = async (values) => {
+    try {
+      const result = await userAPI.login(values);
+      if (result?.status) {
+        localStorage.setItem(keyStorage.TOKEN_KEY, result?.token);
+        const user = await authUtils.isAuthenticated()
+        if(user){
+          dispatch(setUser(user))
+        }
+        return navigate("/");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
   return (
     <div className={cx("login-container")}>
       <div className={cx("login-header", "container")}>
@@ -44,44 +48,8 @@ function Login(props) {
         </div>
       </div>
 
-      <div className={cx("flex", "login-form-wrapper")}>
-        <div className={cx("login-form-container")}>
-          <div className={cx("login-form")}>
-            <div className={cx("login-form__header")}>
-              Sign in to Portfolio Social
-            </div>
-
-            <form onSubmit={formik.handleSubmit}>
-              <InputField
-                label="Username"
-                value={formik.values.username}
-                onChange={formik.handleChange("username")}
-                onBlur={formik.handleBlur("username")}
-                errors={formik.touched.username && formik.errors.username}
-              />
-              <PasswordField
-                label="Password"
-                value={formik.values.password}
-                onChange={formik.handleChange("password")}
-                onBlur={formik.handleBlur("password")}
-                errors={formik.touched.password && formik.errors.password}
-              />
-
-              <div
-                className={cx("login-form__bottom", "flex", "space-between")}
-              >
-                <Link to="/forget-password">Forgot Password?</Link>
-
-                <button
-                  type="submit"
-                  className={cx("login-form__bottom__submit-btn")}
-                >
-                  Login
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+      <div className={cx("login-form-container")}>
+        <LoginForm onSubmit={handleSubmit} />
       </div>
     </div>
   );

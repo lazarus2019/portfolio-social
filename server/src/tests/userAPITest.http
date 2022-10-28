@@ -3,8 +3,7 @@ POST http://localhost:5000/api/user/register
 Content-Type: application/json
 
 {
-    "firstName": "Thai Son",
-    "lastName": "Nguyen",
+    "fullName": "Thai Son",
     "username": "thaisonbk2020",
     "password": "123",
     "email": "thaisonbk2020@gmail.com"
@@ -30,8 +29,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imxhc
 {
     "info.bio": "No description, website, or topics provided.",
     "setting.isPrivateAccount": true,
-    "firstName": "Post",
-    "lastName": "Malone"
+    "fullName": "Post",
 }
 
 ### Following user

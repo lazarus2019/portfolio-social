@@ -16,6 +16,7 @@ const {
   banUser,
   getUserByEmail,
   getUserById,
+  login,
 } = require("../services/userService");
 const {
   sendResetPasswordEmail,
@@ -57,6 +58,26 @@ const userLoginCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Get user info by token
+const userGetByTokenCtrl = expressAsyncHandler(async (req, res) => {
+  const user = req?.user;
+  try {
+    if (user)
+      res.status(200).json({ 
+        username: user?.username,
+        fullName: user?.fullName,
+        email: user?.email,
+        isBan: user?.isBan,
+        bio: user?.info?.bio,
+        savedProject: user?.info?.savedProject,
+        profilePhoto: user?.profilePhoto,
+        isAccountVerified: user?.isAccountVerified,
+       });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //// Get Profile
 const userProfileCtrl = expressAsyncHandler(async (req, res) => {
   const { username } = req.params;
@@ -77,8 +98,7 @@ const userUpdateProfileCtrl = expressAsyncHandler(async (req, res) => {
 
     const userUpdated = await updateProfile(user?._id, req?.body);
     res.status(200).json({
-      firstName: userUpdated.firstName,
-      lastName: userUpdated.lastName,
+      fullName: userUpdated.fullName,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -198,10 +218,10 @@ const userVerifyAccountCtrl = expressAsyncHandler(async (req, res) => {
 
 //// Send feedback to admin contact
 const userFeedbackCtrl = expressAsyncHandler(async (req, res) => {
-  const { email, firstName, lastName } = req?.user;
+  const { email, fullName } = req?.user;
   const { content } = req?.body;
   try {
-    await sendFeedbackEmail({ email, firstName, lastName }, content);
+    await sendFeedbackEmail({ email, fullName }, content);
 
     res.status(200).json({ status: true });
   } catch (error) {
@@ -262,6 +282,7 @@ const userGetByIdCtrl = expressAsyncHandler(async (req, res) => {
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
+  userGetByTokenCtrl,
   userProfileCtrl,
   userUpdateProfileCtrl,
   userFollowCtrl,

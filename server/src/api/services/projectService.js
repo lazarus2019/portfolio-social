@@ -77,7 +77,7 @@ const getProjectBySlug = async (slug) => {
   if (!slug) throw new Error("slug is required || getProjectBySlug");
   const project = await Project.findOne({ slug, isHide: false }).populate(
     "user",
-    "firstName lastName profilePhoto username info.bio"
+    "fullName profilePhoto username info.bio"
   );
 
   if (!project) throw new Error("Project Not Found or Project Was Hidden");
@@ -136,7 +136,7 @@ const getSavedProject = async (listProjectIds) => {
   const projectList = await Project.find({
     _id: { $in: listProjectIds },
     isHide: false,
-  }).populate("user", "firstName lastName username profilePhoto");
+  }).populate("user", "fullName username profilePhoto");
 
   return projectList;
 };
@@ -212,7 +212,7 @@ const uploadPreviewVideo = async (
 //// [ADMIN]
 const getAllProject = async (page) => {
   const projectList = await Project.find()
-    .populate("user", "firstName lastName profilePhoto username info.bio")
+    .populate("user", "fullName profilePhoto username info.bio")
     .limit(10)
     .skip(10 * (Number(page) - 1));
 

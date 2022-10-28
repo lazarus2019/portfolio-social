@@ -30,8 +30,7 @@ function Profile(props) {
       isPrivateAccount: false,
     },
     _id: "634e643f1789a662fec7681d",
-    firstName: "Post",
-    lastName: "Malone",
+    fullName: "Post Malone",
     profilePhoto:
       "https://res.cloudinary.com/amazona-app/image/upload/v1665804263/blank_profile_znhwkp.png",
     username: "tommy087",

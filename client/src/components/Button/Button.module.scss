@@ -1,5 +1,6 @@
 @use "@/scss/variables" as *;
 .button {
+  text-decoration: none;
   font-size: 1.4rem;
   color: $white;
   text-align: center;

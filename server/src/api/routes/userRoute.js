@@ -2,6 +2,7 @@ const route = require("express").Router();
 const {
   userRegisterCtrl,
   userLoginCtrl,
+  userGetByTokenCtrl,
   userProfileCtrl,
   userUpdateProfileCtrl,
   userFollowCtrl,
@@ -27,6 +28,8 @@ const {
 route.post("/register", userRegisterCtrl);
 
 route.post("/login", userLoginCtrl);
+
+route.get("/get-user-by-token", passportAuthJwt, userGetByTokenCtrl);
 
 route.put("/profile", passportAuthJwt, userUpdateProfileCtrl);
 

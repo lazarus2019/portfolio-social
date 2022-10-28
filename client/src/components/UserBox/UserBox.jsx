@@ -16,7 +16,7 @@ function UserBox({ user, isTop }) {
       </div>
       <div className={cx("user-box__content")}>
         <div className={cx("user-box__content__name")}>
-          {user?.firstName} {user?.lastName}
+          {user?.fullName}
         </div>
         <div className={cx("user-box__content__username")}>
           {user?.username}

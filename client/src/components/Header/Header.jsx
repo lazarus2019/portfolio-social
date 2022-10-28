@@ -5,12 +5,22 @@ const cx = classNames.bind(styles);
 import assets from "@/assets";
 import Button from "../Button/Button";
 import Navigation from "../Navigation/Navigation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsPlusLg, BsFillCaretDownFill } from "react-icons/bs";
 import { CiFaceSmile } from "react-icons/ci";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "@/redux/slices/userSlice";
 
 function Header({ hasBg }) {
-  const isLogged = true;
+  const user = useSelector((store) => store?.user?.value);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
   return (
     <div className={cx("header", `${hasBg ? "hasBg" : ""}`)}>
       <div className={cx("container", "flex", "space-between", "y-center")}>
@@ -29,9 +39,8 @@ function Header({ hasBg }) {
 
         <div className={cx("header__right")}>
           <Navigation homeNavigate />
-          <Button content="Sign in" />
-          <Button content="Sign up" className="outline" />
-          {isLogged && (
+
+          {user ? (
             <div className={cx("header__list")}>
               <div className={cx("header__menu")}>
                 <BsPlusLg size={10} color="#fff" />
@@ -62,7 +71,9 @@ function Header({ hasBg }) {
                 <div className={cx("dropdown-menu")}>
                   <Link to={`/@username`} className={cx("logged-user")}>
                     <p>Signed in as</p>
-                    <p className={cx("logged-user__username")}>lazarus2019</p>
+                    <p className={cx("logged-user__username")}>
+                      {user.username}
+                    </p>
                   </Link>
                   <div className="separate"></div>
                   <div className={cx("set-bio")}>
@@ -71,32 +82,49 @@ function Header({ hasBg }) {
                     </div>
                   </div>
                   <div className="separate"></div>
-                  <Link to="" className={cx("dropdown-menu__item")}>
+                  <Link
+                    to={`/@${user.username}`}
+                    className={cx("dropdown-menu__item")}
+                  >
                     Your profile
                   </Link>
-                  <Link to="" className={cx("dropdown-menu__item")}>
+                  <Link
+                    to={`/@${user.username}?tab=project`}
+                    className={cx("dropdown-menu__item")}
+                  >
                     Your projects
                   </Link>
-                  <Link to="" className={cx("dropdown-menu__item")}>
+                  <Link
+                    to={`/@${user.username}?tab=star`}
+                    className={cx("dropdown-menu__item")}
+                  >
                     Your stars
                   </Link>
-                  <Link to="" className={cx("dropdown-menu__item")}>
+                  <Link to="/boards" className={cx("dropdown-menu__item")}>
                     Your boards
                   </Link>
                   <div className="separate"></div>
-                  <Link to="" className={cx("dropdown-menu__item")}>
-                    Send feedback
-                  </Link>
-                  <Link to="" className={cx("dropdown-menu__item")}>
+                  <div className={cx("dropdown-menu__item")}>Send feedback</div>
+                  <Link to="/setting" className={cx("dropdown-menu__item")}>
                     Setting
                   </Link>
                   <div className="separate"></div>
-                  <Link to="" className={cx("dropdown-menu__item")}>
+                  <div
+                    onClick={handleSignOut}
+                    className={cx("dropdown-menu__item")}
+                  >
                     Sign out
-                  </Link>
+                  </div>
                 </div>
               </div>
             </div>
+          ) : (
+            <>
+              {/* <Link to="/login">Sign in</Link>
+              <Link to="/register">Sign up</Link> */}
+              <Button to="/login" content="Sign in" />
+              <Button to="/register" content="Sign up" className="outline" />
+            </>
           )}
         </div>
       </div>

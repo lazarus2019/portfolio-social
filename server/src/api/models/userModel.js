@@ -5,13 +5,9 @@ const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema(
   {
-    firstName: {
+    fullName: {
       type: String,
-      required: [true, "First name is required"],
-    },
-    lastName: {
-      type: String,
-      required: [true, "Last name is required"],
+      required: [true, "Full name is required"],
     },
     profilePhoto: {
       type: String,

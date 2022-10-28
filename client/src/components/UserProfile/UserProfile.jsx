@@ -17,9 +17,7 @@ function UserProfile({ user }) {
         <img src={user?.profilePhoto} alt="" />
       </div>
       <Grid col={2}>
-        <div className={cx("user-name")}>
-          {user?.firstName} {user?.lastName}
-        </div>
+        <div className={cx("user-name")}>{user?.fullName}</div>
         <div className={cx("user-username")}>{user?.username}</div>
       </Grid>
       {isCurrentUser ? (
@@ -30,14 +28,20 @@ function UserProfile({ user }) {
       {user?.setting?.isPrivateAccount ? null : (
         <div className={cx("user-follow")}>
           <BsFillPeopleFill size={15} />
-          <NavLink className={cx("user-follow__link")}>
+          <NavLink
+            to={`/@${user?.username}?tab=follower`}
+            className={cx("user-follow__link")}
+          >
             {user?.info?.follower?.length > 0
               ? user?.info?.follower?.length
               : 0}{" "}
             followers
           </NavLink>
           {" · "}
-          <NavLink className={cx("user-follow__link")}>
+          <NavLink
+            to={`/@${user?.username}?tab=following`}
+            className={cx("user-follow__link")}
+          >
             {user?.info?.following?.length > 0
               ? user?.info?.following?.length
               : 0}{" "}

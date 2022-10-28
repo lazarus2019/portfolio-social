@@ -1,16 +1,21 @@
-import querystring from "query-string";
 import axios from "axios";
-import apiConfig from "@/config/apiConfig";
+import tokenUtils from "@/utils/tokenUtils";
 
 const axiosClient = axios.create({
-  apiConfig,
-  paramsSerializer: (params) => querystring.stringify({ params }),
+  baseURL: "http://localhost:5000/api/",
+  // paramsSerializer: (params) => queryString.stringify( {params} ),
 });
 
 // Interceptors
 axiosClient.interceptors.request.use(
   (config) => {
-    return config;
+    return {
+      ...config,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenUtils.getToken()}`,
+      },
+    };
   },
   (error) => {
     return Promise.reject(error);
@@ -19,6 +24,9 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   (response) => {
+    if (response.headers["authorization"]) {
+      response.data.token = response.headers["authorization"];
+    }
     if (response && response.data) return response.data;
     return response;
   },

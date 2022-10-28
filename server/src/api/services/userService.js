@@ -15,16 +15,9 @@ const checkRegisterEmail = async (email) => {
     );
 };
 
-const createUser = async ({
-  firstName,
-  lastName,
-  username,
-  password,
-  email,
-}) => {
+const createUser = async ({ fullName, username, password, email }) => {
   const user = await User.create({
-    firstName,
-    lastName,
+    fullName,
     username,
     password,
     email,
@@ -48,7 +41,9 @@ const checkUsernameExist = async (username, needPass = false) => {
   if (!username) throw new Error("Username is required || checkUsernameExist");
   var user;
   if (needPass) {
-    user = await User.findOne({ username }).select("_id username password");
+    user = await User.findOne({ username }).select(
+      "_id username password isBan fullName"
+    );
   } else {
     user = await User.findOne({ username }).select(
       "-password -isAdmin -isAccountVerified -info.savedProject -info.follower -info.following -email"
@@ -56,6 +51,15 @@ const checkUsernameExist = async (username, needPass = false) => {
   }
   if (!user) throw new Error("User not found || checkUsernameExist");
 
+  return user;
+};
+
+const login = async (username) => {
+  if (!username) throw new Error("Username is required || login");
+  const user = await User.findOne({ username }).select(
+    "-password -createdAt -updatedAt -_id -isAdmin -verify"
+  );
+  if (!user) throw new Error("User not found || login");
   return user;
 };
 
@@ -68,13 +72,13 @@ const checkPassword = async (enterPass, user) => {
 
 const checkUserBanned = (user) => {
   if (user?.isBan)
-    throw new Error(`Access Denied ${user?.firstName} is blocked`);
+    throw new Error(`Access Denied ${user?.fullName} is banned`);
 };
 
 const checkUserVerified = (user) => {
   if (user?.isAccountVerified)
     throw new Error(
-      `Access Denied ${user?.firstName}, you must verify your identity`
+      `Access Denied ${user?.fullName}, you must verify your identity`
     );
 };
 
@@ -161,8 +165,7 @@ const takeBasicInfo = (listUsers) => {
     followers: user?.info?.followers,
     following: user?.info?.following,
     profilePhoto: user?.profilePhoto,
-    firstName: user?.firstName,
-    lastName: user?.lastName,
+    fullName: user?.fullName,
     isPrivateAccount: user?.setting?.isPrivateAccount,
   }));
 };
@@ -287,4 +290,5 @@ module.exports = {
   banUser,
   getUserByEmail,
   getUserById,
+  login,
 };

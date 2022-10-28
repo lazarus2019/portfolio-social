@@ -101,7 +101,7 @@ const sendFeedbackEmail = async (user, content) => {
   `;
   const { to, subject } = mailTypes.feedback;
 
-  const from = `${user?.firstName} ${user?.lastName}`;
+  const from = `${user?.fullName}`;
 
   try {
     await sendEmail(from, to, `${subject} from: ${from}`, htmlBody);

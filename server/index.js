@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cors = require("cors");
 const express = require("express");
 const logger = require("morgan");
 const dbConnect = require("./src/config/dbConnect");
@@ -16,8 +17,13 @@ const { PORT } = process.env;
 // Connect to MongoDB
 dbConnect();
 
-// Middleware
-app.use(logger("dev"));
+// For Axios get access to response header fields
+const corsOptions = {
+  exposedHeaders: "Authorization",
+};
+
+// Allow CORS policy
+app.use(cors(corsOptions));
 
 // parse application/json (express >= 4.16)
 app.use(express.json());
