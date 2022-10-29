@@ -1,45 +1,50 @@
+import userAPI from "@/api/userAPI";
+import Footer from "@/components/Footer/Footer";
+import Header from "@/components/Header/Header";
+import Loading from "@/components/Loading/Loading";
+import NotFound from "@/components/NotFound/NotFound";
+import Pagination from "@/components/Pagination/Pagination";
+import ProfileTab from "@/components/ProfileTab/ProfileTab";
+import ProjectBoxProfile from "@/components/ProjectBoxProfile/ProjectBoxProfile";
+import SearchProject from "@/components/Search/SearchProfile/SearchProject";
+import UserProfile from "@/components/UserProfile/UserProfile";
 import classNames from "classnames/bind";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router";
+import { toast } from "react-toastify";
 import styles from "./Profile.module.scss";
 
 const cx = classNames.bind(styles);
-import PropTypes from "prop-types";
-import Header from "@/components/Header/Header";
-import UserProfile from "@/components/UserProfile/UserProfile";
-import ProfileTab from "@/components/ProfileTab/ProfileTab";
-import Grid from "@/components/Grid/Grid";
-import ProjectBoxProfile from "@/components/ProjectBoxProfile/ProjectBoxProfile";
-import Footer from "@/components/Footer/Footer";
-
-import Pagination from "@/components/Pagination/Pagination";
-import SearchProject from "@/components/Search/SearchProfile/SearchProject";
 
 function Profile(props) {
-  const user = {
-    info: {
-      projectCount: 0,
-      externalLinks: [
-        {
-          title: "Github",
-          url: "https://github.com/lazarus2019",
-        },
-      ],
-      bio: "No description, website, or topics provided.",
-      followers: [],
-    },
-    setting: {
-      isPrivateAccount: false,
-    },
-    _id: "634e643f1789a662fec7681d",
-    fullName: "Post Malone",
-    profilePhoto:
-      "https://res.cloudinary.com/amazona-app/image/upload/v1665804263/blank_profile_znhwkp.png",
-    username: "tommy087",
-    isBan: false,
-    createdAt: "2022-10-18T08:30:55.427Z",
-    updatedAt: "2022-10-21T02:38:44.693Z",
-    __v: 0,
-    id: "634e643f1789a662fec7681d",
+  // const { username } = useParams();
+  const location = useLocation();
+  const username = useMemo(() => {
+    return location.pathname.split("/@")[1];
+  }, [location]);
+
+  const currentUser = useSelector((store) => store?.user?.value);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+
+  const getUser = async () => {
+    try {
+      const res = await userAPI.profile(username);
+      setUser(res.user);
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
   };
+
+  useLayoutEffect(() => {
+    if (username) {
+      getUser();
+    }
+    window.scrollTo(0, 0);
+    setLoading(false);
+  }, [username]);
+
   const projects = [
     {
       library: {
@@ -310,20 +315,50 @@ function Profile(props) {
   return (
     <>
       <Header hasBg={true} />
-      <ProfileTab user={user} />
-      <div className={cx("container", "profile-container")}>
-        <div className={cx("left-content")}>
-          <UserProfile user={user} />
-        </div>
-        <div className={cx("right-content")}>
-          <SearchProject />
-          {projects.map((project, index) => (
-            <ProjectBoxProfile project={project} key={index} />
-          ))}
+      {loading ? (
+        <Loading fullHeight />
+      ) : user ? (
+        <>
+          <ProfileTab
+            user={user}
+            isCurrentUser={currentUser ? currentUser?.id === user?.id : false}
+            isFollowing={
+              currentUser
+                ? currentUser?.following?.find((id) => id === user?.id)
+                : false
+            }
+          />
+          <div className={cx("container", "profile-container")}>
+            <div className={cx("left-content")}>
+              <UserProfile
+                user={user}
+                isCurrentUser={
+                  currentUser ? currentUser?.id === user?.id : false
+                }
+                isFollowing={
+                  currentUser
+                    ? currentUser?.following?.find((id) => id === user?.id)
+                    : false
+                }
+              />
+            </div>
+            <div className={cx("right-content")}>
+              <SearchProject
+                isCurrentUser={
+                  currentUser ? currentUser?.id === user?.id : false
+                }
+              />
+              {projects.map((project, index) => (
+                <ProjectBoxProfile project={project} key={index} />
+              ))}
 
-          <Pagination />
-        </div>
-      </div>
+              <Pagination />
+            </div>
+          </div>
+        </>
+      ) : (
+        <NotFound desc="User not found" />
+      )}
       <div className={cx("container", "profile-bottom")}>
         <div className="separate"></div>
       </div>

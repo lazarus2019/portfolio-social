@@ -46,7 +46,7 @@ const checkUsernameExist = async (username, needPass = false) => {
     );
   } else {
     user = await User.findOne({ username }).select(
-      "-password -isAdmin -isAccountVerified -info.savedProject -info.follower -info.following -email"
+      "-password -isAdmin -isAccountVerified -info.savedProject -email -passwordChangeAt -updatedAt -verify"
     );
   }
   if (!user) throw new Error("User not found || checkUsernameExist");
@@ -71,8 +71,7 @@ const checkPassword = async (enterPass, user) => {
 };
 
 const checkUserBanned = (user) => {
-  if (user?.isBan)
-    throw new Error(`Access Denied ${user?.fullName} is banned`);
+  if (user?.isBan) throw new Error(`Access Denied ${user?.fullName} is banned`);
 };
 
 const checkUserVerified = (user) => {

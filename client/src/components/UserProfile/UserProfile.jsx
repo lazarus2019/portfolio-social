@@ -1,16 +1,15 @@
 import classNames from "classnames/bind";
+import PropTypes from "prop-types";
+import { BsFillPeopleFill, BsLink45Deg } from "react-icons/bs";
+import { NavLink } from "react-router-dom";
+import { BasicButton } from "../Button/Button";
+import Grid from "../Grid/Grid";
 import styles from "./UserProfile.module.scss";
 
 const cx = classNames.bind(styles);
-import PropTypes from "prop-types";
-import { BsFillPeopleFill, BsLink45Deg } from "react-icons/bs";
-import { Link, NavLink } from "react-router-dom";
-import Button from "../Button/Button";
-import Grid from "../Grid/Grid";
-import { BasicButton } from "../Button/Button";
 
-function UserProfile({ user }) {
-  const isCurrentUser = true;
+function UserProfile(props) {
+  const { user, isCurrentUser, isFollowing } = props;
   return (
     <div className={cx("user")}>
       <div className={cx("user-photo")}>
@@ -23,32 +22,31 @@ function UserProfile({ user }) {
       {isCurrentUser ? (
         <BasicButton content="Edit profile" className="fullWidth" />
       ) : (
-        <BasicButton content="Follow" className="fullWidth" />
+        <BasicButton
+          content={isFollowing ? "Following" : "Follow"}
+          className="fullWidth"
+        />
       )}
-      {user?.setting?.isPrivateAccount ? null : (
-        <div className={cx("user-follow")}>
-          <BsFillPeopleFill size={15} />
-          <NavLink
-            to={`/@${user?.username}?tab=follower`}
-            className={cx("user-follow__link")}
-          >
-            {user?.info?.follower?.length > 0
-              ? user?.info?.follower?.length
-              : 0}{" "}
-            followers
-          </NavLink>
-          {" · "}
-          <NavLink
-            to={`/@${user?.username}?tab=following`}
-            className={cx("user-follow__link")}
-          >
-            {user?.info?.following?.length > 0
-              ? user?.info?.following?.length
-              : 0}{" "}
-            following
-          </NavLink>
-        </div>
-      )}
+      <div className={cx("user-follow")}>
+        <BsFillPeopleFill size={15} />
+        <NavLink
+          to={`/@${user?.username}?tab=follower`}
+          className={cx("user-follow__link")}
+        >
+          {user?.info?.follower?.length > 0 ? user?.info?.follower?.length : 0}{" "}
+          followers
+        </NavLink>
+        {" · "}
+        <NavLink
+          to={`/@${user?.username}?tab=following`}
+          className={cx("user-follow__link")}
+        >
+          {user?.info?.following?.length > 0
+            ? user?.info?.following?.length
+            : 0}{" "}
+          following
+        </NavLink>
+      </div>
       <div className={cx("user-bio")}>{user?.info?.bio}</div>
       {/* External link will be here */}
       <div>

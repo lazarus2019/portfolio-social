@@ -64,11 +64,13 @@ const userGetByTokenCtrl = expressAsyncHandler(async (req, res) => {
   try {
     if (user)
       res.status(200).json({ 
+        id: user?._id,
         username: user?.username,
         fullName: user?.fullName,
         email: user?.email,
         isBan: user?.isBan,
         bio: user?.info?.bio,
+        following: user?.info?.following,
         savedProject: user?.info?.savedProject,
         profilePhoto: user?.profilePhoto,
         isAccountVerified: user?.isAccountVerified,

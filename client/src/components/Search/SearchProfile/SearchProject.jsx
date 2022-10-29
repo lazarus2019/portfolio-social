@@ -45,7 +45,7 @@ const filters = [
   },
 ];
 
-function SearchProject(props) {
+function SearchProject({ isCurrentUser }) {
   return (
     <div className={cx("profile-search")}>
       <input
@@ -88,7 +88,9 @@ function SearchProject(props) {
         ))}
       </div>
 
-      <button className={cx("profile-search__btn", "primary")}>New</button>
+      {isCurrentUser ? (
+        <button className={cx("profile-search__btn", "primary")}>New</button>
+      ) : null}
     </div>
   );
 }

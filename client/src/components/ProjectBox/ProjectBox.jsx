@@ -24,12 +24,9 @@ function ProjectBox({ project, maxHeight }) {
           <h3 className={cx("project-box__content__title")}>
             {project?.title}
           </h3>
-          <Link
-            to={`/@${project?.user?.username}`}
-            className={cx("project-box__content__username")}
-          >
+          <div className={cx("project-box__content__username")}>
             {project?.user?.username}
-          </Link>
+          </div>
         </div>
       </div>
     </Link>

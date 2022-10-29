@@ -1,0 +1,26 @@
+.loading-container {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+
+  &[dataPosition^="top-"] {
+    align-items: flex-start;
+  }
+
+  &[dataPosition^="bottom-"] {
+    align-items: flex-end;
+  }
+
+  &[dataPosition$="-right"] {
+    justify-content: end;
+  }
+
+  &[dataPosition$="-left"] {
+    justify-content: start;
+  }
+}
+
+.fullHeight {
+  min-height: 80vh;
+}

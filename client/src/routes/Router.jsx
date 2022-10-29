@@ -1,4 +1,5 @@
 import HomePage from "@/pages/HomePage/HomePage";
+import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import Login from "@/pages/User/Login/Login";
 import Register from "@/pages/User/Login/Register";
 import Profile from "@/pages/User/Profile/Profile";
@@ -34,7 +35,7 @@ function Router() {
           <Route path="profile" element="profile/setting" />
         </Route>
       </Route>
-      <Route path="*" element="notfound" />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
