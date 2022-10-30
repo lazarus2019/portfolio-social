@@ -1,12 +1,43 @@
 import classNames from "classnames/bind";
-import styles from "./UserBoxProfile.module.scss";
+import styles from "./UserBoxProfileList.module.scss";
 const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { BasicButton } from "../Button/Button";
+import Empty from "../Empty/Empty";
+import Pagination from "../Pagination/Pagination";
 
-function UserBoxProfile(props) {
+function UserBoxProfileList(props) {
+  const {
+    users,
+    currentUser = null,
+    onFollowing = () => {},
+    emptyContent = "Don't have content yet!",
+  } = props;
+  return (
+    <>
+      {users && users?.length > 0 ? (
+        users.map((user, index) => (
+          <UserBoxProfileItem
+            key={index}
+            user={user}
+            onFollowing={onFollowing}
+            isCurrentUser={user.id === currentUser?.id}
+            isFollowing={
+              currentUser && user.followers.indexOf(currentUser?.id) >= 0
+            }
+          />
+        ))
+      ) : (
+        <Empty desc={emptyContent} />
+      )}
+      {users && users?.length > 0 && <Pagination />}
+    </>
+  );
+}
+
+function UserBoxProfileItem(props) {
   const {
     user,
     isFollowing = false,
@@ -65,6 +96,6 @@ function UserBoxProfile(props) {
   );
 }
 
-UserBoxProfile.propTypes = {};
+UserBoxProfileList.propTypes = {};
 
-export default UserBoxProfile;
+export default UserBoxProfileList;

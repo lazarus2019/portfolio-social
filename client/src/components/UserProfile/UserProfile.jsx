@@ -35,7 +35,7 @@ function UserProfile(props) {
       <div className={cx("user-follow")}>
         <BsFillPeopleFill size={15} />
         <NavLink
-          to={`/@${user?.username}?tab=follower`}
+          to={`/@${user?.username}?tab=followers`}
           className={cx("user-follow__link")}
         >
           {user?.info?.followers?.length > 0

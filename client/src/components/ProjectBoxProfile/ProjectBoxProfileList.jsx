@@ -5,8 +5,46 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { BsStar, BsFillStarFill } from "react-icons/bs";
 import { fromNowDateFormatter } from "@/utils/DateFormatter";
+import SearchProject from "../Search/SearchProfile/SearchProject";
+import Pagination from "../Pagination/Pagination";
+import Empty from "../Empty/Empty";
 
-function ProjectBoxProfile(props) {
+function ProjectBoxProfileList(props) {
+  const {
+    projects,
+    projectCount = 0,
+    currentUser = null,
+    onSaving = () => {},
+    emptyContent = "Don't have content yet!",
+    isCurrentUser = false,
+  } = props;
+  return (
+    <>
+      {projectCount > 0 ? (
+        <>
+          <SearchProject isCurrentUser={isCurrentUser} />
+          {projects?.map((project, index) => (
+            <ProjectBoxProfileItem
+              key={index}
+              project={project}
+              isStared={
+                currentUser &&
+                currentUser?.savedProject?.indexOf(project?.id) >= 0
+              }
+              onSaving={onSaving}
+            />
+          ))}
+
+          <Pagination />
+        </>
+      ) : (
+        <Empty desc={emptyContent} />
+      )}
+    </>
+  );
+}
+
+function ProjectBoxProfileItem(props) {
   const { project, isStared, onSaving } = props;
   const handleSaving = () => {
     if (!onSaving) return;
@@ -73,6 +111,6 @@ function ProjectBoxProfile(props) {
   );
 }
 
-ProjectBoxProfile.propTypes = {};
+ProjectBoxProfileList.propTypes = {};
 
-export default ProjectBoxProfile;
+export default ProjectBoxProfileList;

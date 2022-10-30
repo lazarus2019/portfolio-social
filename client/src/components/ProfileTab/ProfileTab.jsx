@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 
 function ProfileTab(props) {
   const { user, isCurrentUser, isFollowing, onFollowing } = props;
+  console.log(user)
   const handleFollowing = () => {
     if (!onFollowing) return;
     onFollowing(user?.id, true);
@@ -72,7 +73,7 @@ function ProfileTab(props) {
               </NavLink>
             )}
             <NavLink
-              to={`/@${user?.username}?tab=follower`}
+              to={`/@${user?.username}?tab=followers`}
               className={cx("tab-list__item")}
             >
               Followers

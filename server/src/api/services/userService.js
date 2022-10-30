@@ -46,7 +46,7 @@ const checkUsernameExist = async (username, needPass = false) => {
     );
   } else {
     user = await User.findOne({ username }).select(
-      "-password -isAdmin -isAccountVerified -info.savedProject -email -passwordChangeAt -updatedAt -verify"
+      "-password -isAdmin -isAccountVerified -email -passwordChangeAt -updatedAt -verify"
     );
   }
   if (!user) throw new Error("User not found || checkUsernameExist");

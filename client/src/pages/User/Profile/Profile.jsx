@@ -1,22 +1,18 @@
 import projectAPI from "@/api/projectAPI";
 import userAPI from "@/api/userAPI";
-import Empty from "@/components/Empty/Empty";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import Loading from "@/components/Loading/Loading";
 import NotFound from "@/components/NotFound/NotFound";
-import Pagination from "@/components/Pagination/Pagination";
 import ProfileTab from "@/components/ProfileTab/ProfileTab";
-import ProjectBoxProfile from "@/components/ProjectBoxProfile/ProjectBoxProfile";
-import SearchProject from "@/components/Search/SearchProfile/SearchProject";
-import UserBoxProfile from "@/components/UserBoxProfile/UserBoxProfile";
+import ProjectBoxProfileList from "@/components/ProjectBoxProfile/ProjectBoxProfileList";
+import UserBoxProfileList from "@/components/UserBoxProfile/UserBoxProfileList";
 import UserProfile from "@/components/UserProfile/UserProfile";
 import { setUser } from "@/redux/slices/userSlice";
 import getErrorMessage from "@/utils/getErrorMessage";
 import classNames from "classnames/bind";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { toast } from "react-toastify";
 import styles from "./Profile.module.scss";
@@ -29,6 +25,9 @@ function Profile(props) {
   const location = useLocation();
   const username = useMemo(() => {
     return location.pathname.split("/@")[1];
+  }, [location]);
+  const currentTab = useMemo(() => {
+    return location.search.split("?tab=")[1] || "project";
   }, [location]);
 
   const currentUser = useSelector((store) => store?.user?.value);
@@ -43,9 +42,6 @@ function Profile(props) {
     try {
       const res = await userAPI.profile(username);
       setProfile(res.user);
-      getProjects();
-      getFollowing();
-      getFollowers();
       window.scrollTo(0, 0);
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -88,13 +84,83 @@ function Profile(props) {
     }
   };
 
+  const getData = async (tab) => {
+    switch (tab) {
+      case "project":
+        await getProjects();
+        break;
+      case "following":
+        await getFollowing();
+        break;
+      case "followers":
+        await getFollowers();
+        break;
+      default:
+        await getProjects();
+    }
+  };
+
+  const renderTab = (tab) => {
+    switch (tab) {
+      case "project":
+        return (
+          <ProjectBoxProfileList
+            projects={projects}
+            projectCount={profile?.info?.projectCount}
+            currentUser={currentUser}
+            onSaving={handleSavingProject}
+            emptyContent="No Posts Yet!"
+            isCurrentUser={
+              currentUser ? currentUser?.id === profile?.id : false
+            }
+          />
+        );
+      case "following":
+        return (
+          <UserBoxProfileList
+            users={following}
+            currentUser={currentUser}
+            onFollowing={handleFollowing}
+            emptyContent="Don’t have any followings yet."
+          />
+        );
+      case "followers":
+        return (
+          <UserBoxProfileList
+            users={followers}
+            currentUser={currentUser}
+            onFollowing={handleFollowing}
+            emptyContent="Don’t have any followers yet."
+          />
+        );
+      default:
+        return (
+          <ProjectBoxProfileList
+            projects={projects}
+            projectCount={profile?.info?.projectCount}
+            currentUser={currentUser}
+            onSaving={handleSavingProject}
+            emptyContent="No Posts Yet!"
+            isCurrentUser={
+              currentUser ? currentUser?.id === profile?.id : false
+            }
+          />
+        );
+    }
+  };
+
   useLayoutEffect(() => {
     if (username) {
       getProfile();
+      getData(currentTab);
     }
 
     setLoading(false);
   }, [username, dispatch]);
+
+  useEffect(() => {
+    getData(currentTab);
+  }, [currentTab]);
 
   const handleFollowing = async (followId, isFollowProfile = false) => {
     try {
@@ -139,6 +205,15 @@ function Profile(props) {
         const temp = { ...currentUser };
         temp.savedProject = res.savedProject;
         dispatch(setUser(temp));
+        if (currentUser.id === profile?.id) {
+          setProfile((prev) => ({
+            ...prev,
+            info: {
+              ...prev.info,
+              savedProject: res.savedProject,
+            },
+          }));
+        }
         getProjects();
       }
     } catch (error) {
@@ -174,65 +249,7 @@ function Profile(props) {
                 onFollowing={handleFollowing}
               />
             </div>
-            <div className={cx("right-content")}>
-              {followers && followers.length > 0 ? (
-                followers?.map((user) => (
-                  <UserBoxProfile
-                    key={user?.id}
-                    user={user}
-                    onFollowing={handleFollowing}
-                    isCurrentUser={user.id === currentUser?.id}
-                    isFollowing={
-                      currentUser &&
-                      user.followers.indexOf(currentUser?.id) >= 0
-                    }
-                  />
-                ))
-              ) : (
-                <Empty desc="Don’t have any followers yet." />
-              )}
-
-              {following && following?.length > 0 ? (
-                following?.map((user) => (
-                  <UserBoxProfile
-                    key={user?.id}
-                    user={user}
-                    onFollowing={handleFollowing}
-                    isFollowing={
-                      currentUser &&
-                      user.followers.indexOf(currentUser?.id) >= 0
-                    }
-                  />
-                ))
-              ) : (
-                <Empty desc="Don’t have any followings yet." />
-              )}
-
-              {profile?.info?.projectCount > 0 ? (
-                <>
-                  <SearchProject
-                    isCurrentUser={
-                      currentUser ? currentUser?.id === profile?.id : false
-                    }
-                  />
-                  {projects?.map((project, index) => (
-                    <ProjectBoxProfile
-                      project={project}
-                      key={index}
-                      isStared={
-                        currentUser &&
-                        currentUser?.savedProject?.indexOf(project?.id) >= 0
-                      }
-                      onSaving={handleSavingProject}
-                    />
-                  ))}
-
-                  <Pagination />
-                </>
-              ) : (
-                <Empty desc="Not Posts Yet" />
-              )}
-            </div>
+            <div className={cx("right-content")}>{renderTab(currentTab)}</div>
           </div>
         </>
       ) : (
