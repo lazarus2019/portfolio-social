@@ -160,6 +160,7 @@ function Profile(props) {
 
   useEffect(() => {
     getData(currentTab);
+    window.scrollTo(0, 0);
   }, [currentTab]);
 
   const handleFollowing = async (followId, isFollowProfile = false) => {
@@ -236,6 +237,7 @@ function Profile(props) {
               profile?.info?.followers.indexOf(currentUser?.id) >= 0
             }
             onFollowing={handleFollowing}
+            currentTab={currentTab}
           />
           <div className={cx("container", "profile-container")}>
             <div className={cx("left-content")}>

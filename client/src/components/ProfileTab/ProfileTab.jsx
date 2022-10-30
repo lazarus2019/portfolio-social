@@ -8,8 +8,7 @@ import { BsStar, BsFillArchiveFill } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 
 function ProfileTab(props) {
-  const { user, isCurrentUser, isFollowing, onFollowing } = props;
-  console.log(user)
+  const { user, isCurrentUser, isFollowing, onFollowing, currentTab = "project" } = props;
   const handleFollowing = () => {
     if (!onFollowing) return;
     onFollowing(user?.id, true);
@@ -37,7 +36,10 @@ function ProfileTab(props) {
           <div className={cx("tab-list")}>
             <NavLink
               to={`/@${user?.username}?tab=project`}
-              className={cx("tab-list__item", "active")}
+              className={cx(
+                "tab-list__item",
+                `${currentTab === "project" && "active"}`
+              )}
             >
               <BsFillArchiveFill size={15} />
               Project
@@ -46,7 +48,10 @@ function ProfileTab(props) {
             {isCurrentUser ? (
               <NavLink
                 to={`/@${user?.username}?tab=star`}
-                className={cx("tab-list__item")}
+                className={cx(
+                  "tab-list__item",
+                  `${currentTab === "star" && "active"}`
+                )}
               >
                 <BsStar size={15} />
                 Star
@@ -60,7 +65,10 @@ function ProfileTab(props) {
             ) : user?.setting?.isPrivateAccount ? null : (
               <NavLink
                 to={`/@${user?.username}?tab=star`}
-                className={cx("tab-list__item")}
+                className={cx(
+                  "tab-list__item",
+                  `${currentTab === "star" && "active"}`
+                )}
               >
                 <BsStar size={15} />
                 Star
@@ -74,7 +82,10 @@ function ProfileTab(props) {
             )}
             <NavLink
               to={`/@${user?.username}?tab=followers`}
-              className={cx("tab-list__item")}
+              className={cx(
+                "tab-list__item",
+                `${currentTab === "followers" && "active"}`
+              )}
             >
               Followers
               <span className={cx("counter")}>
@@ -85,7 +96,10 @@ function ProfileTab(props) {
             </NavLink>
             <NavLink
               to={`/@${user?.username}?tab=following`}
-              className={cx("tab-list__item")}
+              className={cx(
+                "tab-list__item",
+                `${currentTab === "following" && "active"}`
+              )}
             >
               Following
               <span className={cx("counter")}>
