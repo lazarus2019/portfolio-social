@@ -1,6 +1,7 @@
 import userAPI from "@/api/userAPI";
 import tokenUtils from "@/utils/tokenUtils";
 import { toast } from "react-toastify";
+import getErrorMessage from "./getErrorMessage";
 
 const authUtils = {
   isAuthenticated: async () => {
@@ -11,7 +12,7 @@ const authUtils = {
       const user = await userAPI.verifyToken();
       return user;
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(getErrorMessage(error));
       return false;
     }
   },

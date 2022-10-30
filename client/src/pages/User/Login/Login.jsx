@@ -13,6 +13,7 @@ import keyStorage from "@/constants";
 import authUtils from "@/utils/authUtils";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
+import getErrorMessage from "@/utils/getErrorMessage";
 
 function Login() {
   const dispatch = useDispatch()
@@ -30,7 +31,7 @@ function Login() {
         return navigate("/");
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(getErrorMessage(error));
     }
   };
 

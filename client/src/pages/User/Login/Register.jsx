@@ -11,6 +11,7 @@ import queryString from "query-string";
 import RegisterForm from "@/components/Forms/RegisterForm";
 import userAPI from "@/api/userAPI";
 import { toast } from "react-toastify";
+import getErrorMessage from "@/utils/getErrorMessage";
 
 function Register(props) {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function Register(props) {
         return navigate("/login");
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(getErrorMessage(error));
     }
   };
 
