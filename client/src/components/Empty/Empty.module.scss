@@ -1,0 +1,21 @@
+.empty-container {
+  display: flex;
+  margin-top: 4rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  user-select: none;
+  &__header {
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
+  }
+  &__img {
+    width: 350px;
+    height: auto;
+
+    > img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

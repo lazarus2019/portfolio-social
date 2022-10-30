@@ -9,7 +9,11 @@ import styles from "./UserProfile.module.scss";
 const cx = classNames.bind(styles);
 
 function UserProfile(props) {
-  const { user, isCurrentUser, isFollowing } = props;
+  const { user, isCurrentUser, isFollowing, onFollowing } = props;
+  const handleFollowing = () => {
+    if (!onFollowing) return;
+    onFollowing(user?.id, true);
+  };
   return (
     <div className={cx("user")}>
       <div className={cx("user-photo")}>
@@ -23,6 +27,7 @@ function UserProfile(props) {
         <BasicButton content="Edit profile" className="fullWidth" />
       ) : (
         <BasicButton
+          onClick={handleFollowing}
           content={isFollowing ? "Following" : "Follow"}
           className="fullWidth"
         />
@@ -33,7 +38,9 @@ function UserProfile(props) {
           to={`/@${user?.username}?tab=follower`}
           className={cx("user-follow__link")}
         >
-          {user?.info?.follower?.length > 0 ? user?.info?.follower?.length : 0}{" "}
+          {user?.info?.followers?.length > 0
+            ? user?.info?.followers?.length
+            : 0}{" "}
           followers
         </NavLink>
         {" · "}

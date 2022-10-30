@@ -7,14 +7,14 @@ import { Link } from "react-router-dom";
 function Button(props) {
   const { to, className } = props;
   let Comp = "button";
-  const propsTemp = {}
+  const propsTemp = {};
   if (to) {
     Comp = Link;
-    propsTemp.to = to
+    propsTemp.to = to;
   }
   const classes = cx("button", {
-    [className]: props.className
-  })
+    [className]: props.className,
+  });
   const handleClick = () => {
     if (props.onClick) onClick();
   };
@@ -31,7 +31,7 @@ Button.propTypes = {
 
 export function BasicButton(props) {
   const handleClick = () => {
-    if (props.onClick) onClick();
+    if (props.onClick) props.onClick();
   };
   return (
     <button

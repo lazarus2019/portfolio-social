@@ -9,6 +9,7 @@ const filters = [
     title: "Type",
     name: "type",
     desc: "Select type",
+    isPermission: false,
     options: [
       {
         title: "All",
@@ -28,6 +29,7 @@ const filters = [
     title: "Sort",
     name: "sort",
     desc: "Select order",
+    isPermission: true,
     options: [
       {
         title: "Last updated",
@@ -45,7 +47,8 @@ const filters = [
   },
 ];
 
-function SearchProject({ isCurrentUser }) {
+function SearchProject(props) {
+  const { isCurrentUser = false } = props;
   return (
     <div className={cx("profile-search")}>
       <input
@@ -56,35 +59,15 @@ function SearchProject({ isCurrentUser }) {
 
       <div className="profile-search__filters">
         {filters.map((filter, index) => (
-          <button className={cx("profile-search__btn")} key={index}>
-            {filter.title}{" "}
-            <BsFillCaretDownFill
-              size={10}
-              className={cx("profile-search__btn__icon")}
-            />
-            <div className={cx("dropdown-menu")}>
-              <div className={cx("dropdown-menu__header")}>{filter.desc}</div>
-              <div className={cx("dropdown-menu__list")}>
-                {filter.options.map((option, index) => (
-                  <label
-                    key={index}
-                    htmlFor={option.title + "_" + index}
-                    className={cx("dropdown-menu__list__item")}
-                  >
-                    <input
-                      value={option.value}
-                      type="radio"
-                      name={filter.name}
-                      id={option.title + "_" + index}
-                      defaultChecked={index === 0}
-                    />
-                    <BsCheck size={20} />
-                    {option.title}
-                  </label>
-                ))}
-              </div>
-            </div>
-          </button>
+          <>
+            {!isCurrentUser ? (
+              filter.isPermission ? (
+                <DropDownMenu key={index} filter={filter} />
+              ) : null
+            ) : (
+              <DropDownMenu key={index} filter={filter} />
+            )}
+          </>
         ))}
       </div>
 
@@ -94,6 +77,41 @@ function SearchProject({ isCurrentUser }) {
     </div>
   );
 }
+
+const DropDownMenu = (props) => {
+  const { filter } = props;
+  return (
+    <button className={cx("profile-search__btn")}>
+      {filter.title}{" "}
+      <BsFillCaretDownFill
+        size={10}
+        className={cx("profile-search__btn__icon")}
+      />
+      <div className={cx("dropdown-menu")}>
+        <div className={cx("dropdown-menu__header")}>{filter.desc}</div>
+        <div className={cx("dropdown-menu__list")}>
+          {filter.options.map((option, index) => (
+            <label
+              key={index}
+              htmlFor={option.title + "_" + index}
+              className={cx("dropdown-menu__list__item")}
+            >
+              <input
+                value={option.value}
+                type="radio"
+                name={filter.name}
+                id={option.title + "_" + index}
+                defaultChecked={index === 0}
+              />
+              <BsCheck size={20} />
+              {option.title}
+            </label>
+          ))}
+        </div>
+      </div>
+    </button>
+  );
+};
 
 SearchProject.propTypes = {};
 

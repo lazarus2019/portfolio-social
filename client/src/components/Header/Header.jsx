@@ -59,10 +59,7 @@ function Header({ hasBg }) {
               </div>
               <div className={cx("header__menu")}>
                 <div className={cx("header__menu__photo")}>
-                  <img
-                    src="https://res.cloudinary.com/amazona-app/image/upload/v1665804263/blank_profile_znhwkp.png"
-                    alt=""
-                  />
+                  <img src={user.profilePhoto} alt="" />
                 </div>
                 <BsFillCaretDownFill
                   size={10}

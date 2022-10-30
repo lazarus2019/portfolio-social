@@ -4,9 +4,14 @@ const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { BsStar, BsFillStarFill } from "react-icons/bs";
+import { fromNowDateFormatter } from "@/utils/DateFormatter";
 
-function ProjectBoxProfile({ project }) {
-  const active = true;
+function ProjectBoxProfile(props) {
+  const { project, isStared, onSaving } = props;
+  const handleSaving = () => {
+    if (!onSaving) return;
+    onSaving(project?.id);
+  };
   return (
     <div className={cx("project-container")}>
       <Link
@@ -38,13 +43,16 @@ function ProjectBoxProfile({ project }) {
               <div className={cx("project-box__tags__item")}>NodeJS</div>
             </div>
             <div className={cx("project-box__created-date")}>
-              Updated 11 days ago
+              {fromNowDateFormatter(project?.createdAt)}
             </div>
           </div>
           <div className={cx("project-box__right")}>
             <div className={cx("project-box__star")}>
-              <button className={cx("project-box__star__btn", "active")}>
-                {active ? (
+              <button
+                onClick={handleSaving}
+                className={cx("project-box__star__btn", "stared")}
+              >
+                {isStared ? (
                   <>
                     <BsFillStarFill size={14} /> <span>Starred</span>
                   </>

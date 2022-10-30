@@ -94,7 +94,7 @@ const following = async (loginUserId, followId) => {
   if (!loginUserId || !followId)
     throw new Error("loginUserId and followId is required || following");
   // 1. Find the user you want to follow and update it's followers field
-  await User.findByIdAndUpdate(
+  const followingUser = await User.findByIdAndUpdate(
     followId,
     {
       // append a specified value to an array
@@ -105,19 +105,23 @@ const following = async (loginUserId, followId) => {
   );
 
   // 2. Update the login user following field
-  await User.findByIdAndUpdate(
+  const currentUser = await User.findByIdAndUpdate(
     loginUserId,
     {
       $push: { "info.following": followId },
     },
     { new: true }
   );
+  return {
+    followers: followingUser?.info?.followers,
+    following: currentUser?.info?.following,
+  };
 };
 
 const unFollowing = async (loginUserId, unFollowId) => {
   if (!loginUserId || !unFollowId)
     throw new Error("loginUserId and unFollowId is required || unFollowing");
-  await User.findByIdAndUpdate(
+  const followingUser = await User.findByIdAndUpdate(
     unFollowId,
     {
       // remove all instances of value match
@@ -127,13 +131,17 @@ const unFollowing = async (loginUserId, unFollowId) => {
     { new: true }
   );
 
-  await User.findByIdAndUpdate(
+  const currentUser = await User.findByIdAndUpdate(
     loginUserId,
     {
       $pull: { "info.following": unFollowId },
     },
     { new: true }
   );
+  return {
+    followers: followingUser?.info?.followers,
+    following: currentUser?.info?.following,
+  };
 };
 
 const getFollowersByUsername = async (username) => {
@@ -160,11 +168,13 @@ const getFollowingByUsername = async (username) => {
 
 const takeBasicInfo = (listUsers) => {
   return listUsers?.map((user) => ({
+    id: user?._id,
     bio: user?.info?.bio,
     followers: user?.info?.followers,
     following: user?.info?.following,
     profilePhoto: user?.profilePhoto,
     fullName: user?.fullName,
+    username: user?.username,
     isPrivateAccount: user?.setting?.isPrivateAccount,
   }));
 };

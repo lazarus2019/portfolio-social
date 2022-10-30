@@ -47,6 +47,14 @@ const createProject = async (userId, fileThumbnail, projectInfo) => {
     thumbnail: imgUploaded?.url,
     shortDescription: projectInfo.shortDescription,
   });
+
+  await User.findByIdAndUpdate(
+    userId,
+    {
+      $inc: { "info.projectCount": 1 },
+    },
+    { new: true }
+  );
 };
 
 const changeThumbnail = async (projectId, fileThumbnail, oldThumbnail) => {
@@ -69,7 +77,7 @@ const changeThumbnail = async (projectId, fileThumbnail, oldThumbnail) => {
 
   // Remove old project thumbnail from cloudinary
   const fileName = getPublicId(oldThumbnail);
-  console.log(fileName)
+  console.log(fileName);
   await deleteCloudinaryPhotoById(fileName);
 };
 
@@ -86,7 +94,10 @@ const getProjectBySlug = async (slug) => {
 
 const getOwnProject = async (userId) => {
   if (!userId) throw new Error("userId is required || getOwnProject");
-  const projectList = await Project.find({ user: userId });
+  const projectList = await Project.find({ user: userId })
+    .select("-user")
+    .limit(10)
+    .sort({ createdAt: -1 });
 
   return projectList;
 };
@@ -101,7 +112,10 @@ const getProjectByUsername = async (username) => {
   const projectList = await Project.find({
     user: user?._id,
     isHide: false,
-  }).select("-user");
+  })
+    .select("-user")
+    .limit(10)
+    .sort({ createdAt: -1 });
 
   return projectList;
 };
@@ -110,7 +124,7 @@ const savingProject = async (userId, projectId) => {
   if (!userId || !projectId)
     throw new Error("userId and projectId is required || savingProject");
 
-  await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     userId,
     {
       // append a specified value to an array
@@ -127,6 +141,7 @@ const savingProject = async (userId, projectId) => {
     },
     { new: true }
   );
+  return updatedUser.info.savedProject;
 };
 
 const getSavedProject = async (listProjectIds) => {
@@ -145,7 +160,7 @@ const removeSavingProject = async (userId, projectId) => {
   if (!userId || !projectId)
     throw new Error("userId and projectId is required || savingProject");
 
-  await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     userId,
     {
       // append a specified value to an array
@@ -162,6 +177,7 @@ const removeSavingProject = async (userId, projectId) => {
     },
     { new: true }
   );
+  return updatedUser.info.savedProject;
 };
 
 const hideProject = async (projectId) => {

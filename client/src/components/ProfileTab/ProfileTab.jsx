@@ -8,7 +8,11 @@ import { BsStar, BsFillArchiveFill } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 
 function ProfileTab(props) {
-  const { user, isCurrentUser, isFollowing } = props;
+  const { user, isCurrentUser, isFollowing, onFollowing } = props;
+  const handleFollowing = () => {
+    if (!onFollowing) return;
+    onFollowing(user?.id, true);
+  };
   return (
     <div className={cx("profile-tab-container")}>
       <div className={cx("container", "flex")}>
@@ -21,7 +25,10 @@ function ProfileTab(props) {
               {user?.username}
             </div>
             {isCurrentUser ? null : (
-              <BasicButton content={isFollowing ? "Following" : "Follow"} />
+              <BasicButton
+                onClick={handleFollowing}
+                content={isFollowing ? "Following" : "Follow"}
+              />
             )}
           </div>
         </div>
@@ -35,14 +42,33 @@ function ProfileTab(props) {
               Project
               <span className={cx("counter")}>{user?.info?.projectCount}</span>
             </NavLink>
-            {user?.setting?.isPrivateAccount ? null : (
+            {isCurrentUser ? (
               <NavLink
                 to={`/@${user?.username}?tab=star`}
                 className={cx("tab-list__item")}
               >
                 <BsStar size={15} />
                 Star
-                <span className={cx("counter")}>20</span>
+                <span className={cx("counter")}>
+                  {" "}
+                  {user?.info?.savedProject?.length > 0
+                    ? user?.info?.savedProject?.length
+                    : 0}
+                </span>
+              </NavLink>
+            ) : user?.setting?.isPrivateAccount ? null : (
+              <NavLink
+                to={`/@${user?.username}?tab=star`}
+                className={cx("tab-list__item")}
+              >
+                <BsStar size={15} />
+                Star
+                <span className={cx("counter")}>
+                  {" "}
+                  {user?.info?.savedProject?.length > 0
+                    ? user?.info?.savedProject?.length
+                    : 0}
+                </span>
               </NavLink>
             )}
             <NavLink
@@ -50,14 +76,22 @@ function ProfileTab(props) {
               className={cx("tab-list__item")}
             >
               Followers
-              <span className={cx("counter")}>1k</span>
+              <span className={cx("counter")}>
+                {user?.info?.followers?.length > 0
+                  ? user?.info?.followers?.length
+                  : 0}
+              </span>
             </NavLink>
             <NavLink
               to={`/@${user?.username}?tab=following`}
               className={cx("tab-list__item")}
             >
               Following
-              <span className={cx("counter")}>52</span>
+              <span className={cx("counter")}>
+                {user?.info?.following?.length > 0
+                  ? user?.info?.following?.length
+                  : 0}
+              </span>
             </NavLink>
           </div>
         </div>

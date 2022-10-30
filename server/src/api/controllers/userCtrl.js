@@ -63,7 +63,7 @@ const userGetByTokenCtrl = expressAsyncHandler(async (req, res) => {
   const user = req?.user;
   try {
     if (user)
-      res.status(200).json({ 
+      res.status(200).json({
         id: user?._id,
         username: user?.username,
         fullName: user?.fullName,
@@ -74,7 +74,7 @@ const userGetByTokenCtrl = expressAsyncHandler(async (req, res) => {
         savedProject: user?.info?.savedProject,
         profilePhoto: user?.profilePhoto,
         isAccountVerified: user?.isAccountVerified,
-       });
+      });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -113,6 +113,7 @@ const userFollowCtrl = expressAsyncHandler(async (req, res) => {
   validateMongoDbID(new mongoose.Types.ObjectId(followId));
   try {
     const user = req?.user;
+    let result = null;
 
     if (user?._id.toString() === followId.toString())
       throw new Error("You can not following yourself");
@@ -122,11 +123,11 @@ const userFollowCtrl = expressAsyncHandler(async (req, res) => {
     );
 
     if (alreadyFollowing) {
-      unFollowing(user?._id, followId);
+      result = await unFollowing(user?._id, followId);
     } else {
-      following(user?._id, followId);
+      result = await following(user?._id, followId);
     }
-    res.status(200).json({ status: true });
+    res.status(200).json({ status: true, result });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -122,14 +122,15 @@ const projectAddToSaveCtrl = expressAsyncHandler(async (req, res) => {
     const alreadySaved = info?.savedProject?.find(
       (project) => project.toString() === projectId.toString()
     );
+    let savedProject = [];
 
     if (alreadySaved) {
-      await removeSavingProject(_id, projectId);
+      savedProject = await removeSavingProject(_id, projectId);
     } else {
-      await savingProject(_id, projectId);
+      savedProject = await savingProject(_id, projectId);
     }
 
-    res.status(200).json({ status: true });
+    res.status(200).json({ status: true, savedProject });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

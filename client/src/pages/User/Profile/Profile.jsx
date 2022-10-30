@@ -1,4 +1,6 @@
+import projectAPI from "@/api/projectAPI";
 import userAPI from "@/api/userAPI";
+import Empty from "@/components/Empty/Empty";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import Loading from "@/components/Loading/Loading";
@@ -7,9 +9,13 @@ import Pagination from "@/components/Pagination/Pagination";
 import ProfileTab from "@/components/ProfileTab/ProfileTab";
 import ProjectBoxProfile from "@/components/ProjectBoxProfile/ProjectBoxProfile";
 import SearchProject from "@/components/Search/SearchProfile/SearchProject";
+import UserBoxProfile from "@/components/UserBoxProfile/UserBoxProfile";
 import UserProfile from "@/components/UserProfile/UserProfile";
+import { setUser } from "@/redux/slices/userSlice";
+import getErrorMessage from "@/utils/getErrorMessage";
 import classNames from "classnames/bind";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { toast } from "react-toastify";
@@ -19,340 +25,213 @@ const cx = classNames.bind(styles);
 
 function Profile(props) {
   // const { username } = useParams();
+  const dispatch = useDispatch();
   const location = useLocation();
   const username = useMemo(() => {
     return location.pathname.split("/@")[1];
   }, [location]);
 
   const currentUser = useSelector((store) => store?.user?.value);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
 
-  const getUser = async () => {
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
+  const [projects, setProjects] = useState(null);
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
+
+  const getProfile = async () => {
     try {
       const res = await userAPI.profile(username);
-      setUser(res.user);
+      setProfile(res.user);
+      getProjects();
+      getFollowing();
+      getFollowers();
+      window.scrollTo(0, 0);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const getProjects = async () => {
+    try {
+      if (username === currentUser?.username) {
+        const res = await projectAPI.getOwnProjects();
+        setProjects(res.result);
+      } else {
+        const res = await projectAPI.getByUsername(username);
+        setProjects(res.result);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const getFollowing = async () => {
+    try {
+      const res = await userAPI.following(username);
+      if (res) {
+        setFollowing(res.listFollowing);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const getFollowers = async () => {
+    try {
+      const res = await userAPI.followers(username);
+      if (res) {
+        setFollowers(res.listFollowers);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     }
   };
 
   useLayoutEffect(() => {
     if (username) {
-      getUser();
+      getProfile();
     }
-    window.scrollTo(0, 0);
-    setLoading(false);
-  }, [username]);
 
-  const projects = [
-    {
-      library: {
-        content: "",
-        images: [],
-      },
-      _id: "63500ea148a6ca6ff63f625b",
-      title: "passport local jwt",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a simple NodeJS server for register & login by mongoDB, passport local & jwt",
-      starCount: 6,
-      isHide: false,
-      createdAt: "2022-10-19T14:50:09.582Z",
-      updatedAt: "2022-10-20T14:38:29.480Z",
-      __v: 0,
-      slug: "passport-local-jwt-11302",
-      id: "63500ea148a6ca6ff63f625b",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-      },
-      _id: "6350e555bf6ebe1307e1a5e3",
-      title:
-        "Create a slug and add a slug to mongoose schema Create a slug and add a slug to mongoose schema Create a slug and add a slug to mongoose schema Create a slug and add a slug to mongoose schema",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a slug from a mongoose schema title (or any key really), store the slug in the title so you can use it to route route route",
-      starCount: 12,
-      isHide: true,
-      createdAt: "2022-10-20T06:06:13.119Z",
-      updatedAt: "2022-10-20T06:06:13.119Z",
-      slug: "create-a-slug-and-add-a-slug-to-mongoose-schema",
-      __v: 0,
-      id: "6350e555bf6ebe1307e1a5e3",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-        previewVideo:
-          "https://res.cloudinary.com/amazona-app/video/upload/v1666268645/x88x6wovlmgblspywcqs.mp4",
-      },
-      _id: "635126456507ae95e7889189",
-      title: "JWT.IO allows you to decode, verify and generate JWT",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.",
-      starCount: 0,
-      isHide: false,
-      createdAt: "2022-10-20T10:43:17.919Z",
-      updatedAt: "2022-10-20T12:24:15.915Z",
-      slug: "jwtio-allows-you-to-decode-verify-and-generate-jwt-11097",
-      __v: 0,
-      id: "635126456507ae95e7889189",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-        previewVideo:
-          "https://res.cloudinary.com/amazona-app/video/upload/v1666277388/n94qcjiwxe3vztnunqnj.mp4",
-      },
-      _id: "6351567433a58994112e82bc",
-      title: "Create a slug and add a slug to mongoose schema",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a slug from a mongoose schema title (or any key really), store the slug in the title so you can use it to route route route",
-      starCount: 50,
-      isHide: true,
-      createdAt: "2022-10-20T14:08:52.565Z",
-      updatedAt: "2022-10-20T14:49:48.974Z",
-      slug: "create-a-slug-and-add-a-slug-to-mongoose-schema-28919",
-      __v: 0,
-      id: "6351567433a58994112e82bc",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-      },
-      _id: "63500ea148a6ca6ff63f625b",
-      title: "passport local jwt",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a simple NodeJS server for register & login by mongoDB, passport local & jwt",
-      starCount: 100,
-      isHide: false,
-      createdAt: "2022-10-19T14:50:09.582Z",
-      updatedAt: "2022-10-20T14:38:29.480Z",
-      __v: 0,
-      slug: "passport-local-jwt-11302",
-      id: "63500ea148a6ca6ff63f625b",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-      },
-      _id: "6350e555bf6ebe1307e1a5e3",
-      title: "Create a slug and add a slug to mongoose schema",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a slug from a mongoose schema title (or any key really), store the slug in the title so you can use it to route route route",
-      starCount: 80,
-      isHide: true,
-      createdAt: "2022-10-20T06:06:13.119Z",
-      updatedAt: "2022-10-20T06:06:13.119Z",
-      slug: "create-a-slug-and-add-a-slug-to-mongoose-schema",
-      __v: 0,
-      id: "6350e555bf6ebe1307e1a5e3",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-        previewVideo:
-          "https://res.cloudinary.com/amazona-app/video/upload/v1666268645/x88x6wovlmgblspywcqs.mp4",
-      },
-      _id: "635126456507ae95e7889189",
-      title: "JWT.IO allows you to decode, verify and generate JWT",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.",
-      starCount: 0,
-      isHide: false,
-      createdAt: "2022-10-20T10:43:17.919Z",
-      updatedAt: "2022-10-20T12:24:15.915Z",
-      slug: "jwtio-allows-you-to-decode-verify-and-generate-jwt-11097",
-      __v: 0,
-      id: "635126456507ae95e7889189",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-        previewVideo:
-          "https://res.cloudinary.com/amazona-app/video/upload/v1666277388/n94qcjiwxe3vztnunqnj.mp4",
-      },
-      _id: "6351567433a58994112e82bc",
-      title: "Create a slug and add a slug to mongoose schema",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a slug from a mongoose schema title (or any key really), store the slug in the title so you can use it to route route route",
-      starCount: 0,
-      isHide: true,
-      createdAt: "2022-10-20T14:08:52.565Z",
-      updatedAt: "2022-10-20T14:49:48.974Z",
-      slug: "create-a-slug-and-add-a-slug-to-mongoose-schema-28919",
-      __v: 0,
-      id: "6351567433a58994112e82bc",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-      },
-      _id: "63500ea148a6ca6ff63f625b",
-      title: "passport local jwt",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a simple NodeJS server for register & login by mongoDB, passport local & jwt",
-      starCount: 0,
-      isHide: false,
-      createdAt: "2022-10-19T14:50:09.582Z",
-      updatedAt: "2022-10-20T14:38:29.480Z",
-      __v: 0,
-      slug: "passport-local-jwt-11302",
-      id: "63500ea148a6ca6ff63f625b",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-      },
-      _id: "6350e555bf6ebe1307e1a5e3",
-      title: "Create a slug and add a slug to mongoose schema",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a slug from a mongoose schema title (or any key really), store the slug in the title so you can use it to route route route",
-      starCount: 0,
-      isHide: true,
-      createdAt: "2022-10-20T06:06:13.119Z",
-      updatedAt: "2022-10-20T06:06:13.119Z",
-      slug: "create-a-slug-and-add-a-slug-to-mongoose-schema",
-      __v: 0,
-      id: "6350e555bf6ebe1307e1a5e3",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-        previewVideo:
-          "https://res.cloudinary.com/amazona-app/video/upload/v1666268645/x88x6wovlmgblspywcqs.mp4",
-      },
-      _id: "635126456507ae95e7889189",
-      title: "JWT.IO allows you to decode, verify and generate JWT",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.",
-      starCount: 0,
-      isHide: false,
-      createdAt: "2022-10-20T10:43:17.919Z",
-      updatedAt: "2022-10-20T12:24:15.915Z",
-      slug: "jwtio-allows-you-to-decode-verify-and-generate-jwt-11097",
-      __v: 0,
-      id: "635126456507ae95e7889189",
-    },
-    {
-      library: {
-        content: "",
-        images: [],
-        previewVideo:
-          "https://res.cloudinary.com/amazona-app/video/upload/v1666277388/n94qcjiwxe3vztnunqnj.mp4",
-      },
-      _id: "6351567433a58994112e82bc",
-      title: "Create a slug and add a slug to mongoose schema",
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      tag: [],
-      languages: [],
-      shortDescription:
-        "Create a slug from a mongoose schema title (or any key really), store the slug in the title so you can use it to route route route",
-      starCount: 0,
-      isHide: true,
-      createdAt: "2022-10-20T14:08:52.565Z",
-      updatedAt: "2022-10-20T14:49:48.974Z",
-      slug: "create-a-slug-and-add-a-slug-to-mongoose-schema-28919",
-      __v: 0,
-      id: "6351567433a58994112e82bc",
-    },
-  ];
+    setLoading(false);
+  }, [username, dispatch]);
+
+  const handleFollowing = async (followId, isFollowProfile = false) => {
+    try {
+      const res = await userAPI.follow({ followId });
+      if (res?.status) {
+        if (isFollowProfile) {
+          setProfile((prev) => ({
+            ...prev,
+            info: {
+              ...prev.info,
+              followers: res?.result?.followers,
+            },
+          }));
+          if (currentUser.id === profile?.id) {
+            const temp = { ...currentUser };
+            temp.following = res?.result?.following;
+            dispatch(setUser(temp));
+          }
+        } else {
+          if (currentUser.id === profile?.id) {
+            setProfile((prev) => ({
+              ...prev,
+              info: {
+                ...prev.info,
+                following: res?.result?.following,
+              },
+            }));
+          }
+          getFollowing();
+          getFollowers();
+        }
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const handleSavingProject = async (projectId) => {
+    try {
+      const res = await projectAPI.saving({ projectId });
+      if (res.status) {
+        const temp = { ...currentUser };
+        temp.savedProject = res.savedProject;
+        dispatch(setUser(temp));
+        getProjects();
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
   return (
     <>
       <Header hasBg={true} />
       {loading ? (
         <Loading fullHeight />
-      ) : user ? (
+      ) : profile ? (
         <>
           <ProfileTab
-            user={user}
-            isCurrentUser={currentUser ? currentUser?.id === user?.id : false}
+            user={profile}
+            isCurrentUser={currentUser && currentUser?.id === profile?.id}
             isFollowing={
-              currentUser
-                ? currentUser?.following?.find((id) => id === user?.id)
-                : false
+              currentUser &&
+              profile?.info?.followers.indexOf(currentUser?.id) >= 0
             }
+            onFollowing={handleFollowing}
           />
           <div className={cx("container", "profile-container")}>
             <div className={cx("left-content")}>
               <UserProfile
-                user={user}
-                isCurrentUser={
-                  currentUser ? currentUser?.id === user?.id : false
-                }
+                user={profile}
+                isCurrentUser={currentUser && currentUser?.id === profile?.id}
                 isFollowing={
-                  currentUser
-                    ? currentUser?.following?.find((id) => id === user?.id)
-                    : false
+                  currentUser &&
+                  profile?.info?.followers.indexOf(currentUser?.id) >= 0
                 }
+                onFollowing={handleFollowing}
               />
             </div>
             <div className={cx("right-content")}>
-              <SearchProject
-                isCurrentUser={
-                  currentUser ? currentUser?.id === user?.id : false
-                }
-              />
-              {projects.map((project, index) => (
-                <ProjectBoxProfile project={project} key={index} />
-              ))}
+              {followers && followers.length > 0 ? (
+                followers?.map((user) => (
+                  <UserBoxProfile
+                    key={user?.id}
+                    user={user}
+                    onFollowing={handleFollowing}
+                    isCurrentUser={user.id === currentUser?.id}
+                    isFollowing={
+                      currentUser &&
+                      user.followers.indexOf(currentUser?.id) >= 0
+                    }
+                  />
+                ))
+              ) : (
+                <Empty desc="Don’t have any followers yet." />
+              )}
 
-              <Pagination />
+              {following && following?.length > 0 ? (
+                following?.map((user) => (
+                  <UserBoxProfile
+                    key={user?.id}
+                    user={user}
+                    onFollowing={handleFollowing}
+                    isFollowing={
+                      currentUser &&
+                      user.followers.indexOf(currentUser?.id) >= 0
+                    }
+                  />
+                ))
+              ) : (
+                <Empty desc="Don’t have any followings yet." />
+              )}
+
+              {profile?.info?.projectCount > 0 ? (
+                <>
+                  <SearchProject
+                    isCurrentUser={
+                      currentUser ? currentUser?.id === profile?.id : false
+                    }
+                  />
+                  {projects?.map((project, index) => (
+                    <ProjectBoxProfile
+                      project={project}
+                      key={index}
+                      isStared={
+                        currentUser &&
+                        currentUser?.savedProject?.indexOf(project?.id) >= 0
+                      }
+                      onSaving={handleSavingProject}
+                    />
+                  ))}
+
+                  <Pagination />
+                </>
+              ) : (
+                <Empty desc="Not Posts Yet" />
+              )}
             </div>
           </div>
         </>
