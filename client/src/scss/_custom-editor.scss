@@ -1,0 +1,45 @@
+.ck.ck-editor{
+    margin-top: .75rem !important;
+    margin-bottom: 2rem !important;
+}
+
+.ck.ck-editor__main > .ck-editor__editable {
+  background-color: transparent;
+  outline: none;
+}
+
+
+.ck-dropdown__panel .ck-dropdown__panel-visible {
+  border: none;
+}
+
+.ck-reset.ck-editor.ck-rounded-corners {
+  max-height: 450px;
+}
+
+.ck-editor__editable_inline {
+  height: 350px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: gray;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: darkslategray;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+}
+
+.ck-editor__top {
+  background: #fff !important;
+}

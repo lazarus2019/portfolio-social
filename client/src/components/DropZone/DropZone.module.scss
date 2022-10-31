@@ -1,0 +1,50 @@
+@use "@/scss/variables" as *;
+.dropzone-wrapper {
+  margin-top: 0.75rem;
+}
+.dropzone-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.75rem;
+  height: 250px;
+  border: 2px dashed $inputBg;
+  background-color: #fafafa;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  overflow: hidden;
+  .active{
+    cursor: default;
+    user-select: none;
+  }
+  &__header {
+    font-size: 1.6rem;
+    text-align: center;
+    color: $inputBg;
+  }
+
+  &__remove {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: $inputBg;
+  }
+
+  &__preview {
+    max-width: 100%;
+    object-fit: cover;
+      border-radius: 0.75rem;
+  }
+
+  &:hover {
+    &__header {
+      color: $lightColor;
+    }
+  }
+}
+
+.dropzone__error{
+        color: rgba(255, 0, 0, 0.789);
+      font-size: 1.2rem;
+}

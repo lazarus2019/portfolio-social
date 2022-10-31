@@ -7,7 +7,7 @@ import Button from "../Button/Button";
 import Navigation from "../Navigation/Navigation";
 import { Link, useNavigate } from "react-router-dom";
 import { BsPlusLg, BsFillCaretDownFill } from "react-icons/bs";
-import { CiFaceSmile } from "react-icons/ci";
+import { FaRegSmile } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/redux/slices/userSlice";
 
@@ -26,7 +26,7 @@ function Header({ hasBg }) {
       <div className={cx("container", "flex", "space-between", "y-center")}>
         <div className={cx("header__left")}>
           <Link to="/" className={cx("logo")}>
-            <img src={assets.images.logo} alt="" />
+            <img src={assets.images.logo} />
           </Link>
           <div>
             <input
@@ -49,7 +49,10 @@ function Header({ hasBg }) {
                   className={cx("dropdown-icon")}
                 />
                 <div className={cx("dropdown-menu")}>
-                  <Link to="" className={cx("dropdown-menu__item")}>
+                  <Link
+                    to="/create-project"
+                    className={cx("dropdown-menu__item")}
+                  >
                     New Project
                   </Link>
                   <Link to="" className={cx("dropdown-menu__item")}>
@@ -75,7 +78,7 @@ function Header({ hasBg }) {
                   <div className="separate"></div>
                   <div className={cx("set-bio")}>
                     <div className={cx("set-bio__content")}>
-                      <CiFaceSmile size={18} /> Set bio
+                      <FaRegSmile size={18} /> Set bio
                     </div>
                   </div>
                   <div className="separate"></div>

@@ -3,6 +3,7 @@ import styles from "./SearchProfile.module.scss";
 const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
 import { BsFillCaretDownFill, BsX, BsCheck } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const filters = [
   {
@@ -72,7 +73,7 @@ function SearchProject(props) {
       </div>
 
       {isCurrentUser ? (
-        <button className={cx("profile-search__btn", "primary")}>New</button>
+        <Link to="/create-project" className={cx("profile-search__btn", "primary")}>New</Link>
       ) : null}
     </div>
   );

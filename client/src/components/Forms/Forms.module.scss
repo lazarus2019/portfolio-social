@@ -44,3 +44,43 @@
     }
   }
 }
+
+// Create project form
+.create-project__form {
+  padding-top: 2rem;
+
+  .create-project__content {
+    margin-top: 1rem;
+  }
+
+  &__submit-btn {
+    font-weight: 600;
+    font-size: 1.6rem;
+    border-radius: 4px;
+    padding: 1rem 1.5rem;
+    outline: 0;
+    border: none;
+    color: #fff;
+    background-color: #2caf4a;
+  }
+}
+
+.edit-box {
+  font-size: 1.6rem;
+
+  p {
+    line-height: 2.4rem;
+  }
+
+  h2 {
+    line-height: 4rem;
+  }
+
+  h3 {
+    line-height: 3.5rem;
+  }
+
+  h4 {
+    line-height: 3rem;
+  }
+}

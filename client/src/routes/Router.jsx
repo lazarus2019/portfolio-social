@@ -1,5 +1,8 @@
 import HomePage from "@/pages/HomePage/HomePage";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
+import CreateProjectPage from "@/pages/ProjectPage/CreateProject/CreateProjectPage";
+import DetailProjectPage from "@/pages/ProjectPage/DetailProject/DetailProjectPage";
+import EditProjectPage from "@/pages/ProjectPage/EditProject/EditProjectPage";
 import Login from "@/pages/User/Login/Login";
 import Register from "@/pages/User/Login/Register";
 import Profile from "@/pages/User/Profile/Profile";
@@ -25,14 +28,13 @@ function Router() {
         <Route path="reset-password/:token" element="resetPassword" />
         <Route path="reset-password-form" element="resetPasswordForm" />
         <Route path="forget-password" element="forgetPassword" />
+        <Route path="p/:slug" element={<DetailProjectPage />} />
 
-        <Route path="project">
-          <Route index element="" />
-          <Route path=":slug" element="" />
-        </Route>
         <Route path="/" element={<PrivateRoute />}>
           <Route path="setting" element="setting" />
           <Route path="profile" element="profile/setting" />
+          <Route path="create-project" element={<CreateProjectPage />} />
+          <Route path="edit-project/:id" element={<EditProjectPage />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFoundPage />} />

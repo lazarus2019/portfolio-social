@@ -55,6 +55,10 @@
   align-items: center;
 }
 
+.x-end {
+  justify-content: end;
+}
+
 .p-15 {
   padding: 1.5rem;
 }
@@ -92,6 +96,11 @@
   user-select: none;
   cursor: default;
   opacity: 0.5;
+}
+
+.label {
+  font-size: 1.6rem;
+  font-weight: 600;
 }
 
 // Custom react-toastify

@@ -25,10 +25,10 @@ function Profile(props) {
   const location = useLocation();
   const username = useMemo(() => {
     return location.pathname.split("/@")[1];
-  }, [location]);
+  }, [location.pathname]);
   const currentTab = useMemo(() => {
     return location.search.split("?tab=")[1] || "project";
-  }, [location]);
+  }, [location.search]);
 
   const currentUser = useSelector((store) => store?.user?.value);
 

@@ -2,17 +2,21 @@ import React from "react";
 import PropTypes from "prop-types";
 
 function Grid(props) {
+  const { col, mdCol, smCol, gap, children, className } = props;
   const style = {
-    gap: props.gap ? `${props.gap}px` : "0px",
+    gap: gap ? `${gap}px` : "0px",
   };
 
-  const col = props.col ? `grid-col-${props.col}` : "";
-  const mdCol = props.mdCol ? `grid-col-${props.mdCol}` : "";
-  const smCol = props.smCol ? `grid-col-${props.smCol}` : "";
+  const colCls = col ? `grid-col-${col}` : "";
+  const mdColCls = mdCol ? `grid-col-${mdCol}` : "";
+  const smColCls = smCol ? `grid-col-${smCol}` : "";
 
   return (
-    <div className={`grid ${col} ${mdCol} ${smCol}`} style={style}>
-      {props.children}
+    <div
+      className={`grid ${colCls} ${mdColCls} ${smColCls} ${className}`}
+      style={style}
+    >
+      {children}
     </div>
   );
 }
