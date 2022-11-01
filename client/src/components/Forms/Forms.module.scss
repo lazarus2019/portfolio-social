@@ -68,6 +68,12 @@
 .edit-box {
   font-size: 1.6rem;
 
+  &__reload-btn{
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: $btnColor;
+  }
+
   p {
     line-height: 2.4rem;
   }

@@ -70,7 +70,9 @@ const footerSocialLinks = [
 
 function Footer(props) {
   return (
-    <footer className={cx("container", "footer")}>
+    <footer
+      className={cx("container", "footer", `${props.wide ? "wide" : ""}`)}
+    >
       <Grid col={4}>
         <div className={cx("footer__about")}>
           <div className={cx("footer__about__logo")}>

@@ -103,6 +103,12 @@
   font-weight: 600;
 }
 
+.text-btn {
+  font-size: 1.4rem;
+  color: $btnColor;
+  cursor: pointer;
+}
+
 // Custom react-toastify
 :root {
   --toastify-toast-min-height: 30px !important;

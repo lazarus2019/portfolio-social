@@ -13,7 +13,9 @@ function Grid(props) {
 
   return (
     <div
-      className={`grid ${colCls} ${mdColCls} ${smColCls} ${className}`}
+      className={`grid ${colCls} ${mdColCls} ${smColCls} ${
+        className ? className : ""
+      }`}
       style={style}
     >
       {children}

@@ -54,6 +54,13 @@ function CreateProjectFrom(props) {
     formik.setFieldValue("thumbnail", file);
   };
 
+  const handleReloadEditor = () => {
+    setEditorLoaded(false);
+    setTimeout(() => {
+      setEditorLoaded(true);
+    }, 200);
+  };
+
   return (
     <form onSubmit={formik.handleSubmit} className={cx("create-project__form")}>
       <InputField
@@ -96,6 +103,7 @@ function CreateProjectFrom(props) {
                 formik.setFieldValue("content", data);
               }}
               editorLoaded={editorLoaded}
+              onReload={handleReloadEditor}
             />
           </div>
         </div>

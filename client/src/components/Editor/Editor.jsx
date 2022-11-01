@@ -2,14 +2,23 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Loading from "../Loading/Loading";
 
-function Editor({ onChange, editorLoaded, name, value }) {
+function Editor({ onChange, editorLoaded, name, value, onReload }) {
+  const handleReload = () => {
+    if (!onReload) return;
+    onReload();
+  };
   return (
     <div>
       {editorLoaded ? (
         <>
-          <label htmlFor={name} className="label">
-            Content
-          </label>
+          <div className="flex space-between">
+            <label htmlFor={name} className="label">
+              Content
+            </label>
+            <span onClick={handleReload} className="text-btn">
+              Click here for reload editor
+            </span>
+          </div>
           <CKEditor
             type=""
             name={name}
