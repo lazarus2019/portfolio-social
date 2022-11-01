@@ -27,6 +27,7 @@ const formSchema = yup.object({
 });
 
 function CreateProjectFrom(props) {
+  const { onCreate, loading } = props;
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -36,7 +37,8 @@ function CreateProjectFrom(props) {
       thumbnail: null,
     },
     onSubmit: (values) => {
-      console.log(values);
+      if (!onCreate) return;
+      onCreate(values);
     },
     validationSchema: formSchema,
   });
@@ -63,7 +65,12 @@ function CreateProjectFrom(props) {
         errors={formik.touched.title && formik.errors.title}
       />
 
-      <Grid col={2} gap={10} className={cx("create-project__content")}>
+      <Grid
+        col={2}
+        gap={10}
+        mdCol={1}
+        className={cx("create-project__content")}
+      >
         <div className="create-project__thumbnail">
           <TextareaField
             label="Short description*"
@@ -78,7 +85,6 @@ function CreateProjectFrom(props) {
           <DropZone
             setValue={handleSetThumbnail}
             label="Upload Thumbnail*"
-            onBlur={formik.handleBlur("thumbnail")}
             errors={formik.touched.thumbnail && formik.errors.thumbnail}
           />
         </div>
@@ -100,11 +106,12 @@ function CreateProjectFrom(props) {
           className={cx(
             "create-project__form__submit-btn",
             "redirect",
-            `${!(formik.dirty && formik.isValid) && "disabled-btn"}`
+            `${!(formik.dirty && formik.isValid) && "disabled-btn"}`,
+            `${loading && "disabled-btn"}`
           )}
           type="submit"
         >
-          Create project
+          {loading ? "Loading..." : "Create project"}
         </button>
       </div>
     </form>

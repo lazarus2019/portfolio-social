@@ -12,7 +12,7 @@ axiosClient.interceptors.request.use(
     return {
       ...config,
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         Authorization: `Bearer ${tokenUtils.getToken()}`,
       },
     };

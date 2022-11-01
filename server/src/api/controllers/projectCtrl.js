@@ -18,10 +18,10 @@ const {
 //// Create
 const projectCreateCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
-  const { title, shortDescription } = req?.body;
+  const { title, shortDescription, content } = req?.body;
 
   try {
-    await createProject(_id, req.file, { title, shortDescription });
+    await createProject(_id, req.file, { title, shortDescription, content });
 
     res.status(200).json({ status: true });
   } catch (error) {

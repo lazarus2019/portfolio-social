@@ -8,12 +8,40 @@
   user-select: none;
 
   &__thumbnail {
+    position: relative;
     width: 196px;
     margin-right: 2rem;
+    overflow: hidden;
 
     > img {
       width: 100%;
       border-radius: 1rem;
+    }
+  }
+  &__edit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 110px;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    cursor: pointer;
+
+    > svg {
+      display: none;
+      color: $white;
+    }
+
+    &:hover {
+      background-color: rgba($color: #000000, $alpha: 0.5);
+      backdrop-filter: blur(5px);
+      > svg {
+        display: block;
+      }
     }
   }
   .project-box {

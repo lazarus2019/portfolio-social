@@ -2,8 +2,8 @@ import classNames from "classnames/bind";
 import styles from "./ProjectBoxProfile.module.scss";
 const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { BsStar, BsFillStarFill } from "react-icons/bs";
+import { Link, useNavigate } from "react-router-dom";
+import { BsStar, BsFillStarFill, BsPencilSquare } from "react-icons/bs";
 import { fromNowDateFormatter } from "@/utils/DateFormatter";
 import SearchProject from "../Search/SearchProfile/SearchProject";
 import Pagination from "../Pagination/Pagination";
@@ -32,6 +32,7 @@ function ProjectBoxProfileList(props) {
                 currentUser?.savedProject?.indexOf(project?.id) >= 0
               }
               onSaving={onSaving}
+              showEditOption={isCurrentUser}
             />
           ))}
 
@@ -45,24 +46,42 @@ function ProjectBoxProfileList(props) {
 }
 
 function ProjectBoxProfileItem(props) {
-  const { project, isStared, onSaving } = props;
+  const navigate = useNavigate();
+  const { project, isStared, onSaving, showEditOption } = props;
+  let Comp = Link;
+  if (showEditOption) {
+    Comp = "div";
+  }
   const handleSaving = () => {
     if (!onSaving) return;
     onSaving(project?.id);
   };
+  const handleClickEdit = (e, projectId) => {
+    e.stopPropagation();
+    if (!projectId) return;
+    navigate(`/edit-project/${projectId}`);
+  };
   return (
     <div className={cx("project-container")}>
-      <Link
-        to={`/project/${project?.slug}`}
+      <Comp
+        to={`/p/${project?.slug}`}
         className={cx("project-container__thumbnail")}
       >
         <img src={project?.thumbnail} alt="" />
-      </Link>
+        {showEditOption ? (
+          <div
+            className={cx("project-container__edit")}
+            onClick={(event) => handleClickEdit(event, project?.id)}
+          >
+            <BsPencilSquare size={20} />
+          </div>
+        ) : null}
+      </Comp>
       <div className={cx("project-box")}>
         <div className={cx("project-box__content")}>
           <div className={cx("project-box__left")}>
             <Link
-              to={`/project/${project?.slug}`}
+              to={`/p/${project?.slug}`}
               className={cx("project-box__title")}
             >
               {project?.title}

@@ -31,7 +31,8 @@ const createProject = async (userId, fileThumbnail, projectInfo) => {
 
   const isProfane = checkBadWords(
     projectInfo.title,
-    projectInfo.shortDescription
+    projectInfo.shortDescription,
+    projectInfo.content
   );
 
   if (isProfane)
@@ -46,6 +47,7 @@ const createProject = async (userId, fileThumbnail, projectInfo) => {
     title: projectInfo.title,
     thumbnail: imgUploaded?.url,
     shortDescription: projectInfo.shortDescription,
+    "library.content": projectInfo.content,
   });
 
   await User.findByIdAndUpdate(

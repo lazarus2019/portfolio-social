@@ -115,7 +115,8 @@ function DropZone(props) {
           </>
         ) : (
           <p className={cx("dropzone-container__header")}>
-            Drag 'n' drop some files here, or click to select files
+            Drag 'n' drop some files here, or click to select files <br/>
+            Max file size: {maxSize}MB
           </p>
         )}
       </div>
