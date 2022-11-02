@@ -58,7 +58,7 @@ const projectSchema = new mongoose.Schema(
 
 // Automated create slug from the title
 projectSchema.pre("save", function (next) {
-  if (!this.isModified("slug")) {
+  if (!this.isModified("title")) {
     next();
   }
 

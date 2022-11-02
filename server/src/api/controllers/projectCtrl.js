@@ -2,8 +2,10 @@ const expressAsyncHandler = require("express-async-handler");
 const validateMongoDbID = require("../utils/validateMongoDbID");
 const {
   createProject,
+  updateProject,
   isOwnerProject,
   getProjectBySlug,
+  getProjectById,
   savingProject,
   removeSavingProject,
   getSavedProject,
@@ -38,7 +40,7 @@ const projectUpdateThumbnailCtrl = expressAsyncHandler(async (req, res) => {
   try {
     await isOwnerProject(_id, projectId);
 
-    await changeThumbnail(_id, req?.file, oldThumbnailUrl);
+    await changeThumbnail(projectId, req?.file, oldThumbnailUrl);
 
     res.status(200).json({ status: true });
   } catch (error) {
@@ -52,6 +54,21 @@ const projectGetBySlugCtrl = expressAsyncHandler(async (req, res) => {
   try {
     const project = await getProjectBySlug(slug);
 
+    res.status(200).json({ result: project });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Get project by id
+const projectGetByIdCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id } = req?.user;
+  const { projectId } = req?.params;
+  validateMongoDbID(projectId);
+
+  try {
+    await isOwnerProject(_id, projectId);
+    const project = await getProjectById(projectId);
     res.status(200).json({ result: project });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -100,12 +117,14 @@ const projectDeleteCtrl = expressAsyncHandler(async (req, res) => {
 //// Update
 const projectUpdateCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
-  const { projectId } = req?.body;
+  const { projectId, content, shortDescription, title } = req?.body;
   validateMongoDbID(projectId);
 
   try {
     await isOwnerProject(_id, projectId);
-    //// Update project here
+
+    await updateProject(projectId, content, shortDescription, title);
+
     res.status(200).json({ status: true });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -207,4 +226,5 @@ module.exports = {
   projectUpdateThumbnailCtrl,
   projectDeleteCtrl,
   projectUpdateCtrl,
+  projectGetByIdCtrl,
 };

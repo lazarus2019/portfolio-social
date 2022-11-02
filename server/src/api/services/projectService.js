@@ -62,12 +62,10 @@ const createProject = async (userId, fileThumbnail, projectInfo) => {
 const changeThumbnail = async (projectId, fileThumbnail, oldThumbnail) => {
   if (!projectId || !fileThumbnail || !oldThumbnail)
     throw new Error(
-      "projectId, fileThumbnail or oldThumbnail is required || changeProfile"
+      "projectId, fileThumbnail or oldThumbnail is required || changeThumbnail"
     );
 
   const imgUploaded = await uploadPhotoToCloudinary(fileThumbnail);
-
-  console.log(imgUploaded);
 
   await Project.findByIdAndUpdate(
     projectId,
@@ -79,8 +77,44 @@ const changeThumbnail = async (projectId, fileThumbnail, oldThumbnail) => {
 
   // Remove old project thumbnail from cloudinary
   const fileName = getPublicId(oldThumbnail);
-  console.log(fileName);
   await deleteCloudinaryPhotoById(fileName);
+};
+
+const updateProject = async (
+  projectId,
+  content = "",
+  shortDescription = "",
+  title
+) => {
+  if (!projectId || !content || !shortDescription)
+    throw new Error(
+      "projectId, content or shortDescription is required || updateProject"
+    );
+
+  if (title) {
+    await Project.findByIdAndUpdate(
+      projectId,
+      {
+        "library.content": content,
+        shortDescription: shortDescription,
+        title: title,
+      },
+      {
+        new: true,
+      }
+    );
+  } else {
+    await Project.findByIdAndUpdate(
+      projectId,
+      {
+        "library.content": content,
+        shortDescription: shortDescription,
+      },
+      {
+        new: true,
+      }
+    );
+  }
 };
 
 const getProjectBySlug = async (slug) => {
@@ -89,6 +123,14 @@ const getProjectBySlug = async (slug) => {
     "user",
     "fullName profilePhoto username info.bio"
   );
+
+  if (!project) throw new Error("Project Not Found or Project Was Hidden");
+  return project;
+};
+
+const getProjectById = async (id) => {
+  if (!id) throw new Error("id is required || getProjectById");
+  const project = await Project.findById(id);
 
   if (!project) throw new Error("Project Not Found or Project Was Hidden");
   return project;
@@ -239,7 +281,9 @@ const getAllProject = async (page) => {
 
 module.exports = {
   createProject,
+  updateProject,
   getProjectBySlug,
+  getProjectById,
   getOwnProject,
   getProjectByUsername,
   isOwnerProject,

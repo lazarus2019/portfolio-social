@@ -14,6 +14,7 @@ const {
   projectUpdateThumbnailCtrl,
   projectDeleteCtrl,
   projectUpdateCtrl,
+  projectGetByIdCtrl,
 } = require("../controllers/projectCtrl");
 const {
   projectThumbnailMulter,
@@ -32,6 +33,8 @@ route.get("/s/:slug", projectGetBySlugCtrl);
 route.get("/", passportAuthJwt, projectGetOwnCtrl);
 
 route.get("/:username", projectGetByUsernameCtrl);
+
+route.get("/p/:projectId", passportAuthJwt, projectGetByIdCtrl);
 
 // Remove the old video - ERROR
 route.post(
