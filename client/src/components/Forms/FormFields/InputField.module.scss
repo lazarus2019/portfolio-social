@@ -39,6 +39,24 @@
       border: 1px solid $lightColor;
       outline: 0;
       border-radius: 0.5rem;
+
+      // Custom scrollbar
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: gray;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: darkslategray;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+      }
     }
 
     &__error {

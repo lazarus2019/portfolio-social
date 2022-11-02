@@ -1,17 +1,17 @@
+import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Forms.module.scss";
 
 const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import Grid from "../Grid/Grid";
-import { useEffect, useRef, useState } from "react";
 import Editor from "../Editor/Editor";
 import InputField from "./FormFields/InputField";
+
+import * as yup from "yup";
+import { useFormik } from "formik";
 import TextareaField from "./FormFields/TextAreaField";
+import Grid from "../Grid/Grid";
 import DropZone from "../DropZone/DropZone";
-import { BsFillCaretDownFill, BsFillCaretRightFill } from "react-icons/bs";
 
 const formSchema = yup.object({
   title: yup
@@ -27,23 +27,24 @@ const formSchema = yup.object({
   thumbnail: yup.mixed().required("Thumbnail is required"),
 });
 
-function CreateProjectFrom(props) {
-  const { onCreate, loading } = props;
+function EditProjectForm(props) {
+  const { project, onUpdate, loading, onUpdateThumbnail, isUpdateThumbnail } =
+    props;
+  const [editorLoaded, setEditorLoaded] = useState(false);
   const formik = useFormik({
     initialValues: {
-      title: "",
-      shortDescription: "",
-      isHide: false,
-      content: "",
-      thumbnail: null,
+      content: project.library.content || "",
+      title: project.title || "",
+      shortDescription: project.shortDescription || "",
+      thumbnail: project.thumbnail || "",
+      isHide: project.isHide || false,
     },
     onSubmit: (values) => {
-      if (!onCreate) return;
-      onCreate(values);
+      if (!onUpdate) return;
+      onUpdate(values);
     },
     validationSchema: formSchema,
   });
-  const [editorLoaded, setEditorLoaded] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -51,15 +52,20 @@ function CreateProjectFrom(props) {
     }, 200);
   }, []);
 
-  const handleSetThumbnail = (file) => {
-    formik.setFieldValue("thumbnail", file);
-  };
-
   const handleReloadEditor = () => {
     setEditorLoaded(false);
     setTimeout(() => {
       setEditorLoaded(true);
     }, 200);
+  };
+
+  const handleSetThumbnail = (file) => {
+    formik.setFieldValue("thumbnail", file);
+  };
+
+  const handleUpdateThumbnail = () => {
+    if (!onUpdateThumbnail) return;
+    onUpdateThumbnail(formik.values.thumbnail);
   };
 
   return (
@@ -92,8 +98,12 @@ function CreateProjectFrom(props) {
           />
           <DropZone
             setValue={handleSetThumbnail}
+            updateThumbnail={handleUpdateThumbnail}
             label="Upload Thumbnail*"
             errors={formik.touched.thumbnail && formik.errors.thumbnail}
+            value={formik.values.thumbnail}
+            isEdit={true}
+            isUpdateThumbnail={isUpdateThumbnail}
           />
         </div>
         <div className="create-project__info">
@@ -103,13 +113,13 @@ function CreateProjectFrom(props) {
               onChange={(data) => {
                 formik.setFieldValue("content", data);
               }}
+              value={formik.values.content}
               editorLoaded={editorLoaded}
               onReload={handleReloadEditor}
             />
           </div>
         </div>
       </Grid>
-      <AdditionalForm />
 
       <div className="flex x-end">
         <button
@@ -121,34 +131,13 @@ function CreateProjectFrom(props) {
           )}
           type="submit"
         >
-          {loading ? "Loading..." : "Create project"}
+          {loading ? "Loading..." : "Update"}
         </button>
       </div>
     </form>
   );
 }
 
-CreateProjectFrom.propTypes = {};
+EditProjectForm.propTypes = {};
 
-function AdditionalForm(props) {
-  const [isShow, setShow] = useState(false);
-
-  return (
-    <>
-      <label
-        className={cx("create-project__additional-label")}
-        onClick={() => setShow(!isShow)}
-      >
-        Additional{" "}
-        {isShow ? (
-          <BsFillCaretDownFill size={20} />
-        ) : (
-          <BsFillCaretRightFill size={20} />
-        )}
-      </label>
-      {isShow ? <div>AdditionalForm</div> : null}
-    </>
-  );
-}
-
-export default CreateProjectFrom;
+export default EditProjectForm;

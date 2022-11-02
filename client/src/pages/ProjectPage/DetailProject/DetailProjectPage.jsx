@@ -12,7 +12,7 @@ import getErrorMessage from "@/utils/getErrorMessage";
 import projectAPI from "@/api/projectAPI";
 import Loading from "@/components/Loading/Loading";
 import { Link } from "react-router-dom";
-import { fromNowDateFormatter } from "@/utils/DateFormatter";
+import dateFormatter, { fromNowDateFormatter } from "@/utils/DateFormatter";
 import {
   BsFillBookmarkStarFill,
   BsThreeDots,
@@ -93,7 +93,14 @@ function DetailProjectPage(props) {
                         "project-detail__header__author__info__date"
                       )}
                     >
-                      {fromNowDateFormatter(project?.createdAt)}
+                      {dateFormatter(project?.createdAt)}
+                    </p>
+                    <p
+                      className={cx(
+                        "project-detail__header__author__info__date"
+                      )}
+                    >
+                      Updated at {fromNowDateFormatter(project?.updatedAt)}
                     </p>
                   </div>
                 </div>

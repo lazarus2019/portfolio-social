@@ -53,6 +53,19 @@
     margin-top: 1rem;
   }
 
+  .create-project__additional-label {
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    > svg {
+      vertical-align: top;
+    }
+
+    &:hover {
+      color: $btnColor;
+    }
+  }
+
   &__submit-btn {
     font-weight: 600;
     font-size: 1.6rem;
@@ -68,7 +81,7 @@
 .edit-box {
   font-size: 1.6rem;
 
-  &__reload-btn{
+  &__reload-btn {
     font-size: 1.4rem;
     cursor: pointer;
     color: $btnColor;
@@ -88,5 +101,43 @@
 
   h4 {
     line-height: 3rem;
+  }
+
+  a {
+    color: $btnColor;
+  }
+
+  ol,
+  ul {
+    li {
+      font-size: 1.6rem;
+      line-height: 1.5;
+      margin-left: 3rem;
+    }
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+    }
+
+    th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #04aa6d;
+      color: white;
+    }
   }
 }

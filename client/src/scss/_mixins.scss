@@ -10,6 +10,20 @@
   height: $height;
 }
 
+@mixin animation($name, $duration, $timeFunction, $translate1, $translate2) {
+  animation: $name $duration $timeFunction;
+  @keyframes #{$name} {
+    from {
+      opacity: 0;
+      transform: translateY($translate1);
+    }
+    to {
+      opacity: 1;
+      transform: translateY($translate2);
+    }
+  }
+}
+
 @mixin align($flex, $justify-content, $align-items, $height) {
   display: $flex;
   align-items: $align-items;

@@ -170,6 +170,13 @@
         color: $btnColor;
       }
 
+      blockquote {
+        padding: 1rem 1.5rem 0 4rem;
+        border-left: 4px solid #cccccc;
+        margin-bottom: 1rem;
+        background-color: #f4f4f4;
+      }
+
       ol,
       ul {
         li {

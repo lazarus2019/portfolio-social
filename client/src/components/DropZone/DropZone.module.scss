@@ -14,7 +14,7 @@
   border-radius: 0.75rem;
   cursor: pointer;
   overflow: hidden;
-  .active{
+  .active {
     cursor: default;
     user-select: none;
   }
@@ -34,7 +34,7 @@
   &__preview {
     max-width: 100%;
     object-fit: cover;
-      border-radius: 0.75rem;
+    border-radius: 0.75rem;
   }
 
   &:hover {
@@ -44,7 +44,71 @@
   }
 }
 
-.dropzone__error{
-        color: rgba(255, 0, 0, 0.789);
-      font-size: 1.2rem;
+.dropzone__error {
+  color: rgba(255, 0, 0, 0.789);
+  font-size: 1.2rem;
+}
+
+.update-modal {
+  width: 400px;
+  padding: 2rem;
+  background-color: $white;
+  border-radius: 1rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    h3 {
+      font-size: 1.8rem;
+      color: $optionHoverColor;
+    }
+
+    > svg {
+      margin-right: 1rem;
+      color: $optionHoverColor;
+    }
+  }
+
+  &__desc {
+    font-size: 1.6rem;
+    line-height: 1.5;
+  }
+
+  &__options {
+    display: flex;
+    justify-content: end;
+
+    &__btn + &__btn {
+      margin-left: 1rem;
+    }
+
+    &__btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      outline: 0;
+      cursor: pointer;
+      border-radius: 0.75rem;
+
+      &.outline {
+        border: 2px solid $btnColor;
+        background-color: $white;
+        color: $btnColor;
+        &:hover {
+          border-color: $optionHoverColor;
+          color: $optionHoverColor;
+        }
+      }
+
+      &.bg {
+        border: none;
+        background-color: $btnColor;
+        color: $white;
+        &:hover {
+          background-color: $optionHoverColor;
+        }
+      }
+    }
+  }
 }
