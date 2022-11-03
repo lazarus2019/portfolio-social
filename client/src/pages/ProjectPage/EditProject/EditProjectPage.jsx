@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 
 function EditProjectPage(props) {
   const navigate = useNavigate();
-  const user = useSelector(store => store?.user?.value)
+  const user = useSelector((store) => store?.user?.value);
   const { id } = useParams();
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -60,7 +60,7 @@ function EditProjectPage(props) {
       // remove prop thumbnail
       delete values.thumbnail;
       // remove prop title if they not change
-      if (project.title === values.title) {
+      if (project.title === values.title?.trim()) {
         delete values.title;
       }
       const data = {

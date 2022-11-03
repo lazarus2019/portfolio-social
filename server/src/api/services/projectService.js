@@ -10,6 +10,7 @@ const {
   uploadVideoToCloudinary,
   deleteCloudinaryVideoById,
 } = require("../utils/cloudinaryUploadVideo");
+const slugify = require("../utils/slugify");
 
 const isOwnerProject = async (userId, projectId) => {
   if (!projectId || !userId)
@@ -98,6 +99,7 @@ const updateProject = async (
         "library.content": content,
         shortDescription: shortDescription,
         title: title,
+        slug: slugify(title),
       },
       {
         new: true,
