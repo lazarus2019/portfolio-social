@@ -109,6 +109,7 @@ function Profile(props) {
             projectCount={profile?.info?.projectCount}
             currentUser={currentUser}
             onSaving={handleSavingProject}
+            onToggleHide={handleToggleHide}
             emptyContent="No Posts Yet!"
             isCurrentUser={
               currentUser ? currentUser?.id === profile?.id : false
@@ -140,6 +141,7 @@ function Profile(props) {
             projectCount={profile?.info?.projectCount}
             currentUser={currentUser}
             onSaving={handleSavingProject}
+            onToggleHide={handleToggleHide}
             emptyContent="No Posts Yet!"
             isCurrentUser={
               currentUser ? currentUser?.id === profile?.id : false
@@ -216,6 +218,28 @@ function Profile(props) {
           }));
         }
         getProjects();
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const handleToggleHide = async (projectId) => {
+    try {
+      const res = await projectAPI.hide({
+        projectId: projectId,
+      });
+      if (res.status) {
+        // Toggle hide of project
+        const temp = [...projects];
+        const newProjectList = temp.map((project) => {
+          if (project.id === projectId) {
+            return { ...project, isHide: !project.isHide };
+          }
+          return project;
+        });
+        setProjects(newProjectList)
+        toast.success("Your change had saved!");
       }
     } catch (error) {
       toast.error(getErrorMessage(error));

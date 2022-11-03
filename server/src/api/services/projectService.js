@@ -141,7 +141,7 @@ const getProjectById = async (id) => {
 const getOwnProject = async (userId) => {
   if (!userId) throw new Error("userId is required || getOwnProject");
   const projectList = await Project.find({ user: userId })
-    .select("-user")
+    .select("-user -library")
     .limit(10)
     .sort({ createdAt: -1 });
 
@@ -159,7 +159,7 @@ const getProjectByUsername = async (username) => {
     user: user?._id,
     isHide: false,
   })
-    .select("-user")
+    .select("-user -library")
     .limit(10)
     .sort({ createdAt: -1 });
 

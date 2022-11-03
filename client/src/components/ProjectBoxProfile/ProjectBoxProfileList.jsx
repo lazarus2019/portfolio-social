@@ -3,7 +3,13 @@ import styles from "./ProjectBoxProfile.module.scss";
 const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
-import { BsStar, BsFillStarFill, BsPencilSquare } from "react-icons/bs";
+import {
+  BsStar,
+  BsFillStarFill,
+  BsPencilSquare,
+  BsFillEyeSlashFill,
+  BsFillEyeFill,
+} from "react-icons/bs";
 import { fromNowDateFormatter } from "@/utils/DateFormatter";
 import SearchProject from "../Search/SearchProfile/SearchProject";
 import Pagination from "../Pagination/Pagination";
@@ -15,6 +21,7 @@ function ProjectBoxProfileList(props) {
     projectCount = 0,
     currentUser = null,
     onSaving = () => {},
+    onToggleHide,
     emptyContent = "Don't have content yet!",
     isCurrentUser = false,
   } = props;
@@ -33,6 +40,7 @@ function ProjectBoxProfileList(props) {
               }
               onSaving={onSaving}
               showEditOption={isCurrentUser}
+              onToggle={onToggleHide}
             />
           ))}
 
@@ -47,7 +55,7 @@ function ProjectBoxProfileList(props) {
 
 function ProjectBoxProfileItem(props) {
   const navigate = useNavigate();
-  const { project, isStared, onSaving, showEditOption } = props;
+  const { project, isStared, onSaving, showEditOption, onToggle } = props;
   let Comp = Link;
   if (showEditOption) {
     Comp = "div";
@@ -60,6 +68,10 @@ function ProjectBoxProfileItem(props) {
     e.stopPropagation();
     if (!projectId) return;
     navigate(`/edit-project/${projectId}`);
+  };
+  const handleToggle = () => {
+    if (!onToggle) return;
+    onToggle(project?.id);
   };
   return (
     <div className={cx("project-container")}>
@@ -123,6 +135,18 @@ function ProjectBoxProfileItem(props) {
                 {project.starCount}
               </div>
             </div>
+            {showEditOption ? (
+              <div
+                className={cx("project-box__toggle-hide-btn")}
+                onClick={handleToggle}
+              >
+                {project.isHide ? (
+                  <BsFillEyeSlashFill size={20} />
+                ) : (
+                  <BsFillEyeFill size={20} />
+                )}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

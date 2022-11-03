@@ -168,5 +168,20 @@
         border-left-width: 0;
       }
     }
+
+    &__toggle-hide-btn {
+      display: flex;
+      justify-content: end;
+      margin-top: 1rem;
+      cursor: pointer;
+
+      >svg{
+        color: $btnColor;
+
+        &:hover{
+          color: $optionHoverColor;
+        }
+      }
+    }
   }
 }
