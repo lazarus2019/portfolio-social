@@ -123,6 +123,10 @@
   cursor: pointer;
 }
 
+.hide-clipboard{
+  display: none;
+}
+
 // Custom react-toastify
 :root {
   --toastify-toast-min-height: 30px !important;

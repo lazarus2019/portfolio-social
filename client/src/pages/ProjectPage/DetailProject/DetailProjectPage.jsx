@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import getErrorMessage from "@/utils/getErrorMessage";
 import projectAPI from "@/api/projectAPI";
@@ -21,13 +21,20 @@ import {
 import { useSelector } from "react-redux";
 import Grid from "@/components/Grid/Grid";
 import NotFound from "@/components/NotFound/NotFound";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/slices/userSlice";
+import copyToClipboard from "@/utils/copyToClipboard";
+import userAPI from "@/api/userAPI";
 
 function DetailProjectPage(props) {
+  const dispatch = useDispatch();
   const { slug } = useParams();
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState(null);
+  const [isSaved, setSaved] = useState(false);
+  // const inputClipboardRef = useRef(null);
 
-  const user = useSelector((store) => store?.user?.value);
+  const currentUser = useSelector((store) => store?.user?.value);
 
   const getProject = async (slug) => {
     try {
@@ -35,6 +42,10 @@ function DetailProjectPage(props) {
       console.log(res.result);
       setProject(res?.result);
       window.scrollTo(0, 0);
+      if (currentUser) {
+        const checkSave = currentUser.savedProject.indexOf(res.result.id) >= 0;
+        setSaved(checkSave);
+      }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -47,6 +58,56 @@ function DetailProjectPage(props) {
     }
     setLoading(false);
   }, [slug]);
+
+  const handleFollow = async () => {
+    try {
+      if (
+        currentUser &&
+        currentUser?.following?.indexOf(project.user.id) >= 0
+      ) {
+        toast.error("You already follow this user");
+      } else {
+        const res = await userAPI.follow({ followId: project?.user?.id });
+        if (res?.status) {
+          const temp = { ...currentUser };
+          temp.following = res?.result?.following;
+          dispatch(setUser(temp));
+          toast.success("Follow success")
+        }
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const handleSavingProject = async () => {
+    try {
+      const res = await projectAPI.saving({ projectId: project.id });
+      if (res.status) {
+        const temp = { ...currentUser };
+        temp.savedProject = res.savedProject;
+        dispatch(setUser(temp));
+        setSaved(!isSaved);
+        toast.success(`${!isSaved ? "Saved" : "Unsaved"}`);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const handleGetShareLink = () => {
+    // Another way
+    // inputClipboardRef.current.classList.remove("hide-clipboard");
+    // inputClipboardRef.current.value = window.location.href;
+    // inputClipboardRef.current?.select();
+    // document.execCommand("copy");
+    // toast.success("Link copied to clipboard!");
+    // inputClipboardRef.current.value = "";
+    // inputClipboardRef.current.classList.add("hide-clipboard");
+
+    copyToClipboard(window.location.href);
+  };
+
   return (
     <>
       <Header hasBg={true} />
@@ -105,10 +166,13 @@ function DetailProjectPage(props) {
                   </div>
                 </div>
                 <div className={cx("project-detail__header__options")}>
-                  <span>
+                  <span
+                    className={cx(`${isSaved ? "active" : ""}`)}
+                    onClick={handleSavingProject}
+                  >
                     <BsFillBookmarkStarFill size={20} />
                   </span>
-                  <span>
+                  <span onClick={handleGetShareLink}>
                     <BsThreeDots size={20} />
                   </span>
                 </div>
@@ -118,11 +182,17 @@ function DetailProjectPage(props) {
               </div>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: project?.library?.content,
+                  __html: project?.library?.content?.replace(
+                    /href/g,
+                    "target='_blank' href"
+                  ),
                 }}
                 className={cx("project-detail__content")}
               />
-              <span className={cx("project-detail__follow")}>
+              <span
+                className={cx("project-detail__follow")}
+                onClick={handleFollow}
+              >
                 <BsChevronDoubleRight size={15} />
                 Follow {project.user.fullName} for more
               </span>
@@ -136,7 +206,15 @@ function DetailProjectPage(props) {
       <div className="container p-15">
         <div className="separate"></div>
       </div>
+      {/* Input element for copy to clipboard */}
+      {/* <input
+        ref={inputClipboardRef}
+        className="hide-clipboard"
+        type="text"
+        readOnly
+      /> */}
       <Footer />
+      <a href="" target="_blank"></a>
     </>
   );
 }
