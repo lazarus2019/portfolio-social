@@ -14,20 +14,27 @@ import { fromNowDateFormatter } from "@/utils/DateFormatter";
 import SearchProject from "../Search/SearchProfile/SearchProject";
 import Pagination from "../Pagination/Pagination";
 import Empty from "../Empty/Empty";
+import { useMemo } from "react";
 
+const ITEMS_PER_PAGE = 10;
 function ProjectBoxProfileList(props) {
   const {
     projects,
-    projectCount = 0,
     currentUser = null,
     onSaving = () => {},
+    onPageChange = () => {},
+    currentPage = 1,
+    totalRows = 1,
     onToggleHide,
     emptyContent = "Don't have content yet!",
     isCurrentUser = false,
   } = props;
+  const totalPage = useMemo(() => {
+    return Math.ceil(totalRows / ITEMS_PER_PAGE);
+  });
   return (
     <>
-      {projectCount > 0 ? (
+      {projects.length > 0 ? (
         <>
           <SearchProject isCurrentUser={isCurrentUser} />
           {projects?.map((project, index) => (
@@ -44,7 +51,13 @@ function ProjectBoxProfileList(props) {
             />
           ))}
 
-          <Pagination />
+          {totalPage > 1 ? (
+            <Pagination
+              onPageChange={onPageChange}
+              totalPage={totalPage}
+              currentPage={currentPage}
+            />
+          ) : null}
         </>
       ) : (
         <Empty desc={emptyContent} />

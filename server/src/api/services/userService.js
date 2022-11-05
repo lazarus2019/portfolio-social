@@ -3,7 +3,9 @@ const {
   uploadPhotoToCloudinary,
   deleteCloudinaryPhotoById,
 } = require("../utils/cloudinaryUploadPhoto");
+const { paginationWithArray } = require("../utils/paginationResult");
 const { getPublicId } = require("../utils/uploadFile");
+const { USERS_PER_PAGE } = process.env;
 
 const checkRegisterEmail = async (email) => {
   if (!email)
@@ -144,26 +146,44 @@ const unFollowing = async (loginUserId, unFollowId) => {
   };
 };
 
-const getFollowersByUsername = async (username) => {
-  if (!username)
-    throw new Error("Username is required || getFollowersByUsername");
+const getFollowersByUsername = async (username, page) => {
+  if (!username || !page)
+    throw new Error("Username or page is required || getFollowersByUsername");
   const user = await User.findOne({ username })
     .select("info.followers")
     .populate("info.followers");
   if (!user) throw new Error("User not found || getFollowersByUsername");
 
-  return takeBasicInfo(user?.info?.followers);
+  const limit = USERS_PER_PAGE;
+
+  const result = await paginationWithArray({
+    list: user?.info?.followers,
+    page,
+    limit,
+    callback: takeBasicInfo,
+  });
+
+  return result;
 };
 
-const getFollowingByUsername = async (username) => {
-  if (!username)
-    throw new Error("Username is required || getFollowingByUsername");
+const getFollowingByUsername = async (username, page) => {
+  if (!username || !page)
+    throw new Error("Username or page is required || getFollowingByUsername");
   const user = await User.findOne({ username })
     .select("info.following")
     .populate("info.following");
   if (!user) throw new Error("User not found || getFollowingByUsername");
 
-  return takeBasicInfo(user?.info?.following);
+  const limit = USERS_PER_PAGE;
+
+  const result = await paginationWithArray({
+    list: user?.info?.following,
+    page,
+    limit,
+    callback: takeBasicInfo,
+  });
+
+  return result;
 };
 
 const takeBasicInfo = (listUsers) => {

@@ -6,12 +6,22 @@ const projectAPI = {
     const url = "project/create";
     return axiosClient.post(url, data);
   },
-  getOwnProjects: () => {
-    const url = "project";
+  getOwnProjects: (queryParams) => {
+    let url = "";
+    if (queryParams) {
+      url = `project${queryParams}`;
+    } else {
+      url = `project`;
+    }
     return axiosClient.get(url);
   },
-  getByUsername: (username) => {
-    const url = `project/${username}`;
+  getByUsername: (username, queryParams) => {
+    let url = "";
+    if (queryParams) {
+      url = `project/${username}${queryParams}`;
+    } else {
+      url = `project/${username}`;
+    }
     return axiosClient.get(url);
   },
   getBySlug: (slug) => {

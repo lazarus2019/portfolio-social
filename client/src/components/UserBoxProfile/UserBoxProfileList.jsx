@@ -7,14 +7,22 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { BasicButton } from "../Button/Button";
 import Empty from "../Empty/Empty";
 import Pagination from "../Pagination/Pagination";
+import { useMemo } from "react";
 
+const ITEMS_PER_PAGE = 15;
 function UserBoxProfileList(props) {
   const {
     users,
     currentUser = null,
     onFollowing = () => {},
+    onPageChange = () => {},
+    currentPage = 1,
+    totalRows = 1,
     emptyContent = "Don't have content yet!",
   } = props;
+  const totalPage = useMemo(() => {
+    return Math.ceil(totalRows / ITEMS_PER_PAGE);
+  });
   return (
     <>
       {users && users?.length > 0 ? (
@@ -32,7 +40,13 @@ function UserBoxProfileList(props) {
       ) : (
         <Empty desc={emptyContent} />
       )}
-      {users && users?.length > 0 && <Pagination />}
+      {totalPage > 1 ? (
+        <Pagination
+          onPageChange={onPageChange}
+          totalPage={totalPage}
+          currentPage={currentPage}
+        />
+      ) : null}
     </>
   );
 }

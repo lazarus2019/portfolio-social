@@ -14,6 +14,7 @@ import classNames from "classnames/bind";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
+import queryString from "query-string";
 import { toast } from "react-toastify";
 import styles from "./Profile.module.scss";
 
@@ -34,9 +35,14 @@ function Profile(props) {
 
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
-  const [projects, setProjects] = useState(null);
+  const [projects, setProjects] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalRows, setTotalRows] = useState(1);
+  const [filter, setFilter] = useState({
+    page: 1,
+  });
 
   const getProfile = async () => {
     try {
@@ -48,55 +54,59 @@ function Profile(props) {
     }
   };
 
-  const getProjects = async () => {
+  const getProjects = async (queryParams) => {
     try {
       if (username === currentUser?.username) {
-        const res = await projectAPI.getOwnProjects();
-        setProjects(res.result);
+        const res = await projectAPI.getOwnProjects(queryParams);
+        setProjects(res.results);
+        setTotalRows(res.totalRows);
       } else {
-        const res = await projectAPI.getByUsername(username);
-        setProjects(res.result);
+        const res = await projectAPI.getByUsername(username, queryParams);
+        setProjects(res.results);
+        setTotalRows(res.totalRows);
       }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
   };
 
-  const getFollowing = async () => {
+  const getFollowing = async (queryParams) => {
     try {
-      const res = await userAPI.following(username);
+      const res = await userAPI.following(username, queryParams);
       if (res) {
-        setFollowing(res.listFollowing);
+        setFollowing(res.results);
+        setTotalRows(res.totalRows);
       }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
   };
 
-  const getFollowers = async () => {
+  const getFollowers = async (queryParams) => {
     try {
-      const res = await userAPI.followers(username);
+      const res = await userAPI.followers(username, queryParams);
       if (res) {
-        setFollowers(res.listFollowers);
+        setFollowers(res.results);
+        setTotalRows(res.totalRows);
       }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
   };
 
-  const getData = async (tab) => {
-    switch (tab) {
+  const getData = async (queryParams) => {
+    switch (currentTab) {
       case "project":
-        await getProjects();
+        await getProjects(queryParams);
         break;
       case "following":
-        await getFollowing();
+        await getFollowing(queryParams);
         break;
       case "followers":
-        await getFollowers();
+        await getFollowers(queryParams);
         break;
       default:
-        await getProjects();
+        await getProjects(queryParams);
     }
   };
 
@@ -106,10 +116,12 @@ function Profile(props) {
         return (
           <ProjectBoxProfileList
             projects={projects}
-            projectCount={profile?.info?.projectCount}
             currentUser={currentUser}
             onSaving={handleSavingProject}
             onToggleHide={handleToggleHide}
+            onPageChange={handlePageChange}
+            totalRows={totalRows}
+            currentPage={currentPage}
             emptyContent="No Posts Yet!"
             isCurrentUser={
               currentUser ? currentUser?.id === profile?.id : false
@@ -122,6 +134,9 @@ function Profile(props) {
             users={following}
             currentUser={currentUser}
             onFollowing={handleFollowing}
+            onPageChange={handlePageChange}
+            totalRows={totalRows}
+            currentPage={currentPage}
             emptyContent="Don’t have any followings yet."
           />
         );
@@ -131,6 +146,9 @@ function Profile(props) {
             users={followers}
             currentUser={currentUser}
             onFollowing={handleFollowing}
+            onPageChange={handlePageChange}
+            totalRows={totalRows}
+            currentPage={currentPage}
             emptyContent="Don’t have any followers yet."
           />
         );
@@ -138,10 +156,12 @@ function Profile(props) {
         return (
           <ProjectBoxProfileList
             projects={projects}
-            projectCount={profile?.info?.projectCount}
             currentUser={currentUser}
             onSaving={handleSavingProject}
             onToggleHide={handleToggleHide}
+            onPageChange={handlePageChange}
+            totalRows={totalRows}
+            currentPage={currentPage}
             emptyContent="No Posts Yet!"
             isCurrentUser={
               currentUser ? currentUser?.id === profile?.id : false
@@ -154,15 +174,16 @@ function Profile(props) {
   useLayoutEffect(() => {
     if (username) {
       getProfile();
-      getData(currentTab);
+      getData();
     }
 
     setLoading(false);
   }, [username, dispatch]);
 
   useEffect(() => {
-    getData(currentTab);
+    getData();
     window.scrollTo(0, 0);
+    setCurrentPage(1);
   }, [currentTab]);
 
   const handleFollowing = async (followId, isFollowProfile = false) => {
@@ -218,6 +239,7 @@ function Profile(props) {
           }));
         }
         getProjects();
+        // Replace get project by change value to save or not save
       }
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -238,12 +260,22 @@ function Profile(props) {
           }
           return project;
         });
-        setProjects(newProjectList)
+        setProjects(newProjectList);
         toast.success("Your change had saved!");
       }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
+  };
+
+  // Pagination
+  const handlePageChange = async (page) => {
+    setCurrentPage(page);
+    const newFilter = { ...filter, page: page };
+    setFilter(newFilter);
+
+    getData(`?${queryString.stringify(newFilter)}`);
+    window.scrollTo(0, 0);
   };
 
   return (

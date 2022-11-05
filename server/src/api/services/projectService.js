@@ -11,6 +11,8 @@ const {
   deleteCloudinaryVideoById,
 } = require("../utils/cloudinaryUploadVideo");
 const slugify = require("../utils/slugify");
+const { paginationFindQuery } = require("../utils/paginationResult");
+const { PROJECTS_PER_PAGE } = process.env;
 
 const isOwnerProject = async (userId, projectId) => {
   if (!projectId || !userId)
@@ -138,30 +140,46 @@ const getProjectById = async (id) => {
   return project;
 };
 
-const getOwnProject = async (userId) => {
-  if (!userId) throw new Error("userId is required || getOwnProject");
-  const projectList = await Project.find({ user: userId })
-    .select("-user -library")
-    .limit(10)
-    .sort({ createdAt: -1 });
+const getOwnProject = async (userId, page) => {
+  if (!userId || !page)
+    throw new Error("userId, page is required || getOwnProject");
+  const query = { user: userId };
+  const select = "-user -library";
+  const sort = { createdAt: -1 };
+  const limit = PROJECTS_PER_PAGE;
+
+  const projectList = await paginationFindQuery({
+    model: Project,
+    select,
+    query,
+    sort,
+    limit,
+    page,
+  });
 
   return projectList;
 };
 
-const getProjectByUsername = async (username) => {
-  if (!username)
-    throw new Error("username is required || getProjectByUsername");
+const getProjectByUsername = async (username, page) => {
+  if (!username || !page)
+    throw new Error("username & page is required || getProjectByUsername");
 
   const user = await User.findOne({ username }).select("_id");
   if (!user) throw new Error("User Not Found || getProjectByUsername");
 
-  const projectList = await Project.find({
-    user: user?._id,
-    isHide: false,
-  })
-    .select("-user -library")
-    .limit(10)
-    .sort({ createdAt: -1 });
+  const query = { user: user?.id, isHide: false };
+  const select = "-user -library";
+  const sort = { createdAt: -1 };
+  const limit = PROJECTS_PER_PAGE;
+
+  const projectList = await paginationFindQuery({
+    model: Project,
+    select,
+    query,
+    sort,
+    limit,
+    page,
+  });
 
   return projectList;
 };

@@ -9,9 +9,9 @@ const userAPI = {
     const url = "user/login";
     return axiosClient.post(url, data);
   },
-  verifyToken: ()=>{
+  verifyToken: () => {
     const url = "user/get-user-by-token";
-    return axiosClient.get(url)
+    return axiosClient.get(url);
   },
   profile: (username) => {
     const url = `user/profile/${username}`;
@@ -25,12 +25,22 @@ const userAPI = {
     const url = "user/follow";
     return axiosClient.put(url, data);
   },
-  followers: (username) => {
-    const url = `user/followers/${username}`;
+  followers: (username, queryParams) => {
+    let url = "";
+    if (queryParams) {
+      url = `user/followers/${username}${queryParams}`;
+    } else {
+      url = `user/followers/${username}`;
+    }
     return axiosClient.get(url);
   },
-  following: (username) => {
-    const url = `user/following/${username}`;
+  following: (username, queryParams) => {
+    let url = "";
+    if (queryParams) {
+      url = `user/following/${username}${queryParams}`;
+    } else {
+      url = `user/following/${username}`;
+    }
     return axiosClient.get(url);
   },
   forgetPassword: (data) => {
