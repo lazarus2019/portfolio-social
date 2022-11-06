@@ -93,6 +93,8 @@ function SearchProject(props) {
                   key={index}
                   filter={filter}
                   onChange={onFilterChange}
+                  type={params?.type}
+                  sort={params?.sort}
                 />
               ) : null
             ) : (
@@ -100,6 +102,8 @@ function SearchProject(props) {
                 key={index}
                 filter={filter}
                 onChange={onFilterChange}
+                type={params?.type}
+                sort={params?.sort}
               />
             )}
           </>
@@ -119,7 +123,7 @@ function SearchProject(props) {
 }
 
 const DropDownMenu = (props) => {
-  const { filter, onChange } = props;
+  const { filter, onChange, type, sort } = props;
   const handleChange = (e) => {
     if (!onChange) return;
     onChange({

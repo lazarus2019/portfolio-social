@@ -5,6 +5,7 @@ const {
 } = require("../utils/cloudinaryUploadPhoto");
 const { paginationWithArray } = require("../utils/paginationResult");
 const { getPublicId } = require("../utils/uploadFile");
+const crypto = require("crypto");
 const { USERS_PER_PAGE } = process.env;
 
 const checkRegisterEmail = async (email) => {
@@ -224,7 +225,7 @@ const checkEmail = async (email) => {
 
 const resetPassword = async (token, password) => {
   if (!token || !password)
-    throw new Error("Token and password is required || verifyAccount");
+    throw new Error("Token and password is required || resetPassword");
 
   const user = await User.findOne({
     "verify.passwordResetToken": token,
@@ -246,10 +247,11 @@ const resetPassword = async (token, password) => {
 
 const verifyAccount = async (token) => {
   if (!token) throw new Error("Token is required || verifyAccount");
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
   // Find this user by token
   const userFound = await User.findOne({
-    "verify.accountVerificationToken": token,
+    "verify.accountVerificationToken": hashedToken,
     "verify.accountVerificationTokenExpires": { $gt: Date.now() },
   });
 

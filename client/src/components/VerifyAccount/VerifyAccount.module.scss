@@ -1,0 +1,66 @@
+@use "@/scss/variables" as *;
+
+.verify {
+  background-color: #faebca;
+  display: flex;
+  padding: 0.75rem 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  &__message {
+    color: #e0a131;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: center;
+    user-select: none;
+    margin-right: 1rem;
+  }
+
+  &__btn {
+    color: #e0a131;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e0a131;
+    border-radius: 1rem;
+    transition: 0.25s;
+
+    &:hover {
+      color: $white;
+      box-shadow: inset 0 -4rem 0 0 #e0a131;
+    }
+  }
+
+  &__sent {
+    background-color: #cafad8;
+    display: flex;
+    padding: 0.75rem 0;
+    justify-content: center;
+    align-items: center;
+    &__message {
+      color: #3dc466;
+      font-size: 1.4rem;
+      font-weight: 600;
+      text-align: center;
+      user-select: none;
+      margin-right: 1rem;
+    }
+
+    &__btn {
+      color: #3dc466;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.75rem 1rem;
+      border: 2px solid #3dc466;
+      border-radius: 1rem;
+      transition: 0.25s;
+
+      &:hover {
+        color: $white;
+        box-shadow: inset 0 -4rem 0 0 #3dc466;
+      }
+    }
+  }
+}

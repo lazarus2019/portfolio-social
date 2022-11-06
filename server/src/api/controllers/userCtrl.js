@@ -17,6 +17,7 @@ const {
   getUserByEmail,
   getUserById,
   login,
+  verifyAccount,
 } = require("../services/userService");
 const {
   sendResetPasswordEmail,
@@ -196,7 +197,7 @@ const userVerifyTokenCtrl = expressAsyncHandler(async (req, res) => {
     const user = await checkEmail(email);
 
     const token = await user.createAccountVerificationToken();
-    const url = `reset-password/${token}`;
+    const url = `verify-account/${token}`;
 
     await user.save();
 

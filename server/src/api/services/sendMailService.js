@@ -1,7 +1,12 @@
 const oAuth2Client = require("../../config/nodemailer/nodemailer");
 const nodemailer = require("nodemailer");
-const { GG_REFRESH_TOKEN, GG_EMAIL, GG_CLIENT_ID, GG_CLIENT_SECRET_KEY } =
-  process.env;
+const {
+  GG_REFRESH_TOKEN,
+  GG_EMAIL,
+  GG_CLIENT_ID,
+  GG_CLIENT_SECRET_KEY,
+  CLIENT_PORT,
+} = process.env;
 
 const mailTypes = {
   resetPassword: {
@@ -49,7 +54,7 @@ const sendResetPasswordEmail = async (email, url) => {
     <ul>  
       <li>Email: ${email}</li>
     </ul>
-    <a href="${url}">Click here to reset password</a>
+    <a href="http://localhost:${CLIENT_PORT}/${url}">Click here to reset password</a>
     <h3>Message</h3>
   `;
 
@@ -73,7 +78,7 @@ const sendVerificationEmail = async (email, url) => {
     <ul>  
       <li>Email: ${email}</li>
     </ul>
-    <a href="${url}">Click here to verify account</a>
+    <a href="http://localhost:${CLIENT_PORT}/${url}">Click here to verify account</a>
     <h3>Message</h3>
   `;
   const { from, subject } = mailTypes.verifyAccount;

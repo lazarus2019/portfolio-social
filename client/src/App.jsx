@@ -4,10 +4,12 @@ import Router from "./routes/Router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./scss/_index.scss";
+import VerifyAccount from "./components/VerifyAccount/VerifyAccount";
 
 function App() {
   return (
     <BrowserRouter>
+      <VerifyAccount />
       <Router />
       <GoToTop />
       <ToastContainer
