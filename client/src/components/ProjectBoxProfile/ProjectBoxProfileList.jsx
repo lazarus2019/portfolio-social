@@ -15,6 +15,7 @@ import SearchProject from "../Search/SearchProfile/SearchProject";
 import Pagination from "../Pagination/Pagination";
 import Empty from "../Empty/Empty";
 import { useMemo } from "react";
+import FilterResult from "../FilterResult/FilterResult";
 
 const ITEMS_PER_PAGE = 10;
 function ProjectBoxProfileList(props) {
@@ -23,6 +24,10 @@ function ProjectBoxProfileList(props) {
     currentUser = null,
     onSaving = () => {},
     onPageChange = () => {},
+    onFilterChange = () => {},
+    onSearchChange = () => {},
+    onClearFilter = () => {},
+    searchQueryParams = {},
     currentPage = 1,
     totalRows = 1,
     onToggleHide,
@@ -34,9 +39,15 @@ function ProjectBoxProfileList(props) {
   });
   return (
     <>
+      <SearchProject
+        isCurrentUser={isCurrentUser}
+        onFilterChange={onFilterChange}
+        onSearchChange={onSearchChange}
+        params={searchQueryParams}
+      />
+      <FilterResult onClearFilter={onClearFilter} params={searchQueryParams} />
       {projects.length > 0 ? (
         <>
-          <SearchProject isCurrentUser={isCurrentUser} />
           {projects?.map((project, index) => (
             <ProjectBoxProfileItem
               key={index}

@@ -8,6 +8,8 @@ import { BasicButton } from "../Button/Button";
 import Empty from "../Empty/Empty";
 import Pagination from "../Pagination/Pagination";
 import { useMemo } from "react";
+import SearchUser from "../Search/SearchProfile/SearchUser";
+import FilterResult from "../FilterResult/FilterResult";
 
 const ITEMS_PER_PAGE = 15;
 function UserBoxProfileList(props) {
@@ -16,6 +18,9 @@ function UserBoxProfileList(props) {
     currentUser = null,
     onFollowing = () => {},
     onPageChange = () => {},
+    onSearchChange = () => {},
+    onClearFilter = () => {},
+    searchQueryParams = {},
     currentPage = 1,
     totalRows = 1,
     emptyContent = "Don't have content yet!",
@@ -25,6 +30,8 @@ function UserBoxProfileList(props) {
   });
   return (
     <>
+      <SearchUser onSearchChange={onSearchChange} />
+      <FilterResult onClearFilter={onClearFilter} params={searchQueryParams} />
       {users && users?.length > 0 ? (
         users.map((user, index) => (
           <UserBoxProfileItem

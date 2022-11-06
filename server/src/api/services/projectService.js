@@ -140,12 +140,53 @@ const getProjectById = async (id) => {
   return project;
 };
 
-const getOwnProject = async (userId, page) => {
+const getOwnProject = async (userId, page, sortPass, typePass, querySearch) => {
   if (!userId || !page)
     throw new Error("userId, page is required || getOwnProject");
-  const query = { user: userId };
+
+  // Search query
+  let query = { user: userId };
+  if (querySearch) {
+    const searchQuery = {
+      title: {
+        $regex: querySearch,
+        $options: "i",
+      },
+    };
+    query = { ...query, ...searchQuery };
+  }
+  // Type query
+  let typeQuery = {};
+  switch (typePass) {
+    case "public":
+      typeQuery = {
+        isHide: false,
+      };
+      break;
+    case "private":
+      typeQuery = { isHide: true };
+      break;
+    default:
+  }
+  query = { ...query, ...typeQuery };
+
+  // Sorting
+  let sort = {};
+  switch (sortPass) {
+    case "name":
+      sort = {
+        title: 1,
+      };
+      break;
+    case "stars":
+      sort = {
+        starCount: -1,
+      };
+      break;
+    default:
+      sort = { createdAt: -1 };
+  }
   const select = "-user -library";
-  const sort = { createdAt: -1 };
   const limit = PROJECTS_PER_PAGE;
 
   const projectList = await paginationFindQuery({
@@ -160,16 +201,41 @@ const getOwnProject = async (userId, page) => {
   return projectList;
 };
 
-const getProjectByUsername = async (username, page) => {
-  if (!username || !page)
-    throw new Error("username & page is required || getProjectByUsername");
+const getProjectByUsername = async (username, page, sortPass, querySearch) => {
+  if (!username || !page || !sortPass)
+    throw new Error(
+      "username , page or sortPass is required || getProjectByUsername"
+    );
 
   const user = await User.findOne({ username }).select("_id");
   if (!user) throw new Error("User Not Found || getProjectByUsername");
 
-  const query = { user: user?.id, isHide: false };
+  let query = { user: user?.id, isHide: false };
+  if (querySearch) {
+    const searchQuery = {
+      title: {
+        $regex: querySearch,
+        $options: "i",
+      },
+    };
+    query = { ...query, ...searchQuery };
+  }
   const select = "-user -library";
-  const sort = { createdAt: -1 };
+  let sort = {};
+  switch (sortPass) {
+    case "name":
+      sort = {
+        title: 1,
+      };
+      break;
+    case "stars":
+      sort = {
+        starCount: -1,
+      };
+      break;
+    default:
+      sort = { createdAt: -1 };
+  }
   const limit = PROJECTS_PER_PAGE;
 
   const projectList = await paginationFindQuery({

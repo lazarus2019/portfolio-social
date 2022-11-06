@@ -13,7 +13,7 @@ import getErrorMessage from "@/utils/getErrorMessage";
 import classNames from "classnames/bind";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import queryString from "query-string";
 import { toast } from "react-toastify";
 import styles from "./Profile.module.scss";
@@ -23,13 +23,11 @@ const cx = classNames.bind(styles);
 function Profile(props) {
   // const { username } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const username = useMemo(() => {
     return location.pathname.split("/@")[1];
   }, [location.pathname]);
-  const currentTab = useMemo(() => {
-    return location.search.split("?tab=")[1] || "project";
-  }, [location.search]);
 
   const currentUser = useSelector((store) => store?.user?.value);
 
@@ -40,9 +38,18 @@ function Profile(props) {
   const [following, setFollowing] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(1);
-  const [filter, setFilter] = useState({
-    page: 1,
-  });
+
+  const searchQueryParams = useMemo(() => {
+    const params = queryString.parse(location.search);
+
+    return {
+      tab: params.tab || "project",
+      q: params.q || undefined,
+      sort: params.sort || undefined,
+      page: params.page || undefined,
+      type: params.type || undefined,
+    };
+  }, [location.search]);
 
   const getProfile = async () => {
     try {
@@ -95,7 +102,7 @@ function Profile(props) {
   };
 
   const getData = async (queryParams) => {
-    switch (currentTab) {
+    switch (searchQueryParams.tab) {
       case "project":
         await getProjects(queryParams);
         break;
@@ -120,6 +127,10 @@ function Profile(props) {
             onSaving={handleSavingProject}
             onToggleHide={handleToggleHide}
             onPageChange={handlePageChange}
+            onFilterChange={handleFilterChange}
+            onSearchChange={handleSearchChange}
+            onClearFilter={handleClearFilter}
+            searchQueryParams={searchQueryParams}
             totalRows={totalRows}
             currentPage={currentPage}
             emptyContent="No Posts Yet!"
@@ -160,6 +171,10 @@ function Profile(props) {
             onSaving={handleSavingProject}
             onToggleHide={handleToggleHide}
             onPageChange={handlePageChange}
+            onFilterChange={handleFilterChange}
+            onSearchChange={handleSearchChange}
+            onClearFilter={handleClearFilter}
+            searchQueryParams={searchQueryParams}
             totalRows={totalRows}
             currentPage={currentPage}
             emptyContent="No Posts Yet!"
@@ -181,10 +196,23 @@ function Profile(props) {
   }, [username, dispatch]);
 
   useEffect(() => {
-    getData();
+    if (searchQueryParams?.page) {
+      console.log("params changed");
+      getData(`?${queryString.stringify(searchQueryParams)}`);
+      setCurrentPage(+searchQueryParams?.page);
+    } else {
+      console.log("tab changed");
+      getData();
+      setCurrentPage(1);
+    }
     window.scrollTo(0, 0);
-    setCurrentPage(1);
-  }, [currentTab]);
+  }, [
+    searchQueryParams.tab,
+    searchQueryParams.page,
+    searchQueryParams.sort,
+    searchQueryParams.q,
+    searchQueryParams.type,
+  ]);
 
   const handleFollowing = async (followId, isFollowProfile = false) => {
     try {
@@ -238,7 +266,7 @@ function Profile(props) {
             },
           }));
         }
-        getProjects();
+        getProjects(`?${queryString.stringify(searchQueryParams)}`);
         // Replace get project by change value to save or not save
       }
     } catch (error) {
@@ -269,12 +297,50 @@ function Profile(props) {
   };
 
   // Pagination
-  const handlePageChange = async (page) => {
+  const handlePageChange = (page) => {
     setCurrentPage(page);
-    const newFilter = { ...filter, page: page };
-    setFilter(newFilter);
+    const newFilter = { ...searchQueryParams, page: page };
 
-    getData(`?${queryString.stringify(newFilter)}`);
+    navigate(`?${queryString.stringify(newFilter)}`);
+    window.scrollTo(0, 0);
+  };
+
+  // Filter Project
+  const handleFilterChange = (filter) => {
+    const newFilter = { ...searchQueryParams, ...filter, page: 1 };
+
+    navigate(`?${queryString.stringify(newFilter)}`);
+    window.scrollTo(0, 0);
+  };
+
+  // Search Project, Follower & following
+  const handleSearchChange = (keyword) => {
+    let newFilter = { ...searchQueryParams };
+    console.log({ keyword });
+    if (keyword) {
+      if (keyword !== "") {
+        newFilter = { ...searchQueryParams, q: keyword, page: 1 };
+      } else {
+        newFilter = { ...searchQueryParams, q: undefined, page: undefined };
+      }
+    } else {
+      // Check first time and set q = ""
+      // newFilter = { ...searchQueryParams, q: "", page: undefined };
+    }
+    navigate(`?${queryString.stringify(newFilter)}`);
+    window.scrollTo(0, 0);
+  };
+
+  // Clear filter & search query
+  const handleClearFilter = () => {
+    const newFilter = {
+      ...searchQueryParams,
+      q: undefined,
+      sort: undefined,
+      page: undefined,
+      type: undefined,
+    };
+    navigate(`?${queryString.stringify(newFilter)}`);
     window.scrollTo(0, 0);
   };
 
@@ -293,7 +359,7 @@ function Profile(props) {
               profile?.info?.followers.indexOf(currentUser?.id) >= 0
             }
             onFollowing={handleFollowing}
-            currentTab={currentTab}
+            currentTab={searchQueryParams?.tab}
           />
           <div className={cx("container", "profile-container")}>
             <div className={cx("left-content")}>
@@ -307,7 +373,9 @@ function Profile(props) {
                 onFollowing={handleFollowing}
               />
             </div>
-            <div className={cx("right-content")}>{renderTab(currentTab)}</div>
+            <div className={cx("right-content")}>
+              {renderTab(searchQueryParams?.tab)}
+            </div>
           </div>
         </>
       ) : (

@@ -78,9 +78,9 @@ const projectGetByIdCtrl = expressAsyncHandler(async (req, res) => {
 //// Get Own project
 const projectGetOwnCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
-    const { page = 1 } = req?.query;
+  const { page = 1, sort = "date", type, q } = req?.query;
   try {
-    const result = await getOwnProject(_id, page);
+    const result = await getOwnProject(_id, page, sort, type, q);
 
     res.status(200).json(result);
   } catch (error) {
@@ -91,9 +91,9 @@ const projectGetOwnCtrl = expressAsyncHandler(async (req, res) => {
 //// Get project by username
 const projectGetByUsernameCtrl = expressAsyncHandler(async (req, res) => {
   const { username } = req?.params;
-  const { page = 1 } = req?.query;
+  const { page = 1, sort = "date", q } = req?.query;
   try {
-    const result = await getProjectByUsername(username, page);
+    const result = await getProjectByUsername(username, page, sort, q);
 
     res.status(200).json(result);
   } catch (error) {

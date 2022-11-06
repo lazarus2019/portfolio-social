@@ -2,8 +2,10 @@ import classNames from "classnames/bind";
 import styles from "./SearchProfile.module.scss";
 const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
-import { BsFillCaretDownFill, BsX, BsCheck } from "react-icons/bs";
+import { BsFillCaretDownFill, BsCheck } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useDebounce } from "@/hooks";
+import { useEffect, useMemo, useState } from "react";
 
 const filters = [
   {
@@ -49,13 +51,37 @@ const filters = [
 ];
 
 function SearchProject(props) {
-  const { isCurrentUser = false } = props;
+  const {
+    isCurrentUser = false,
+    onFilterChange,
+    onSearchChange,
+    params,
+  } = props;
+  const value = useMemo(() => {
+    return params?.q ? params?.q : undefined;
+  });
+  const [searchValue, setSearchValue] = useState(value);
+  const debounceValue = useDebounce(searchValue, 500);
+
+  useEffect(() => {
+    // if (debounceValue !== "") {
+    if (!onSearchChange) return;
+    onSearchChange(debounceValue);
+    // }
+  }, [debounceValue]);
+
+  useEffect(() => {
+    setSearchValue(value);
+  }, [value]);
+
   return (
     <div className={cx("profile-search")}>
       <input
         type="text"
+        value={searchValue ? searchValue : ""}
         className={cx("profile-search__input")}
         placeholder="Find a project"
+        onChange={(e) => setSearchValue(e.target.value)}
       />
 
       <div className="profile-search__filters">
@@ -63,24 +89,43 @@ function SearchProject(props) {
           <>
             {!isCurrentUser ? (
               filter.isPermission ? (
-                <DropDownMenu key={index} filter={filter} />
+                <DropDownMenu
+                  key={index}
+                  filter={filter}
+                  onChange={onFilterChange}
+                />
               ) : null
             ) : (
-              <DropDownMenu key={index} filter={filter} />
+              <DropDownMenu
+                key={index}
+                filter={filter}
+                onChange={onFilterChange}
+              />
             )}
           </>
         ))}
       </div>
 
       {isCurrentUser ? (
-        <Link to="/create-project" className={cx("profile-search__btn", "primary")}>New</Link>
+        <Link
+          to="/create-project"
+          className={cx("profile-search__btn", "primary")}
+        >
+          New
+        </Link>
       ) : null}
     </div>
   );
 }
 
 const DropDownMenu = (props) => {
-  const { filter } = props;
+  const { filter, onChange } = props;
+  const handleChange = (e) => {
+    if (!onChange) return;
+    onChange({
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
     <button className={cx("profile-search__btn")}>
       {filter.title}{" "}
@@ -103,6 +148,7 @@ const DropDownMenu = (props) => {
                 name={filter.name}
                 id={option.title + "_" + index}
                 defaultChecked={index === 0}
+                onChange={handleChange}
               />
               <BsCheck size={20} />
               {option.title}

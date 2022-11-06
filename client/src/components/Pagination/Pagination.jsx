@@ -27,7 +27,7 @@ function Pagination(props) {
         onClick={() => handleClickPageChange(currentPage + 1)}
         className={cx(
           "pagination__btn",
-          `${currentPage === totalPage ? "disabled" : ""}`
+          `${currentPage >= totalPage ? "disabled" : ""}`
         )}
       >
         Next
