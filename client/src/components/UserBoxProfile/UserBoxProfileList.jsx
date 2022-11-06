@@ -30,7 +30,7 @@ function UserBoxProfileList(props) {
   });
   return (
     <>
-      <SearchUser onSearchChange={onSearchChange} />
+      <SearchUser onSearchChange={onSearchChange} params={searchQueryParams} />
       <FilterResult onClearFilter={onClearFilter} params={searchQueryParams} />
       {users && users?.length > 0 ? (
         users.map((user, index) => (

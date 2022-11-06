@@ -39,14 +39,20 @@ const paginationFindQuery = async ({ ...rest }) => {
 };
 
 const paginationWithArray = ({ ...rest }) => {
-  const { limit = 10, page = 1, list, callback } = rest;
+  const { limit = 10, page = 1, list, callback, filterCallback, query } = rest;
 
-  const results = callback
-    ? callback(list?.slice((page - 1) * limit, page * limit))
-    : list?.slice((page - 1) * limit, page * limit);
+  let results = list?.slice((page - 1) * limit, page * limit);
+  let totalRows = list?.length;
+
+  if (query) {
+    results = filterCallback(results, query);
+    totalRows = results?.length;
+  }
+
+  results = callback ? callback(results) : results;
 
   return {
-    totalRows: list?.length,
+    totalRows,
     results,
     meta: {
       page,

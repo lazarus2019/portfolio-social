@@ -146,6 +146,10 @@ function Profile(props) {
             currentUser={currentUser}
             onFollowing={handleFollowing}
             onPageChange={handlePageChange}
+            onFilterChange={handleFilterChange}
+            onClearFilter={handleClearFilter}
+            onSearchChange={handleSearchChange}
+            searchQueryParams={searchQueryParams}
             totalRows={totalRows}
             currentPage={currentPage}
             emptyContent="Don’t have any followings yet."
@@ -158,6 +162,10 @@ function Profile(props) {
             currentUser={currentUser}
             onFollowing={handleFollowing}
             onPageChange={handlePageChange}
+            onFilterChange={handleFilterChange}
+            onClearFilter={handleClearFilter}
+            onSearchChange={handleSearchChange}
+            searchQueryParams={searchQueryParams}
             totalRows={totalRows}
             currentPage={currentPage}
             emptyContent="Don’t have any followers yet."

@@ -146,7 +146,7 @@ const unFollowing = async (loginUserId, unFollowId) => {
   };
 };
 
-const getFollowersByUsername = async (username, page) => {
+const getFollowersByUsername = async (username, page, query) => {
   if (!username || !page)
     throw new Error("Username or page is required || getFollowersByUsername");
   const user = await User.findOne({ username })
@@ -161,12 +161,14 @@ const getFollowersByUsername = async (username, page) => {
     page,
     limit,
     callback: takeBasicInfo,
+    filterCallback: filterUserList,
+    query,
   });
 
   return result;
 };
 
-const getFollowingByUsername = async (username, page) => {
+const getFollowingByUsername = async (username, page, query) => {
   if (!username || !page)
     throw new Error("Username or page is required || getFollowingByUsername");
   const user = await User.findOne({ username })
@@ -181,6 +183,19 @@ const getFollowingByUsername = async (username, page) => {
     page,
     limit,
     callback: takeBasicInfo,
+    filterCallback: filterUserList,
+    query,
+  });
+
+  return result;
+};
+
+// Filter & search
+const filterUserList = (listUsers, query) => {
+  const regex = new RegExp(`${query}`, "gis");
+
+  const result = listUsers?.filter((user) => {
+    return regex.test(user?.fullName) || regex.test(user?.username);
   });
 
   return result;

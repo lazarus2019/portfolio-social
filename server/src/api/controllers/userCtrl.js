@@ -136,9 +136,9 @@ const userFollowCtrl = expressAsyncHandler(async (req, res) => {
 //// Get list followers
 const userFollowersListCtrl = expressAsyncHandler(async (req, res) => {
   const { username } = req.params;
-  const { page = 1 } = req?.query;
+  const { page = 1, q } = req?.query;
   try {
-    const listFollowers = await getFollowersByUsername(username, page);
+    const listFollowers = await getFollowersByUsername(username, page, q);
     res.status(200).json(listFollowers);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -148,9 +148,9 @@ const userFollowersListCtrl = expressAsyncHandler(async (req, res) => {
 //// Get list following
 const userFollowingListCtrl = expressAsyncHandler(async (req, res) => {
   const { username } = req.params;
-  const { page = 1 } = req?.query;
+  const { page = 1, q } = req?.query;
   try {
-    const listFollowing = await getFollowingByUsername(username, page);
+    const listFollowing = await getFollowingByUsername(username, page, q);
     res.status(200).json(listFollowing);
   } catch (error) {
     res.status(500).json({ message: error.message });
