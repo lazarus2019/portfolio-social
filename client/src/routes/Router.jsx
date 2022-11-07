@@ -6,6 +6,8 @@ import EditProjectPage from "@/pages/ProjectPage/EditProject/EditProjectPage";
 import Login from "@/pages/User/Login/Login";
 import Register from "@/pages/User/Login/Register";
 import Profile from "@/pages/User/Profile/Profile";
+import ForgotPasswordPage from "@/pages/VerifyNReset/ForgotPasswordPage";
+import ResetPasswordPage from "@/pages/VerifyNReset/ResetPasswordPage";
 import VerifyAccountPage from "@/pages/VerifyNReset/VerifyAccountPage";
 import React from "react";
 import { Route, Routes } from "react-router";
@@ -26,9 +28,8 @@ function Router() {
         <Route path="search" element="search" />
         {/* <Route path="/login" element="search" /> */}
         <Route path="verify-account/:token" element={<VerifyAccountPage />} />
-        <Route path="reset-password/:token" element="resetPassword" />
-        <Route path="reset-password-form" element="resetPasswordForm" />
-        <Route path="forget-password" element="forgetPassword" />
+        <Route path="reset-password/:token" element={<ResetPasswordPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="p/:slug" element={<DetailProjectPage />} />
 
         <Route path="/" element={<PrivateRoute />}>

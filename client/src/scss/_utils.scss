@@ -51,6 +51,10 @@
   justify-content: space-between;
 }
 
+.x-center {
+  justify-content: center;
+}
+
 .y-center {
   align-items: center;
 }
@@ -123,7 +127,7 @@
   cursor: pointer;
 }
 
-.hide-clipboard{
+.hide-clipboard {
   display: none;
 }
 

@@ -11,14 +11,12 @@ import { BsFillCheckSquareFill } from "react-icons/bs";
 import { logout } from "@/redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import userAPI from "@/api/userAPI";
-import { useSelector } from "react-redux";
 
 const REDIRECT_DELAY = 3000;
 
 function VerifyAccountPage(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((store) => store?.user?.value);
   const { token } = useParams();
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);

@@ -226,9 +226,10 @@ const checkEmail = async (email) => {
 const resetPassword = async (token, password) => {
   if (!token || !password)
     throw new Error("Token and password is required || resetPassword");
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
   const user = await User.findOne({
-    "verify.passwordResetToken": token,
+    "verify.passwordResetToken": hashedToken,
     "verify.passwordResetExpires": { $gt: Date.now() },
   }).select("password");
 
@@ -242,6 +243,8 @@ const resetPassword = async (token, password) => {
 
   user.password = password;
   user.passwordChangeAt = new Date();
+  user.verify.passwordResetExpires = undefined;
+  user.verify.passwordResetToken = undefined;
   await user.save();
 };
 
