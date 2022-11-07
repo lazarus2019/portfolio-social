@@ -141,3 +141,52 @@
     }
   }
 }
+
+// Feedback form
+.feedback-form {
+  width: 400px;
+  &__header {
+    position: relative;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    padding: 1.5rem;
+    background-color: #58af6c;
+    color: $white;
+
+    > h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    > p {
+      font-size: 1.2rem;
+    }
+
+    > svg {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: $white;
+      cursor: pointer;
+    }
+  }
+
+  &__body {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    padding: 1rem 1.5rem 2rem;
+    background-color: $white;
+    &__submit-btn {
+      margin-top: 1rem;
+      width: 100%;
+      font-weight: 600;
+      font-size: 1.6rem;
+      border-radius: 4px;
+      padding: 1rem 1.5rem;
+      outline: 0;
+      border: none;
+      color: #fff;
+      background-color: #2caf4a;
+    }
+  }
+}

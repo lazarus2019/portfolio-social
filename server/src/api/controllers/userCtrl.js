@@ -23,6 +23,7 @@ const {
   sendResetPasswordEmail,
   sendFeedbackEmail,
   sendVerificationEmail,
+  replyFeedbackEmail,
 } = require("../services/sendMailService");
 const { generateToken } = require("../utils/tokenGenerate");
 const mongoose = require("mongoose");
@@ -224,10 +225,9 @@ const userVerifyAccountCtrl = expressAsyncHandler(async (req, res) => {
 
 //// Send feedback to admin contact
 const userFeedbackCtrl = expressAsyncHandler(async (req, res) => {
-  const { email, fullName } = req?.user;
-  const { content } = req?.body;
+  const { email, fullName, message } = req?.body;
   try {
-    await sendFeedbackEmail({ email, fullName }, content);
+    await sendFeedbackEmail({ email, fullName }, message);
 
     res.status(200).json({ status: true });
   } catch (error) {
@@ -285,6 +285,18 @@ const userGetByIdCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// ADMIN
+const userReplyFeedbackCtrl = expressAsyncHandler(async (req, res) => {
+  const { email, fullName, message } = req?.body;
+  try {
+    await replyFeedbackEmail({ email, fullName }, message);
+
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = {
   userRegisterCtrl,
   userLoginCtrl,
@@ -303,4 +315,5 @@ module.exports = {
   userBanningCtrl,
   userGetByEmailCtrl,
   userGetByIdCtrl,
+  userReplyFeedbackCtrl,
 };

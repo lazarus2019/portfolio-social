@@ -81,10 +81,11 @@ Content-Type: application/json
 ### Send feedback to admin contact
 POST http://localhost:5000/api/user/send-feedback
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRoYWlzb25iazIwMjAiLCJpZCI6IjYzNGZiMDliZmEwMWViOTk2MmZmMjAwMSIsImlhdCI6MTY2NjE3NjA0NCwiZXhwIjoxNjY2NjA4MDQ0fQ.HB0VNYociT3Ls3vStaS3MQcsEmOEJtLuLZ8n3MLy0GQ
 
 {
-    "content": "Some site has been crash"
+    "email": "ltv.aptech2019@gmail.com",
+    "fullName": "Krix Daniel",
+    "message": "Some site has been crash"
 }
 
 ######## ADMIN ########
@@ -113,4 +114,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imxhc
 
 {
     "email": "jokertn16@gmail.com"
+}
+
+### Reply Feedback
+POST http://localhost:5000/api/user/reply-feedback
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY3NzQxOTc5LCJleHAiOjE2NjgxNzM5Nzl9.Q8Xib0GldEzdkIfz0QapPcoMg9FrjbhUM3SRC5FThTU
+
+{
+	"email": "ltv.aptech2019@gmail.com",
+	"fullName": "Krix Daniel",
+	"message": "OK, we already fixed the error you report in the last feedback."
 }

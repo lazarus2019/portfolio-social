@@ -6,9 +6,29 @@ import PropTypes from "prop-types";
 import assets from "@/assets";
 import { Link } from "react-router-dom";
 import Grid from "../Grid/Grid";
+import { useState } from "react";
+import Modal from "../Modal/Modal";
+import FeedbackForm from "../Forms/FeedbackForm";
+import { toast } from "react-toastify";
+import getErrorMessage from "@/utils/getErrorMessage";
+import userAPI from "@/api/userAPI";
 
 function NotFound(props) {
   const { desc = "Page not found" } = props;
+  const [isShowModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const handleSendContact = async (values) => {
+    setLoading(true);
+    try {
+      const res = await userAPI.sendFeedback(values);
+      toast.success("Thank you for sending feedback, we'll reply you soon!");
+      setShowModal(false)
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+    setLoading(false);
+  };
+
   return (
     <div className={cx("notfound", "flex")}>
       <Grid col={2}>
@@ -22,13 +42,25 @@ function NotFound(props) {
             <Link to="/" className={cx("notfound__content__redirect__btn")}>
               Go back home
             </Link>
-            <div className={cx("notfound__content__redirect__btn")}>
+            <div
+              className={cx("notfound__content__redirect__btn")}
+              onClick={() => setShowModal(!isShowModal)}
+            >
               Contact us
             </div>
           </div>
           <div className={cx("notfound__content__shape")}></div>
         </div>
       </Grid>
+      {isShowModal ? (
+        <Modal>
+          <FeedbackForm
+            onSubmit={handleSendContact}
+            onClose={() => setShowModal(false)}
+            loading={loading}
+          />
+        </Modal>
+      ) : null}
     </div>
   );
 }

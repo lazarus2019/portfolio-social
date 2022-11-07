@@ -41,8 +41,8 @@ function Router() {
             <Route path="edit-project/:id" element={<EditProjectPage />} />
           </Route>
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
-      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

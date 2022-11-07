@@ -17,6 +17,10 @@ const mailTypes = {
     subject: "User FeedBack",
     to: GG_EMAIL,
   },
+  replyFeedback: {
+    subject: "Reply Feedback",
+    from: 'Portfolio Social 👻" <foo@example.com>',
+  },
   verifyAccount: {
     subject: "Email verification required",
     from: 'Portfolio Social 👻" <foo@example.com>',
@@ -92,9 +96,28 @@ const sendVerificationEmail = async (email, url) => {
   }
 };
 
-const sendFeedbackEmail = async (user, content) => {
-  if (!user || !content)
-    throw new Error("user and content is required || sendFeedbackEmail");
+const replyFeedbackEmail = async (user, message) => {
+  if (!user || !message)
+    throw new Error("user and message is required || replyFeedbackEmail");
+  const htmlBody = `
+    <p>Reply to ${user.fullName}</p>
+    <h3>Message</h3>
+    <p>${message}</p>
+  `;
+  const { from, subject } = mailTypes.replyFeedback;
+
+  try {
+    await sendEmail(from, user?.email, `${subject} from: ${from}`, htmlBody);
+  } catch {
+    throw new Error(
+      `Failed to reply feedback message to ${user?.email} || replyFeedbackEmail`
+    );
+  }
+};
+
+const sendFeedbackEmail = async (user, message) => {
+  if (!user || !message)
+    throw new Error("user and message is required || sendFeedbackEmail");
   const htmlBody = `
     <p>You have a new contact request</p>
     <h3>Contact Details</h3>
@@ -102,7 +125,7 @@ const sendFeedbackEmail = async (user, content) => {
       <li>Email: ${user?.email}</li>
     </ul>
     <h3>Message</h3>
-    <p>${content}</p>
+    <p>${message}</p>
   `;
   const { to, subject } = mailTypes.feedback;
 
@@ -112,7 +135,7 @@ const sendFeedbackEmail = async (user, content) => {
     await sendEmail(from, to, `${subject} from: ${from}`, htmlBody);
   } catch {
     throw new Error(
-      `Failed to send reset token to ${email} || sendFeedbackEmail`
+      `Failed to send feedback message from ${email} || sendFeedbackEmail`
     );
   }
 };
@@ -121,4 +144,5 @@ module.exports = {
   sendResetPasswordEmail,
   sendVerificationEmail,
   sendFeedbackEmail,
+  replyFeedbackEmail,
 };
