@@ -44,6 +44,7 @@ function ProjectBoxProfileList(props) {
         onFilterChange={onFilterChange}
         onSearchChange={onSearchChange}
         params={searchQueryParams}
+        currentUser={currentUser}
       />
       <FilterResult onClearFilter={onClearFilter} params={searchQueryParams} />
       {projects.length > 0 ? (

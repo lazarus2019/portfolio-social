@@ -3,9 +3,10 @@ import styles from "./SearchProfile.module.scss";
 const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
 import { BsFillCaretDownFill, BsCheck } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDebounce } from "@/hooks";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 const filters = [
   {
@@ -56,7 +57,9 @@ function SearchProject(props) {
     onFilterChange,
     onSearchChange,
     params,
+    currentUser,
   } = props;
+  const navigate = useNavigate();
   const value = useMemo(() => {
     return params?.q ? params?.q : undefined;
   });
@@ -73,6 +76,20 @@ function SearchProject(props) {
   useEffect(() => {
     setSearchValue(value);
   }, [value]);
+
+  const handleRedirectToCreateProject = (e) => {
+    e.preventDefault();
+    const regexPathname = /\/\/(www.)?[^?\/]+\/(\S+)/;
+    if (currentUser && isCurrentUser) {
+      if (currentUser?.isAccountVerified) {
+        navigate(`/${regexPathname.exec(e.target?.href)[2]}`);
+      } else {
+        toast.error(
+          "You need to verify your email address to perform this action"
+        );
+      }
+    }
+  };
 
   return (
     <div className={cx("profile-search")}>
@@ -114,6 +131,7 @@ function SearchProject(props) {
         <Link
           to="/create-project"
           className={cx("profile-search__btn", "primary")}
+          onClick={handleRedirectToCreateProject}
         >
           New
         </Link>

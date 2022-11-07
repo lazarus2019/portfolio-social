@@ -14,6 +14,7 @@ import { Route, Routes } from "react-router";
 import AppLayout from "./AppLayout";
 import AuthLayout from "./AuthLayout";
 import PrivateRoute from "./protected/PrivateRoute";
+import VerifyRoute from "./protected/VerifyRoute";
 
 function Router() {
   return (
@@ -35,8 +36,10 @@ function Router() {
         <Route path="/" element={<PrivateRoute />}>
           <Route path="setting" element="setting" />
           <Route path="profile" element="profile/setting" />
-          <Route path="create-project" element={<CreateProjectPage />} />
-          <Route path="edit-project/:id" element={<EditProjectPage />} />
+          <Route element={<VerifyRoute />}>
+            <Route path="create-project" element={<CreateProjectPage />} />
+            <Route path="edit-project/:id" element={<EditProjectPage />} />
+          </Route>
         </Route>
       </Route>
       <Route path="*" element={<NotFoundPage />} />
