@@ -34,6 +34,7 @@ function Profile(props) {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [projects, setProjects] = useState([]);
+  const [savedProjects, setSavedProjects] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,6 +78,18 @@ function Profile(props) {
     }
   };
 
+  const getSavedProjects = async (queryParams) => {
+    try {
+      if (username === currentUser?.username) {
+        const res = await projectAPI.getSavedProjects(queryParams);
+        setSavedProjects(res.results);
+        setTotalRows(res.totalRows);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
   const getFollowing = async (queryParams) => {
     try {
       const res = await userAPI.following(username, queryParams);
@@ -105,6 +118,9 @@ function Profile(props) {
     switch (searchQueryParams.tab) {
       case "project":
         await getProjects(queryParams);
+        break;
+      case "star":
+        await getSavedProjects(queryParams);
         break;
       case "following":
         await getFollowing(queryParams);
@@ -137,6 +153,23 @@ function Profile(props) {
             isCurrentUser={
               currentUser ? currentUser?.id === profile?.id : false
             }
+          />
+        );
+      case "star":
+        return (
+          <ProjectBoxProfileList
+            projects={savedProjects}
+            currentUser={currentUser}
+            onSaving={handleSavingProject}
+            onToggleHide={handleToggleHide}
+            onPageChange={handlePageChange}
+            onFilterChange={handleFilterChange}
+            onSearchChange={handleSearchChange}
+            onClearFilter={handleClearFilter}
+            searchQueryParams={searchQueryParams}
+            totalRows={totalRows}
+            currentPage={currentPage}
+            emptyContent="No Posts Yet!"
           />
         );
       case "following":
@@ -274,7 +307,11 @@ function Profile(props) {
             },
           }));
         }
-        getProjects(`?${queryString.stringify(searchQueryParams)}`);
+        if (currentTab === "star") {
+          getSavedProjects(`?${queryString.stringify(searchQueryParams)}`);
+        } else {
+          getProjects(`?${queryString.stringify(searchQueryParams)}`);
+        }
         // Replace get project by change value to save or not save
       }
     } catch (error) {

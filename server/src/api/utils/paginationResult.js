@@ -61,4 +61,39 @@ const paginationWithArray = ({ ...rest }) => {
   };
 };
 
-module.exports = { paginationFindQuery, paginationWithArray };
+const paginationWithArrayIds = async ({ ...rest }) => {
+  const {
+    page = 1,
+    model,
+    populate = "",
+    populateSelect = "",
+    query = {},
+    sort = {},
+    select = {},
+    limit = 10,
+  } = rest;
+
+  let results = await model
+    .find(query)
+    .sort(sort)
+    .select(select)
+    .populate(populate, populateSelect);
+
+  const totalRows = results?.length;
+  results = results?.slice((page - 1) * limit, page * limit);
+
+  return {
+    totalRows,
+    results,
+    meta: {
+      page,
+      limit,
+    },
+  };
+};
+
+module.exports = {
+  paginationFindQuery,
+  paginationWithArray,
+  paginationWithArrayIds,
+};

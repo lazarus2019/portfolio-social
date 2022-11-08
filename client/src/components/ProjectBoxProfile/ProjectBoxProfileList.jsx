@@ -47,7 +47,7 @@ function ProjectBoxProfileList(props) {
         currentUser={currentUser}
       />
       <FilterResult onClearFilter={onClearFilter} params={searchQueryParams} />
-      {projects.length > 0 ? (
+      {projects?.length > 0 ? (
         <>
           {projects?.map((project, index) => (
             <ProjectBoxProfileItem

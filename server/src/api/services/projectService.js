@@ -11,7 +11,10 @@ const {
   deleteCloudinaryVideoById,
 } = require("../utils/cloudinaryUploadVideo");
 const slugify = require("../utils/slugify");
-const { paginationFindQuery } = require("../utils/paginationResult");
+const {
+  paginationFindQuery,
+  paginationWithArrayIds,
+} = require("../utils/paginationResult");
 const { PROJECTS_PER_PAGE } = process.env;
 
 const isOwnerProject = async (userId, projectId) => {
@@ -274,14 +277,54 @@ const savingProject = async (userId, projectId) => {
   return updatedUser.info.savedProject;
 };
 
-const getSavedProject = async (listProjectIds) => {
+const getSavedProject = async (listProjectIds, page, sortPass, querySearch) => {
   if (!listProjectIds)
     throw new Error("listProjectIds is required || getSavedProject");
 
-  const projectList = await Project.find({
+  const limit = PROJECTS_PER_PAGE;
+  const populate = "user";
+  const populateSelect = "fullName username profilePhoto";
+
+  let query = {
     _id: { $in: listProjectIds },
     isHide: false,
-  }).populate("user", "fullName username profilePhoto");
+  };
+
+  if (querySearch) {
+    const searchQuery = {
+      title: {
+        $regex: querySearch,
+        $options: "i",
+      },
+    };
+    query = { ...query, ...searchQuery };
+  }
+
+  let sort = {};
+  switch (sortPass) {
+    case "name":
+      sort = {
+        title: 1,
+      };
+      break;
+    case "stars":
+      sort = {
+        starCount: -1,
+      };
+      break;
+    default:
+      sort = { createdAt: -1 };
+  }
+
+  const projectList = await paginationWithArrayIds({
+    model: Project,
+    query,
+    page,
+    populate,
+    populateSelect,
+    limit,
+    sort,
+  });
 
   return projectList;
 };

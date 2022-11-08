@@ -160,10 +160,11 @@ const projectAddToSaveCtrl = expressAsyncHandler(async (req, res) => {
 //// Get saved project (skip hide project)
 const projectGetSavedCtrl = expressAsyncHandler(async (req, res) => {
   const { info } = req?.user;
+  const { page = 1, sort = {}, q } = req?.query;
   try {
-    const projectList = await getSavedProject(info?.savedProject);
+    const result = await getSavedProject(info?.savedProject, page, sort, q);
 
-    res.status(200).json({ result: projectList });
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

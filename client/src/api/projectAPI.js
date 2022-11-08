@@ -45,8 +45,13 @@ const projectAPI = {
     const url = "project/saved";
     return axiosClient.put(url, data);
   },
-  getSavedProjects: () => {
-    const url = "project/saved";
+  getSavedProjects: (queryParams) => {
+    let url = "";
+    if (queryParams) {
+      url = `project/saved${queryParams}`;
+    } else {
+      url = `project/saved`;
+    }
     return axiosClient.get(url);
   },
   // Hide/Unhide
