@@ -5,7 +5,7 @@ const cx = classNames.bind(styles);
 import PropTypes from "prop-types";
 
 function TextareaField(props) {
-  const { label, value, onChange, onBlur, errors, className } = props;
+  const { label, value, onChange, onBlur, errors, className, placeholder } = props;
   return (
     <div className={cx("input-field__group", className)}>
       <label htmlFor="" className={cx("input-field__group__label")}>
@@ -16,6 +16,7 @@ function TextareaField(props) {
         onBlur={onBlur}
         className={cx("input-field__group__textarea")}
         defaultValue={value}
+        placeholder={placeholder}
       ></textarea>
       {errors && (
         <div className={cx("input-field__group__error")}>{errors}</div>

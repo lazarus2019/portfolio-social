@@ -288,6 +288,8 @@ const changeProfile = async (userId, file, oldProfilePhoto) => {
   if (fileName?.startsWith("blank_profile")) return;
 
   await deleteCloudinaryPhotoById(fileName);
+
+  return imgUploaded?.url;
 };
 
 //// [ADMIN]

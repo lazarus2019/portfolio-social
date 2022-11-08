@@ -30,16 +30,23 @@ Button.propTypes = {
 };
 
 export function BasicButton(props) {
+  let Comp = "button";
+  const propsTemp = {};
+  if (props.to) {
+    Comp = Link;
+    propsTemp.to = props.to;
+  }
   const handleClick = () => {
     if (props.onClick) props.onClick();
   };
   return (
-    <button
+    <Comp
       className={cx("basic-button", props.className)}
       onClick={handleClick}
+      {...propsTemp}
     >
       {props.content}
-    </button>
+    </Comp>
   );
 }
 

@@ -98,12 +98,12 @@ function EditProjectForm(props) {
           />
           <DropZone
             setValue={handleSetThumbnail}
-            updateThumbnail={handleUpdateThumbnail}
+            updateImage={handleUpdateThumbnail}
             label="Upload Thumbnail*"
             errors={formik.touched.thumbnail && formik.errors.thumbnail}
             value={formik.values.thumbnail}
             isEdit={true}
-            isUpdateThumbnail={isUpdateThumbnail}
+            isUpdateImage={isUpdateThumbnail}
           />
         </div>
         <div className="create-project__info">

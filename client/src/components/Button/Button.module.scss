@@ -30,6 +30,10 @@
   cursor: pointer;
 
   &.fullWidth {
+    text-decoration: none;
+    display: block;
+    font-size: 1.2rem;
+    text-align: center;
     width: 100%;
     padding: 0.5rem 0;
   }

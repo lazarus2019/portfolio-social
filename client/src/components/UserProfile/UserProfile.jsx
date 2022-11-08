@@ -24,7 +24,7 @@ function UserProfile(props) {
         <div className={cx("user-username")}>{user?.username}</div>
       </Grid>
       {isCurrentUser ? (
-        <BasicButton content="Edit profile" className="fullWidth" />
+        <BasicButton to="/setting" content="Edit profile" className="fullWidth" />
       ) : (
         <BasicButton
           onClick={handleFollowing}

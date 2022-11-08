@@ -22,8 +22,9 @@ function DropZone(props) {
     errors,
     value,
     isEdit = false,
-    updateThumbnail,
-    isUpdateThumbnail,
+    updateImage,
+    isUpdateImage,
+    isRound = false,
   } = props;
   const [file, setFile] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -108,13 +109,15 @@ function DropZone(props) {
     <div className={cx("dropzone-wrapper")}>
       <label className="label">{label}</label>
       {isEdit ? (
-        <label className="label-edit">
-          (Thumbnail is individually update )
-        </label>
+        <label className="label-edit">(Image is individually update )</label>
       ) : null}
       <div
         {...getRootProps({ className: "dropzone" })}
-        className={cx("dropzone-container", `${file ? "active" : ""}`)}
+        className={cx(
+          "dropzone-container",
+          `${file ? "active" : ""}`,
+          `${isRound ? "rounded" : ""}`
+        )}
       >
         <input {...getInputProps()} />
         {file ? (
@@ -148,8 +151,8 @@ function DropZone(props) {
       <UpdateThumbnailModal
         isShow={showModal}
         setShow={setShowModal}
-        onUpdate={updateThumbnail}
-        isUpdateThumbnail={isUpdateThumbnail}
+        onUpdate={updateImage}
+        isUpdateImage={isUpdateImage}
       />
       {errors && <div className={cx("dropzone__error")}>{errors}</div>}
     </div>
@@ -157,7 +160,7 @@ function DropZone(props) {
 }
 
 function UpdateThumbnailModal(props) {
-  const { isShow, onUpdate, setShow, isUpdateThumbnail } = props;
+  const { isShow, onUpdate, setShow, isUpdateImage } = props;
   const handleUpdateThumbnail = () => {
     if (!onUpdate) return;
     onUpdate();
@@ -173,7 +176,7 @@ function UpdateThumbnailModal(props) {
               <h3>Are you sure?</h3>
             </div>
             <p className={cx("update-modal__desc")}>
-              Thumbnail is individually update so click update button for
+              Image is individually update so click update button for
               updating. Or click Cancel to change another.
             </p>
             <div className="m-15">
@@ -192,11 +195,11 @@ function UpdateThumbnailModal(props) {
                 className={cx(
                   "update-modal__options__btn",
                   "bg",
-                  `${isUpdateThumbnail && "disabled-btn"}`
+                  `${isUpdateImage && "disabled-btn"}`
                 )}
                 onClick={handleUpdateThumbnail}
               >
-                {isUpdateThumbnail ? "Loading..." : "Update"}
+                {isUpdateImage ? "Loading..." : "Update"}
               </button>
             </div>
           </div>

@@ -6,6 +6,7 @@ import EditProjectPage from "@/pages/ProjectPage/EditProject/EditProjectPage";
 import Login from "@/pages/User/Login/Login";
 import Register from "@/pages/User/Login/Register";
 import Profile from "@/pages/User/Profile/Profile";
+import SettingPage from "@/pages/User/Setting/SettingPage";
 import ForgotPasswordPage from "@/pages/VerifyNReset/ForgotPasswordPage";
 import ResetPasswordPage from "@/pages/VerifyNReset/ResetPasswordPage";
 import VerifyAccountPage from "@/pages/VerifyNReset/VerifyAccountPage";
@@ -34,7 +35,7 @@ function Router() {
         <Route path="p/:slug" element={<DetailProjectPage />} />
 
         <Route path="/" element={<PrivateRoute />}>
-          <Route path="setting" element="setting" />
+          <Route path="setting" element={<SettingPage />} />
           <Route path="profile" element="profile/setting" />
           <Route element={<VerifyRoute />}>
             <Route path="create-project" element={<CreateProjectPage />} />

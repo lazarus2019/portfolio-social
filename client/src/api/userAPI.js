@@ -21,6 +21,10 @@ const userAPI = {
     const url = "user/profile";
     return axiosClient.put(url, data);
   },
+  updateProfilePhoto: (data) => {
+    const url = "user/profilephoto-upload";
+    return axiosClient.put(url, data);
+  },
   follow: (data) => {
     const url = "user/follow";
     return axiosClient.put(url, data);
