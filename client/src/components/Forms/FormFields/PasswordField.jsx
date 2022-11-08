@@ -7,13 +7,20 @@ import { useState } from "react";
 import { BiShowAlt, BiHide } from "react-icons/bi";
 
 function PasswordField(props) {
-  const { label, value, onChange, onBlur, errors, className } = props;
+  const { label, value, onChange, onBlur, errors, className, halfWidth } =
+    props;
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
   return (
-    <div className={cx("input-field__group", className)}>
+    <div
+      className={cx(
+        "input-field__group",
+        className,
+        `${halfWidth ? "halfWidth" : ""}`
+      )}
+    >
       <label htmlFor="" className={cx("input-field__group__label")}>
         {label}
       </label>

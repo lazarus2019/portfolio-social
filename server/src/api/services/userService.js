@@ -69,7 +69,8 @@ const login = async (username) => {
 const checkPassword = async (enterPass, user) => {
   if (!enterPass || !user)
     throw new Error("enterPass and user is required || checkPassword");
-  if (user.isPasswordMatched(enterPass)) return;
+  const isMatched = await user.isPasswordMatched(enterPass);
+  if (isMatched) return;
   throw new Error("Password not matched || checkPassword");
 };
 
@@ -248,6 +249,32 @@ const resetPassword = async (token, password) => {
   await user.save();
 };
 
+const changePassword = async (userId, currentPass, newPass) => {
+  if (!userId || !currentPass || !newPass)
+    throw new Error(
+      "userId, currentPass and newPass is required || changePassword"
+    );
+
+  // Check identical password
+  if (currentPass === newPass)
+    throw new Error("New password must different to current password");
+
+  const user = await User.findById(userId);
+
+  // Check current pass
+  const isMatched = await user.isPasswordMatched(currentPass);
+  if (!isMatched) throw new Error("Current password is wrong");
+
+  // Check similar with old password
+  const isSimilar = await user.isPasswordMatched(newPass);
+  if (isSimilar)
+    throw new Error("Your new password is to similar to your current password");
+
+  user.password = newPass;
+  user.passwordChangeAt = new Date();
+  await user.save();
+};
+
 const verifyAccount = async (token) => {
   if (!token) throw new Error("Token is required || verifyAccount");
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
@@ -342,4 +369,5 @@ module.exports = {
   getUserByEmail,
   getUserById,
   login,
+  changePassword,
 };

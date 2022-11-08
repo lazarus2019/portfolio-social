@@ -1,0 +1,23 @@
+@use "@/scss/variables" as *;
+
+.setting-container {
+}
+
+.setting {
+  &__header {
+    font-weight: 500;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #d0d7de;
+
+    &.danger {
+      color: $dangerColor;
+      font-weight: 600;
+    }
+  }
+
+  &__content {
+    margin-bottom: 4rem;
+  }
+}

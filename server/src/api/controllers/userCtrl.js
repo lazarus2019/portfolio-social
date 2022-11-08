@@ -18,6 +18,7 @@ const {
   getUserById,
   login,
   verifyAccount,
+  changePassword,
 } = require("../services/userService");
 const {
   sendResetPasswordEmail,
@@ -43,13 +44,13 @@ const userRegisterCtrl = expressAsyncHandler(async (req, res) => {
 
 //// Login
 const userLoginCtrl = expressAsyncHandler(async (req, res) => {
+  const { username, password } = req?.body;
   try {
-    const { username, password } = req?.body;
     const user = await checkUsernameExist(username, true);
 
-    checkUserBanned(user);
+    await checkUserBanned(user);
 
-    checkPassword(password, user);
+    await checkPassword(password, user);
 
     const token = generateToken({ username, id: user?._id });
     res.setHeader("Authorization", token);
@@ -248,6 +249,18 @@ const userProfilePhotoUploadCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Change password
+const userChangePasswordCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id } = req?.user;
+  const { currentPass, newPass } = req?.body;
+  try {
+    await changePassword(_id, currentPass, newPass);
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 const userBanningCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
   const { userId } = req?.body;
@@ -317,4 +330,5 @@ module.exports = {
   userGetByEmailCtrl,
   userGetByIdCtrl,
   userReplyFeedbackCtrl,
+  userChangePasswordCtrl,
 };

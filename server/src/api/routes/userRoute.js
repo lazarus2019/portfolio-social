@@ -18,6 +18,7 @@ const {
   userGetByEmailCtrl,
   userGetByIdCtrl,
   userReplyFeedbackCtrl,
+  userChangePasswordCtrl,
 } = require("../controllers/userCtrl");
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
 const adminMiddleware = require("../middleware/auth/adminMiddleware");
@@ -35,6 +36,8 @@ route.get("/get-user-by-token", passportAuthJwt, userGetByTokenCtrl);
 route.put("/profile", passportAuthJwt, userUpdateProfileCtrl);
 
 route.get("/profile/:username", userProfileCtrl);
+
+route.put("/change-password", passportAuthJwt, userChangePasswordCtrl);
 
 route.put("/follow", passportAuthJwt, userFollowCtrl);
 

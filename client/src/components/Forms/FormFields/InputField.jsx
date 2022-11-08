@@ -13,9 +13,16 @@ function InputField(props) {
     onBlur,
     errors,
     className,
+    halfWidth,
   } = props;
   return (
-    <div className={cx("input-field__group", className)}>
+    <div
+      className={cx(
+        "input-field__group",
+        className,
+        `${halfWidth ? "halfWidth" : ""}`
+      )}
+    >
       <label htmlFor="" className={cx("input-field__group__label")}>
         {label}
       </label>

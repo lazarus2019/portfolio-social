@@ -1,6 +1,9 @@
 @use "@/scss/variables" as *;
 .input-field {
   &__group {
+    &.halfWidth {
+      width: 50%;
+    }
     &__label {
       display: block;
       font-weight: 600;

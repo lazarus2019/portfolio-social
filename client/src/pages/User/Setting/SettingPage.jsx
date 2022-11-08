@@ -14,12 +14,16 @@ import getErrorMessage from "@/utils/getErrorMessage";
 import { useDispatch } from "react-redux";
 import userAPI from "@/api/userAPI";
 import { setUser } from "@/redux/slices/userSlice";
+import AccountSetting from "@/components/Setting/AccountSetting";
+import EmailSetting from "@/components/Setting/EmailSetting";
+import ProjectSetting from "@/components/Setting/ProjectSetting";
 
 function SettingPage(props) {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("info");
   const user = useSelector((store) => store?.user?.value);
   const [loading, setLoading] = useState(false);
+  const [isChangedPassword, setChangedPassword] = useState(false);
   const [isUpdatePhoto, setUpdatePhoto] = useState(false);
 
   const renderTab = () => {
@@ -35,11 +39,16 @@ function SettingPage(props) {
           />
         );
       case "account":
-        return <div>Account Tab</div>;
+        return (
+          <AccountSetting
+            onChangePassword={handleChangePassword}
+            isChangedPassword={isChangedPassword}
+          />
+        );
       case "email":
-        return <div>Email Tab</div>;
+        return <EmailSetting />;
       case "project":
-        return <div>Project Tab</div>;
+        return <ProjectSetting />;
       default:
         return (
           <ProfileInfoForm
@@ -82,6 +91,15 @@ function SettingPage(props) {
       toast.error(getErrorMessage(error));
     }
     setLoading(false);
+  };
+
+  const handleChangePassword = async (values) => {
+    try {
+      const res = await userAPI.changePassword(values);
+      toast.success("Your password have been updated!");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   };
 
   return (

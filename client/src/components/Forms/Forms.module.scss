@@ -193,7 +193,7 @@
 
 // Profile form
 .profile-form {
-  &__header{
+  &__header {
     font-weight: 500;
     font-size: 2rem;
     margin-bottom: 2rem;
@@ -205,5 +205,15 @@
     font-size: 1.2rem;
     color: #57606a;
     margin-top: 1rem;
+  }
+}
+
+// Change password form
+.change-password {
+  &__link {
+    text-decoration: none;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+    color: $optionHoverColor;
   }
 }
