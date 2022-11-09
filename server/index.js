@@ -7,7 +7,7 @@ const {
   notFound,
   errorHandler,
 } = require("./src/api/middleware/error/errorHandler");
-const { userRoute, projectRoute, boardRoute } = require("./src/api/routes");
+const { userRoute, projectRoute, boardRoute, sectionRoute } = require("./src/api/routes");
 const passportConfig = require("./src/api/middleware/passport/passport");
 const app = express();
 
@@ -32,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/user", userRoute);
 app.use("/api/project", projectRoute);
 app.use("/api/board", boardRoute);
+app.use("/api/section", sectionRoute);
 
 // error handler: MUST below all the routes
 app.use(notFound); // error handle will take error from notfound so it must above
