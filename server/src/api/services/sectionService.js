@@ -13,9 +13,13 @@ const update = async (sectionId, content) => {
   if (!sectionId || !content)
     throw new Error("sectionId and is required || update");
 
-  const section = await Section.findByIdAndUpdate(sectionId, {
-    $set: content,
-  });
+  const section = await Section.findByIdAndUpdate(
+    sectionId,
+    {
+      $set: content,
+    },
+    { new: true }
+  );
   section.tasks = [];
 
   return section;

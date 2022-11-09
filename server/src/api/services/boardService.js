@@ -113,7 +113,11 @@ const update = async (boardId, content) => {
     }
   }
 
-  const board = await Board.findByIdAndUpdate(boardId, { $set: newInfo });
+  const board = await Board.findByIdAndUpdate(
+    boardId,
+    { $set: newInfo },
+    { new: true }
+  );
 
   return board;
 };

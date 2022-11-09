@@ -1,0 +1,24 @@
+### Create task
+POST http://localhost:5000/api/task/636b62fab047ebc3a328df55
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY3OTc4Nzc0LCJleHAiOjE2Njg0MTA3NzR9.dqK3p9sYf4-ThowlkX8MY-JR6h5rtISkTt_k_HkbUZE
+Content-Type: application/json
+
+{
+    "sectionId": "636bab27e0bd47e7c22fa270"
+}
+
+### Update task
+PUT http://localhost:5000/api/task/636bb77e161284111f82e157
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY3OTc4Nzc0LCJleHAiOjE2Njg0MTA3NzR9.dqK3p9sYf4-ThowlkX8MY-JR6h5rtISkTt_k_HkbUZE
+Content-Type: application/json
+
+{
+    "title": "Cut hair",
+     "icon": "😎",
+     "content": "Prepare before 15/12",
+     "isDone": true
+}
+
+### Delete task
+DELETE http://localhost:5000/api/task/636bb77e161284111f82e157
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxhcHRyaW5odmllbiIsImlkIjoiNjM0ZTY2MjlkZTAxNTNmYTBlYTA1OTY5IiwiaWF0IjoxNjY3OTc4Nzc0LCJleHAiOjE2Njg0MTA3NzR9.dqK3p9sYf4-ThowlkX8MY-JR6h5rtISkTt_k_HkbUZE
