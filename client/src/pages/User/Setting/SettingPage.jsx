@@ -41,8 +41,10 @@ function SettingPage(props) {
       case "account":
         return (
           <AccountSetting
+            user={user}
             onChangePassword={handleChangePassword}
             isChangedPassword={isChangedPassword}
+            onChangePrivate={handleChangePrivate}
           />
         );
       case "email":
@@ -102,6 +104,15 @@ function SettingPage(props) {
     }
   };
 
+  const handleChangePrivate = async(values)=>{
+    try {
+      const res = await userAPI.changePrivateSetting(values)
+      dispatch(setUser({ ...user, isPrivateAccount: values.isPrivate}));
+      toast.success("Your changes have been successfully saved!");
+    } catch (error) {
+      toast.error(getErrorMessage(error))
+    }
+  }
   return (
     <div className={cx("setting-container", "container")}>
       <div

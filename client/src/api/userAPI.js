@@ -59,6 +59,10 @@ const userAPI = {
     const url = "user/change-password";
     return axiosClient.put(url, data);
   },
+  changePrivateSetting: (data) => {
+    const url = "user/change-private-setting";
+    return axiosClient.put(url, data);
+  },
   sendVerifyAccount: () => {
     const url = "user/verify-account-token";
     return axiosClient.post(url);

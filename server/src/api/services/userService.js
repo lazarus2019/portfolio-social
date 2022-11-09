@@ -275,6 +275,21 @@ const changePassword = async (userId, currentPass, newPass) => {
   await user.save();
 };
 
+const changePrivateSetting = async (userId, isPrivate) => {
+  if (!userId || isPrivate === undefined)
+    throw new Error("userId and isPrivate is required || changePrivateSetting");
+
+  await User.findByIdAndUpdate(
+    userId,
+    {
+      "setting.isPrivateAccount": !!isPrivate,
+    },
+    {
+      new: true,
+    }
+  );
+};
+
 const verifyAccount = async (token) => {
   if (!token) throw new Error("Token is required || verifyAccount");
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
@@ -370,4 +385,5 @@ module.exports = {
   getUserById,
   login,
   changePassword,
+  changePrivateSetting,
 };

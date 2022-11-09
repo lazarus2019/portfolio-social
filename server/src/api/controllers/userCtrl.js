@@ -19,6 +19,7 @@ const {
   login,
   verifyAccount,
   changePassword,
+  changePrivateSetting,
 } = require("../services/userService");
 const {
   sendResetPasswordEmail,
@@ -77,6 +78,7 @@ const userGetByTokenCtrl = expressAsyncHandler(async (req, res) => {
         savedProject: user?.info?.savedProject,
         profilePhoto: user?.profilePhoto,
         isAccountVerified: user?.isAccountVerified,
+        isPrivateAccount: user?.setting?.isPrivateAccount,
       });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -261,6 +263,19 @@ const userChangePasswordCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Change private account setting
+const userChangePrivateSettingCtrl = expressAsyncHandler(async (req, res) => {
+  const { _id } = req?.user;
+  const { isPrivate } = req?.body;
+
+  try {
+    await changePrivateSetting(_id, isPrivate);
+    res.status(200).json({ status: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 const userBanningCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
   const { userId } = req?.body;
@@ -331,4 +346,5 @@ module.exports = {
   userGetByIdCtrl,
   userReplyFeedbackCtrl,
   userChangePasswordCtrl,
+  userChangePrivateSettingCtrl,
 };
