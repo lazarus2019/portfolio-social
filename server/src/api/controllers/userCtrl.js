@@ -279,6 +279,8 @@ const userChangePrivateSettingCtrl = expressAsyncHandler(async (req, res) => {
 const userBanningCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
   const { userId } = req?.body;
+  validateMongoDbID(userId);
+  
   try {
     if (_id.toString() === userId.toString())
       throw new Error("You can not banning yourself!");
