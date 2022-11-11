@@ -55,7 +55,7 @@ function Header({ hasBg }) {
                   >
                     New Project
                   </Link>
-                  <Link to="" className={cx("dropdown-menu__item")}>
+                  <Link to="/boards" className={cx("dropdown-menu__item")}>
                     New Board
                   </Link>
                 </div>

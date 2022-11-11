@@ -5,9 +5,10 @@ import App from "./App";
 import store from "./redux/store";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // Commented strict mode for drag n drop
+  // <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

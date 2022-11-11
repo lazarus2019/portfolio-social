@@ -19,7 +19,7 @@ const boardCreateCtrl = expressAsyncHandler(async (req, res) => {
   try {
     const newBoard = await createBoard(_id);
 
-    res.status(200).json({ status: true, board: newBoard });
+    res.status(200).json({ status: true, results: newBoard });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -97,12 +97,12 @@ const boardUpdateCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
   const { boardId } = req?.params;
   validateMongoDbID(boardId);
-  const { title, description, isFavorite } = req?.body;
+  const { title, description, isFavorite, icon } = req?.body;
 
   try {
     await checkUserOwnBoardById(_id, boardId);
 
-    const newBoard = await update(boardId, { title, description, isFavorite });
+    const newBoard = await update(boardId, { title, description, isFavorite, icon });
 
     res.status(200).json({ status: true, results: newBoard });
   } catch (error) {

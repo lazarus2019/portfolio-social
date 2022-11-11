@@ -1,5 +1,6 @@
 const Board = require("../models/boardModel");
 const Section = require("../models/sectionModel");
+const Task = require("../models/taskModel");
 
 const checkUserOwnBoardById = async (userId, boardId) => {
   if (!userId || !boardId)
@@ -64,8 +65,10 @@ const getOne = async (userId, boardId) => {
   if (!userId || !boardId)
     throw new Error("userId and boardId is required || getOne");
 
-  const board = Board.findOne({ user: userId, _id: boardId });
+  const board = await Board.findOne({ user: userId, _id: boardId });
   if (!board) throw new Error("Board Not Found || getOne");
+
+  const boardObj = (await board).toObject();
 
   const sections = await Section.find({ board: boardId });
   if (sections?.length > 0) {
@@ -73,14 +76,14 @@ const getOne = async (userId, boardId) => {
       const tasks = await Task.find({ section: section?.id })
         .populate("section")
         .sort({ position: -1 });
-      section._doc.tasks = tasks;
+      section.tasks = tasks;
     }
-    board._doc.sections = sections;
+    boardObj.sections = sections;
   } else {
-    board._doc.sections = []; // BUG
+    boardObj.sections = []; // BUG
   }
 
-  return board;
+  return boardObj;
 };
 
 const update = async (boardId, content) => {
@@ -149,8 +152,10 @@ const deleteBoard = async (boardId) => {
   if (!boardId) throw new Error("boardId is required || deleteBoard");
 
   const sections = await Section.find({ board: boardId });
-  for (const section of sections) {
-    await Task.deleteMany({ section: section.id });
+  if (sections?.length > 0) {
+    for (const section of sections) {
+      await Task.deleteMany({ section: section.id });
+    }
   }
 
   await Section.deleteMany({ board: boardId });
@@ -175,6 +180,8 @@ const deleteBoard = async (boardId) => {
       });
     }
   }
+
+  await Board.deleteOne({ _id: boardId });
 
   const boards = await Board.find().sort({
     position: 1,

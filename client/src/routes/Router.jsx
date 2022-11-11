@@ -1,3 +1,5 @@
+import BoardHomePage from "@/pages/Board/BoardHomePage";
+import BoardPage from "@/pages/Board/BoardPage";
 import HomePage from "@/pages/HomePage/HomePage";
 import NotFoundPage from "@/pages/NotFoundPage/NotFoundPage";
 import CreateProjectPage from "@/pages/ProjectPage/CreateProject/CreateProjectPage";
@@ -14,6 +16,7 @@ import React from "react";
 import { Route, Routes } from "react-router";
 import AppLayout from "./AppLayout";
 import AuthLayout from "./AuthLayout";
+import BoardLayout from "./BoardLayout";
 import PrivateRoute from "./protected/PrivateRoute";
 import VerifyRoute from "./protected/VerifyRoute";
 
@@ -41,6 +44,10 @@ function Router() {
             <Route path="create-project" element={<CreateProjectPage />} />
             <Route path="edit-project/:id" element={<EditProjectPage />} />
           </Route>
+        </Route>
+        <Route path="/boards" element={<BoardLayout />}>
+          <Route index element={<BoardHomePage />} />
+          <Route path=":boardId" element={<BoardPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Route>

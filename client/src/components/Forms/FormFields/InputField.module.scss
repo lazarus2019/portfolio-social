@@ -22,6 +22,11 @@
       outline: 0;
       background-color: transparent;
       border: 1px solid $lightColor;
+
+      &.noOutline {
+        border: unset;
+        padding: 0;
+      }
     }
 
     &.normal {

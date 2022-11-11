@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
-import boardReducer from './slices/boardSlice'
+import boardReducer from "./slices/boardSlice";
+import boardFavoriteReducer from "./slices/boardFavoriteSlice";
 const store = configureStore({
   reducer: {
     user: userReducer,
-    board: boardReducer,
+    boards: boardReducer,
+    boardFavorite: boardFavoriteReducer,
   },
 });
 

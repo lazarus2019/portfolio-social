@@ -9,6 +9,7 @@ function Loading({
   vertical = "center",
   horizontal = "center",
   fullHeight = false,
+  color = "#000",
 }) {
   return (
     <div
@@ -19,7 +20,7 @@ function Loading({
       )}
       dataposition={`${vertical}-${horizontal}`}
     >
-      <ScaleLoader />
+      <ScaleLoader color={color} />
     </div>
   );
 }

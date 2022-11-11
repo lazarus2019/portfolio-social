@@ -20,7 +20,7 @@ const boardAPI = {
   },
   updateFavoritePosition: (data) => {
     // data = {boards: [...]}
-    const url = "board";
+    const url = "board/favorites";
     return axiosClient.put(url, data);
   },
   getById: (boardId) => {

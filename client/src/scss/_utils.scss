@@ -82,6 +82,27 @@
   margin-left: -1.5rem;
 }
 
+.f-grow {
+  flex-grow: 1;
+}
+
+.x-full {
+  width: max-content;
+}
+
+.y-full {
+  height: 100vh;
+}
+
+.veil {
+  position: fixed;
+  background-color: transparent;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .p-note {
   font-size: 1.2rem;
   color: #57606a;

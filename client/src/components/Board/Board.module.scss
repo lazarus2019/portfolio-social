@@ -1,0 +1,191 @@
+@use "@/scss/variables" as *;
+
+.board-sidebar {
+  background-color: #282829;
+  height: 100vh;
+  width: 250px;
+  overflow-x: auto;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: gray;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: darkslategray;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+
+  &__user-info {
+    user-select: none;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > p {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: $white;
+    }
+
+    > a {
+      > svg {
+        color: $white;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__top {
+    padding: 1rem 1.5rem;
+
+    > svg {
+      color: $white;
+      cursor: pointer;
+    }
+  }
+  &__header {
+    color: $white;
+    font-size: 1.4rem;
+  }
+
+  &__list {
+    &__item {
+      text-decoration: none;
+      display: block;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: $white;
+
+      &:hover,
+      &.active {
+        background-color: #39434a;
+      }
+    }
+  }
+}
+
+.emoji-container {
+  position: relative;
+  width: max-content;
+}
+
+.emoji-icon {
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.emoji-box {
+  display: none;
+  position: absolute;
+  top: 100%;
+  z-index: 99;
+  &.show {
+    display: block;
+  }
+}
+
+.kanban {
+  flex: 1;
+  background-color: #131213;
+  padding: 2rem 4rem 0;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    position: sticky;
+    &__btn {
+      display: inline;
+      color: $greenColor;
+      font-size: 1.2rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid $greenColor;
+      cursor: pointer;
+    }
+
+    &__amount {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $white;
+    }
+  }
+
+  &__separate {
+    border-color: #39434a !important;
+  }
+
+  &__body {
+    display: flex;
+    align-items: flex-start;
+    max-width: calc(100vw - 330px);
+    overflow-x: auto;
+    padding-bottom: 2rem;
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: gray;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: darkslategray;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
+
+    .section__list {
+      width: 300px;
+
+      // Custom scrollbar
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: gray;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: darkslategray;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+      }
+      &__item {
+        width: 300px;
+
+        ~ &__item {
+          margin-right: 1rem;
+        }
+        &__header {
+        }
+
+        &__options {
+          &__btn {
+          }
+        }
+      }
+    }
+  }
+}

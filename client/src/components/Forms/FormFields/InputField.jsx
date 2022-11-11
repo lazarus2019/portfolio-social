@@ -14,6 +14,8 @@ function InputField(props) {
     errors,
     className,
     halfWidth,
+    noOutline,
+    placeholder = "",
   } = props;
   return (
     <div
@@ -31,7 +33,11 @@ function InputField(props) {
         onChange={onChange}
         onBlur={onBlur}
         type={type}
-        className={cx("input-field__group__input")}
+        className={cx(
+          "input-field__group__input",
+          `${noOutline && "noOutline"}`
+        )}
+        placeholder={placeholder}
       />
       {errors && (
         <div className={cx("input-field__group__error")}>{errors}</div>

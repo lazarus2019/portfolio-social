@@ -368,12 +368,12 @@ function Profile(props) {
       } else {
         newFilter = { ...searchQueryParams, q: undefined, page: undefined };
       }
+      navigate(`?${queryString.stringify(newFilter)}`);
+      window.scrollTo(0, 0);
     } else {
       // Check first time and set q = ""
       // newFilter = { ...searchQueryParams, q: "", page: undefined };
     }
-    navigate(`?${queryString.stringify(newFilter)}`);
-    window.scrollTo(0, 0);
   };
 
   // Clear filter & search query
