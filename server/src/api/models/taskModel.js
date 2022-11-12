@@ -10,7 +10,7 @@ const taskSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      default: "",
+      default: "To do list",
     },
     icon: {
       type: String,

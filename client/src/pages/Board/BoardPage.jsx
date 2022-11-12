@@ -17,6 +17,7 @@ import { setBoards } from "@/redux/slices/boardSlice";
 import { useSelector } from "react-redux";
 import EmojiPicker from "@/components/Board/EmojiPicker";
 import { TextareaFieldWithoutDefaultValue } from "@/components/Forms/FormFields/TextAreaField";
+import BoardKanban from "@/components/Board/BoardKanban";
 
 let timer;
 const timeout = 500;
@@ -36,9 +37,9 @@ function BoardPage(props) {
   const boards = useSelector((store) => store?.boards?.value);
   const favoriteList = useSelector((store) => store?.boardFavorite?.value);
 
-  const getBoard = async () => {
+  const getBoard = async (signal) => {
     try {
-      const res = await boardAPI.getById(boardId);
+      const res = await boardAPI.getById(boardId, { signal });
       setBoardInfo({
         icon: res?.results?.icon,
         description: res?.results?.description,
@@ -47,15 +48,21 @@ function BoardPage(props) {
       });
       setFavorite(res?.results?.isFavorite);
     } catch (error) {
-      toast.error(getErrorMessage(error));
+      if (error.name !== "AbortError") toast.error(getErrorMessage(error));
     }
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     if (boardId) {
-      getBoard();
+      getBoard(signal);
     }
     setLoading(false);
+    //cleanup function
+    return () => {
+      controller.abort();
+    };
   }, [boardId]);
 
   const handleDelete = async () => {
@@ -97,7 +104,7 @@ function BoardPage(props) {
   };
 
   const handleIconChange = async (newIcon) => {
-      clearTimeout(timer);
+    clearTimeout(timer);
     changeBoardInfo({
       icon: newIcon,
     });
@@ -220,7 +227,7 @@ function BoardPage(props) {
             </div>
           </div>
 
-          {/* <BoardKanban data={boardInfo?.sections} boardId={boardId} /> */}
+          <BoardKanban data={boardInfo?.sections} boardId={boardId} />
         </div>
       )}
     </div>

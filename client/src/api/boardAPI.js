@@ -23,9 +23,9 @@ const boardAPI = {
     const url = "board/favorites";
     return axiosClient.put(url, data);
   },
-  getById: (boardId) => {
+  getById: (boardId, signal) => {
     const url = `board/${boardId}`;
-    return axiosClient.get(url);
+    return axiosClient.get(url, signal);
   },
   updateBoard: (boardId, data) => {
     // data = {title: x, description: x, isFavorite: x}

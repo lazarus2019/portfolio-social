@@ -38,6 +38,7 @@ function BoardFavoriteList(props) {
   }, [boardId, list]);
 
   const onDragEnd = async ({ source, destination }) => {
+    if (!destination) return;
     const newList = [...list];
     const [removed] = newList.splice(source.index, 1);
     newList.splice(destination.index, 0, removed);

@@ -2,7 +2,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Loading from "../Loading/Loading";
 
-function Editor({ onChange, editorLoaded, name, value, onReload }) {
+function Editor({ onChange, editorLoaded, name, value, onReload, theme }) {
   const handleReload = () => {
     if (!onReload) return;
     onReload();
@@ -12,43 +12,45 @@ function Editor({ onChange, editorLoaded, name, value, onReload }) {
       {editorLoaded ? (
         <>
           <div className="flex space-between">
-            <label htmlFor={name} className="label">
+            <label htmlFor={name} className={`label ${theme ? theme : ""}`}>
               Content
             </label>
-            <span onClick={handleReload} className="text-btn">
+            {onReload ? <span onClick={handleReload} className="text-btn">
               Click here for reload editor
-            </span>
+            </span> : null}
           </div>
-          <CKEditor
-            type=""
-            name={name}
-            id={name}
-            editor={ClassicEditor}
-            data={value}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              // console.log({ event, editor, data })
-              onChange(data);
-            }}
-            config={{
-              toolbar: [
-                "heading",
-                "|",
-                "bold",
-                "italic",
-                "blockQuote",
-                "|",
-                "link",
-                "numberedList",
-                "bulletedList",
-                "insertTable",
-                "|",
-                "undo",
-                "redo",
-                "|",
-              ],
-            }}
-          />
+          <div className={`${theme ? theme : ""}`}>
+            <CKEditor
+              type=""
+              name={name}
+              id={name}
+              editor={ClassicEditor}
+              data={value}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                // console.log({ event, editor, data })
+                onChange(data);
+              }}
+              config={{
+                toolbar: [
+                  "heading",
+                  "|",
+                  "bold",
+                  "italic",
+                  "blockQuote",
+                  "|",
+                  "link",
+                  "numberedList",
+                  "bulletedList",
+                  "insertTable",
+                  "|",
+                  "undo",
+                  "redo",
+                  "|",
+                ],
+              }}
+            />
+          </div>
         </>
       ) : (
         <Loading />

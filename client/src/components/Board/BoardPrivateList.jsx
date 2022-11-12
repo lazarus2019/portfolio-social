@@ -40,6 +40,7 @@ function BoardPrivateList(props) {
   }, [boardId, boards]);
 
   const onDragEnd = async ({ source, destination }) => {
+    if (!destination) return;
     const newList = [...boards];
     const [removed] = newList.splice(source.index, 1);
     newList.splice(destination.index, 0, removed);

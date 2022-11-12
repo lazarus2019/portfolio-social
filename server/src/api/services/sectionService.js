@@ -5,7 +5,7 @@ const create = async (boardId) => {
   if (!boardId) throw new Error("boardId is required || create");
 
   const section = await Section.create({ board: boardId });
-  section.tasks = [];
+ section._doc.tasks = [];
 
   return section;
 };
@@ -20,7 +20,7 @@ const update = async (sectionId, content) => {
     },
     { new: true }
   );
-  section.tasks = [];
+  section._doc.tasks = [];
 
   return section;
 };

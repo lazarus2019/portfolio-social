@@ -141,6 +141,10 @@
 .label {
   font-size: 1.6rem;
   font-weight: 600;
+
+  &.dark{
+    color: #fff;
+  }
 }
 
 .label-edit {

@@ -76,14 +76,12 @@ const getOne = async (userId, boardId) => {
       const tasks = await Task.find({ section: section?.id })
         .populate("section")
         .sort({ position: -1 });
-      section.tasks = tasks;
+      section._doc.tasks = tasks;
     }
-    boardObj.sections = sections;
-  } else {
-    boardObj.sections = []; // BUG
   }
+  board._doc.sections = sections;
 
-  return boardObj;
+  return board;
 };
 
 const update = async (boardId, content) => {

@@ -25,9 +25,11 @@ function InputField(props) {
         `${halfWidth ? "halfWidth" : ""}`
       )}
     >
-      <label htmlFor="" className={cx("input-field__group__label")}>
-        {label}
-      </label>
+      {label ? (
+        <label htmlFor="" className={cx("input-field__group__label")}>
+          {label}
+        </label>
+      ) : null}
       <input
         value={value}
         onChange={onChange}

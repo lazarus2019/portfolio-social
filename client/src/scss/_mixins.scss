@@ -39,6 +39,21 @@
   -webkit-box-decoration-break: clone;
 }
 
+@mixin roundIcon($width, $height) {
+  width: $width;
+  height: $height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(67, 67, 67);
+  }
+}
+
 // Responsive
 @mixin responsive($breakpoint) {
   @if $breakpoint == large {

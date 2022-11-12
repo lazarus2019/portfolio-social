@@ -1,4 +1,5 @@
 @use "@/scss/variables" as *;
+@use "@/scss/mixins" as mixins;
 
 .board-sidebar {
   background-color: #282829;
@@ -38,9 +39,9 @@
     }
 
     > a {
+      @include mixins.roundIcon(3rem, 3rem);
       > svg {
         color: $white;
-        cursor: pointer;
       }
     }
   }
@@ -114,7 +115,13 @@
       padding: 0.5rem 1rem;
       border-radius: 0.5rem;
       border: 1px solid $greenColor;
-      cursor: pointer;
+      transition: 0.15s;
+
+      &:hover {
+        cursor: pointer;
+        color: $white;
+        box-shadow: inset 0 -3.25em 0 0 $greenColor;
+      }
     }
 
     &__amount {
@@ -134,6 +141,7 @@
     max-width: calc(100vw - 330px);
     overflow-x: auto;
     padding-bottom: 2rem;
+    margin-bottom: 2rem;
     // Custom scrollbar
     &::-webkit-scrollbar {
       width: 5px;
@@ -153,7 +161,8 @@
     }
 
     .section__list {
-      width: 300px;
+      margin-top: 1.5rem;
+      width: 250px;
 
       // Custom scrollbar
       &::-webkit-scrollbar {
@@ -172,20 +181,128 @@
       &::-webkit-scrollbar-thumb:hover {
         background-color: #555;
       }
-      &__item {
-        width: 300px;
 
-        ~ &__item {
-          margin-right: 1rem;
-        }
-        &__header {
+      &__header {
+        width: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &__title {
+          input {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: $white;
+          }
         }
 
         &__options {
+          display: flex;
+          align-items: center;
+
           &__btn {
+            @include mixins.roundIcon(2.5rem, 2.5rem);
+            &.add {
+              svg {
+                color: $greenColor;
+              }
+            }
+            &.delete {
+              svg {
+                color: $dangerColor;
+              }
+            }
+          }
+        }
+      }
+
+      .task-box {
+        &__list {
+          margin-top: 1rem;
+          overflow-x: auto;
+
+          // Custom scrollbar
+          &::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+          }
+
+          &::-webkit-scrollbar-track {
+            background-color: gray;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background-color: darkslategray;
+          }
+
+          &::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+          }
+
+          &__item {
+            position: relative;
+            display: block;
+            padding: 1rem 2rem 1rem 1rem;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: $white;
+            background-color: #282829;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            user-select: none;
+
+            &__checkdone {
+              color: $greenColor;
+              position: absolute;
+              right: 1rem;
+              top: 50%;
+              transform: translateY(-50%);
+            }
           }
         }
       }
     }
+
+    .section__list ~ .section__list {
+      margin-left: 1.5rem;
+    }
+  }
+}
+
+.task-box {
+  position: relative;
+  background-color: #131213;
+  min-width: 600px;
+  padding: 2rem 3rem;
+  border-radius: 0.75rem;
+
+  &__delete-btn {
+    @include mixins.roundIcon(3rem, 3rem);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    > svg {
+      color: $dangerColor;
+    }
+  }
+
+  &__header {
+    margin-bottom: 1rem;
+    &__title {
+      margin-left: 1rem;
+      > input {
+        font-size: 2rem;
+        font-weight: 600;
+        width: 100%;
+      }
+    }
+  }
+
+  &__create-date {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $white;
+    margin: 0.5rem 0;
   }
 }
