@@ -18,7 +18,7 @@ const multerFilter = (req, file, cb) => {
 
 //// Profile Photo
 const previewVideoMulter = multer({
-  dest: "uploads/",
+  // dest: "uploads/",
   fileFilter: multerFilter,
   limits: { fileSize: 10000000 }, // 10MB
 });
