@@ -2,7 +2,7 @@ import axios from "axios";
 import tokenUtils from "@/utils/tokenUtils";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5000/api/",
+  baseURL: "https://portfolio-social-server.vercel.app/api/",
   // paramsSerializer: (params) => queryString.stringify( {params} ),
 });
 

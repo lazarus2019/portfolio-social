@@ -10,7 +10,7 @@ import {
   BsFillEyeSlashFill,
   BsFillEyeFill,
 } from "react-icons/bs";
-import { fromNowDateFormatter } from "@/utils/DateFormatter";
+import { fromNowDateFormatter } from "@/utils/dateFormatter";
 import SearchProject from "../Search/SearchProfile/SearchProject";
 import Pagination from "../Pagination/Pagination";
 import Empty from "../Empty/Empty";

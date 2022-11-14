@@ -12,7 +12,7 @@ import getErrorMessage from "@/utils/getErrorMessage";
 import projectAPI from "@/api/projectAPI";
 import Loading from "@/components/Loading/Loading";
 import { Link } from "react-router-dom";
-import dateFormatter, { fromNowDateFormatter } from "@/utils/DateFormatter";
+import dateFormatter, { fromNowDateFormatter } from "@/utils/dateFormatter";
 import {
   BsFillBookmarkStarFill,
   BsThreeDots,
