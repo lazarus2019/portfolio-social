@@ -135,7 +135,7 @@ const sendFeedbackEmail = async (user, message) => {
     await sendEmail(from, to, `${subject} from: ${from}`, htmlBody);
   } catch {
     throw new Error(
-      `Failed to send feedback message from ${email} || sendFeedbackEmail`
+      `Failed to send feedback message from ${user?.email} || sendFeedbackEmail`
     );
   }
 };
