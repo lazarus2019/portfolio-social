@@ -6,6 +6,7 @@ const {
   GG_CLIENT_ID,
   GG_CLIENT_SECRET_KEY,
   CLIENT_PORT,
+  CLIENT_URL,
 } = process.env;
 
 const mailTypes = {
@@ -58,7 +59,8 @@ const sendResetPasswordEmail = async (email, url) => {
     <ul>  
       <li>Email: ${email}</li>
     </ul>
-    <a href="http://localhost:${CLIENT_PORT}/${url}">Click here to reset password</a>
+    <a href="${CLIENT_URL}/${url}">[Client URL]Click here to reset password</a>
+    <a href="http://localhost:${CLIENT_PORT}/${url}">[Localhost]Click here to reset password</a>
     <h3>Message</h3>
   `;
 
@@ -82,7 +84,8 @@ const sendVerificationEmail = async (email, url) => {
     <ul>  
       <li>Email: ${email}</li>
     </ul>
-    <a href="http://localhost:${CLIENT_PORT}/${url}">Click here to verify account</a>
+    <a href="${CLIENT_URL}/${url}">[Client URL]Click here to verify account</a>
+    <a href="http://localhost:${CLIENT_PORT}/${url}">[Localhost]Click here to verify account</a>
     <h3>Message</h3>
   `;
   const { from, subject } = mailTypes.verifyAccount;
