@@ -27,6 +27,11 @@
         border: unset;
         padding: 0;
       }
+
+      &.readOnly {
+        background-color: #eee;
+        cursor: default;
+      }
     }
 
     &.normal {

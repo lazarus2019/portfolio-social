@@ -307,7 +307,7 @@ function Profile(props) {
             },
           }));
         }
-        if (currentTab === "star") {
+        if (searchQueryParams.tab === "star") {
           getSavedProjects(`?${queryString.stringify(searchQueryParams)}`);
         } else {
           getProjects(`?${queryString.stringify(searchQueryParams)}`);
@@ -315,6 +315,7 @@ function Profile(props) {
         // Replace get project by change value to save or not save
       }
     } catch (error) {
+      console.log({error})
       toast.error(getErrorMessage(error));
     }
   };

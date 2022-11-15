@@ -32,9 +32,9 @@ function ProfileInfoForm(props) {
       if (!onUpdate) return;
       // delete photo prop
       delete values?.photo;
-      const newValues = {...values, "info.bio": values?.bio}
+      const newValues = { ...values, "info.bio": values?.bio };
       // delete bio prop
-      delete newValues?.bio
+      delete newValues?.bio;
       onUpdate(newValues);
     },
     validationSchema: formSchema,
@@ -61,6 +61,12 @@ function ProfileInfoForm(props) {
             onChange={formik.handleChange("fullName")}
             onBlur={formik.handleBlur("fullName")}
             errors={formik.touched.fullName && formik.errors.fullName}
+          />
+          <InputField
+            label="Email"
+            className="normal"
+            value={user?.email || ""}
+            readOnly
           />
           <TextareaField
             label="Bio"

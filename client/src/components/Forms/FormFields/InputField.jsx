@@ -16,6 +16,7 @@ function InputField(props) {
     halfWidth,
     noOutline,
     placeholder = "",
+    readOnly,
   } = props;
   return (
     <div
@@ -37,9 +38,11 @@ function InputField(props) {
         type={type}
         className={cx(
           "input-field__group__input",
-          `${noOutline && "noOutline"}`
+          `${noOutline && "noOutline"}`,
+          `${readOnly && "readOnly"}`
         )}
         placeholder={placeholder}
+        readOnly={readOnly}
       />
       {errors && (
         <div className={cx("input-field__group__error")}>{errors}</div>
