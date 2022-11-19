@@ -1,0 +1,125 @@
+@use "scss/variables" as *;
+.dropzone-wrapper {
+  margin-top: 0.75rem;
+}
+.dropzone-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.75rem;
+  height: 250px;
+  border: 2px dashed $inputBg;
+  background-color: #fafafa;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  overflow: hidden;
+
+  &.rounded {
+    border-radius: 50%;
+    height: 250px;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+
+    &__remove {
+    }
+  }
+  .active {
+    cursor: default;
+    user-select: none;
+  }
+  &__header {
+    font-size: 1.6rem;
+    text-align: center;
+    color: $inputBg;
+  }
+
+  &__remove {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: $inputBg;
+  }
+
+  &__preview {
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 0.75rem;
+  }
+
+  &:hover {
+    &__header {
+      color: $lightColor;
+    }
+  }
+}
+
+.dropzone__error {
+  color: rgba(255, 0, 0, 0.789);
+  font-size: 1.2rem;
+}
+
+.update-modal {
+  width: 400px;
+  padding: 2rem;
+  background-color: $white;
+  border-radius: 1rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    h3 {
+      font-size: 1.8rem;
+      color: $optionHoverColor;
+    }
+
+    > svg {
+      margin-right: 1rem;
+      color: $optionHoverColor;
+    }
+  }
+
+  &__desc {
+    font-size: 1.6rem;
+    line-height: 1.5;
+  }
+
+  &__options {
+    display: flex;
+    justify-content: end;
+
+    &__btn + &__btn {
+      margin-left: 1rem;
+    }
+
+    &__btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      outline: 0;
+      cursor: pointer;
+      border-radius: 0.75rem;
+
+      &.outline {
+        border: 2px solid $btnColor;
+        background-color: $white;
+        color: $btnColor;
+        &:hover {
+          border-color: $optionHoverColor;
+          color: $optionHoverColor;
+        }
+      }
+
+      &.bg {
+        border: none;
+        background-color: $btnColor;
+        color: $white;
+        &:hover {
+          background-color: $optionHoverColor;
+        }
+      }
+    }
+  }
+}

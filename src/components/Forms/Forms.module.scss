@@ -1,0 +1,219 @@
+@use "scss/variables" as *;
+.form {
+  flex: auto;
+  flex: 1;
+  max-width: 460px;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  background-color: rgba($color: #000000, $alpha: 0.3);
+  border: 1px solid #202637;
+
+  &__header {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: $white;
+  }
+
+  &__bottom {
+    margin-top: 2rem;
+
+    > a {
+      font-size: 1.2rem;
+      color: $lightColor;
+      text-decoration: none;
+    }
+
+    &__submit-btn {
+      cursor: pointer;
+      font-size: 1.4rem;
+      border-radius: 0.5rem;
+      padding: 0.75rem 2rem;
+      background-color: transparent;
+      border: 1px solid $lightColor;
+      outline: 0;
+      color: $lightColor;
+
+      &.fullWidth {
+        width: 100%;
+      }
+
+      &:hover {
+        border-color: #00cfc8;
+      }
+    }
+  }
+}
+
+// Create project form
+.create-project__form {
+  padding-top: 2rem;
+
+  .create-project__content {
+    margin-top: 1rem;
+  }
+
+  .create-project__additional-label {
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    > svg {
+      vertical-align: top;
+    }
+
+    &:hover {
+      color: $btnColor;
+    }
+  }
+
+  &__submit-btn {
+    font-weight: 600;
+    font-size: 1.6rem;
+    border-radius: 4px;
+    padding: 1rem 1.5rem;
+    outline: 0;
+    border: none;
+    color: #fff;
+    background-color: #2caf4a;
+  }
+}
+
+.edit-box {
+  font-size: 1.6rem;
+
+  &__reload-btn {
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: $btnColor;
+  }
+
+  p {
+    line-height: 2.4rem;
+  }
+
+  h2 {
+    line-height: 4rem;
+  }
+
+  h3 {
+    line-height: 3.5rem;
+  }
+
+  h4 {
+    line-height: 3rem;
+  }
+
+  a {
+    color: $btnColor;
+  }
+
+  ol,
+  ul {
+    li {
+      font-size: 1.6rem;
+      line-height: 1.5;
+      margin-left: 3rem;
+    }
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+    }
+
+    th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #04aa6d;
+      color: white;
+    }
+  }
+}
+
+// Feedback form
+.feedback-form {
+  width: 400px;
+  &__header {
+    position: relative;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    padding: 1.5rem;
+    background-color: #58af6c;
+    color: $white;
+
+    > h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    > p {
+      font-size: 1.2rem;
+    }
+
+    > svg {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: $white;
+      cursor: pointer;
+    }
+  }
+
+  &__body {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    padding: 1rem 1.5rem 2rem;
+    background-color: $white;
+    &__submit-btn {
+      margin-top: 1rem;
+      width: 100%;
+      font-weight: 600;
+      font-size: 1.6rem;
+      border-radius: 4px;
+      padding: 1rem 1.5rem;
+      outline: 0;
+      border: none;
+      color: #fff;
+      background-color: #2caf4a;
+    }
+  }
+}
+
+// Profile form
+.profile-form {
+  &__header {
+    font-weight: 500;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #d0d7de;
+  }
+
+  &__note {
+    font-size: 1.2rem;
+    color: #57606a;
+    margin-top: 1rem;
+  }
+}
+
+// Change password form
+.change-password {
+  &__link {
+    text-decoration: none;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+    color: $optionHoverColor;
+  }
+}

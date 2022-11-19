@@ -1,0 +1,44 @@
+@use "scss/variables" as *;
+.button {
+  text-decoration: none;
+  font-size: 1.4rem;
+  color: $white;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 2rem;
+  background-color: transparent;
+  outline: 0;
+  border-width: 0;
+
+  &.outline {
+    padding: 4px 8px;
+    border: 1px solid $white;
+    border-radius: 4px;
+  }
+
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
+.basic-button {
+  padding: 0.2rem 1rem;
+  color: $black;
+  background-color: #f6f8fa;
+  border-radius: 0.5rem;
+  border: 1px solid #1b1f2426;
+  cursor: pointer;
+
+  &.fullWidth {
+    text-decoration: none;
+    display: block;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+}

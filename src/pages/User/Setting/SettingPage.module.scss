@@ -1,0 +1,62 @@
+@use "scss/variables" as *;
+
+.setting-container {
+  padding: 2rem 0;
+}
+
+.setting-header {
+  margin: 2rem 0;
+  &__user {
+    &__photo {
+      width: 60px;
+      height: 60px;
+      margin-right: 1.5rem;
+
+      > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 1px solid #1b1f2426;
+      }
+    }
+
+    &__info {
+      user-select: none;
+      > a {
+        font-size: 1.6rem;
+        font-weight: 600;
+        text-decoration: none;
+        color: $black;
+
+        &:hover {
+          text-decoration: underline;
+          text-decoration-thickness: 2px;
+        }
+      }
+
+      > p {
+        margin-top: 0.25rem;
+        font-size: 1.2rem;
+        color: #57606a;
+      }
+    }
+  }
+
+  &__btn {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.2rem;
+  }
+}
+
+.setting-sidebar {
+  width: 300px;
+  border-right: 1px solid #d0d7de;
+}
+
+.setting-content {
+  flex: 1;
+  margin-left: 4rem;
+}
