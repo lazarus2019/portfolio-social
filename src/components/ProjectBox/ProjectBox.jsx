@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import styles from "./ProjectBox.module.scss";
 const cx = classNames.bind(styles);
 
-function ProjectBox({ project, maxHeight }) {
+function ProjectBox({ project, maxHeight, small }) {
   const style = {
     backgroundImage: `url(${project.thumbnail})`,
   };
   return (
-    <Link to={`/p/${project?.slug}`} className={cx(`project-box`)}>
+    <Link
+      to={`/p/${project?.slug}`}
+      className={cx(`project-box`, `${small ? "small" : ""}`)}
+    >
       {project.starCount > 0 ? (
         <div className={cx("project-box__star")}>
           {project.starCount}

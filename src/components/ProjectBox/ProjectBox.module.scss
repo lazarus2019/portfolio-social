@@ -82,3 +82,31 @@
     }
   }
 }
+
+.project-box {
+  &.small {
+    box-shadow: rgba(149, 157, 165, 0.3) 0px 4px 16px;
+    margin-bottom: 2rem;
+    transition: transform 0.25s ease;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  &.small &__userPhoto {
+    display: none;
+  }
+
+  &.small &__content {
+    &__title {
+      font-size: 1.4rem;
+      line-height: 1.8rem;
+      max-height: 3.6rem;
+    }
+    &__username {
+      display: none;
+    }
+  }
+}

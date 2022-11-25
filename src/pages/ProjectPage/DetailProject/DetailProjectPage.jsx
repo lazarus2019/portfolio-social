@@ -1,24 +1,19 @@
 import projectAPI from "api/projectAPI";
 import userAPI from "api/userAPI";
 import classnames from "classnames/bind";
+import ProjectContent from "components/DetailProject/ProjectContent";
+import ProjectSidebar from "components/DetailProject/ProjectSidebar";
 import Footer from "components/Footer/Footer";
 import Grid from "components/Grid/Grid";
 import Header from "components/Header/Header";
 import Loading from "components/Loading/Loading";
 import NotFound from "components/NotFound/NotFound";
 import { useEffect, useState } from "react";
-import {
-  BsChevronDoubleRight,
-  BsFillBookmarkStarFill,
-  BsThreeDots,
-} from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { setUser } from "redux/slices/userSlice";
 import copyToClipboard from "utils/copyToClipboard";
-import dateFormatter, { fromNowDateFormatter } from "utils/dateFormatter";
 import getErrorMessage from "utils/getErrorMessage";
 import styles from "./DetailProjectPage.module.scss";
 
@@ -35,6 +30,7 @@ function DetailProjectPage(props) {
   const currentUser = useSelector((store) => store?.user?.value);
 
   useEffect(() => {
+      setLoading(true);
     const getProject = async (slug) => {
       try {
         const res = await projectAPI.getBySlug(slug);
@@ -111,89 +107,20 @@ function DetailProjectPage(props) {
         {loading ? (
           <Loading fullHeight />
         ) : project ? (
-          <Grid col={3} gap={30}>
-            <div className={cx("project-detail")}>
-              <div
-                className={cx("project-detail__thumbnail")}
-                style={{ backgroundImage: `url(${project.thumbnail})` }}
-              >
-                <div className={cx("project-detail__thumbnail__title")}>
-                  {project.title}
-                </div>
-              </div>
-              <div
-                className={cx(
-                  "project-detail__header",
-                  "flex",
-                  "space-between",
-                  "y-center"
-                )}
-              >
-                <div className={cx("project-detail__header__author")}>
-                  <Link
-                    to={`/@${project.user.username}`}
-                    className={cx("project-detail__header__author__photo")}
-                  >
-                    <img src={project.user.profilePhoto} alt="" />
-                  </Link>
-                  <div className={cx("project-detail__header__author__info")}>
-                    <Link
-                      to={`/@${project.user.username}`}
-                      className={cx(
-                        "project-detail__header__author__info__username"
-                      )}
-                    >
-                      {project.user.fullName}
-                    </Link>
-                    <p
-                      className={cx(
-                        "project-detail__header__author__info__date"
-                      )}
-                    >
-                      {dateFormatter(project?.createdAt)}
-                    </p>
-                    <p
-                      className={cx(
-                        "project-detail__header__author__info__date"
-                      )}
-                    >
-                      Updated at {fromNowDateFormatter(project?.updatedAt)}
-                    </p>
-                  </div>
-                </div>
-                <div className={cx("project-detail__header__options")}>
-                  <span
-                    className={cx(`${isSaved ? "active" : ""}`)}
-                    onClick={handleSavingProject}
-                  >
-                    <BsFillBookmarkStarFill size={20} />
-                  </span>
-                  <span onClick={handleGetShareLink}>
-                    <BsThreeDots size={20} />
-                  </span>
-                </div>
-              </div>
-              <div className={cx("project-detail__short-desc")}>
-                {project.shortDescription}
-              </div>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: project?.library?.content?.replace(
-                    /href/g,
-                    "target='_blank' href"
-                  ),
-                }}
-                className={cx("project-detail__content")}
+          <Grid col={4} gap={30}>
+            <ProjectContent
+              project={project}
+              onGetShareLink={handleGetShareLink} 
+              onSaving={handleSavingProject}
+              onFollow={handleFollow}
+              isSaved={isSaved}
+            />
+            <div className={cx("project-sidebar")}>
+              <ProjectSidebar
+                userId={project.user?._id}
+                userFullName={project.user?.fullName}
               />
-              <span
-                className={cx("project-detail__follow")}
-                onClick={handleFollow}
-              >
-                <BsChevronDoubleRight size={15} />
-                Follow {project.user.fullName} for more
-              </span>
             </div>
-            <div className={cx("project-sidebar")}></div>
           </Grid>
         ) : (
           <NotFound desc="Project Not Found" />
