@@ -20,6 +20,7 @@ const {
   verifyAccount,
   changePassword,
   changePrivateSetting,
+  getPopularUsers,
 } = require("../services/userService");
 const {
   sendResetPasswordEmail,
@@ -280,7 +281,7 @@ const userBanningCtrl = expressAsyncHandler(async (req, res) => {
   const { _id } = req?.user;
   const { userId } = req?.body;
   validateMongoDbID(userId);
-  
+
   try {
     if (_id.toString() === userId.toString())
       throw new Error("You can not banning yourself!");
@@ -311,6 +312,16 @@ const userGetByIdCtrl = expressAsyncHandler(async (req, res) => {
     const user = await getUserById(userId);
 
     res.status(200).json({ result: user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Get popular users
+const userGetPopularCtrl = expressAsyncHandler(async (req, res) => {
+  try {
+    const data = await getPopularUsers();
+    res.status(200).json({ result: data });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -349,4 +360,5 @@ module.exports = {
   userReplyFeedbackCtrl,
   userChangePasswordCtrl,
   userChangePrivateSettingCtrl,
+  userGetPopularCtrl,
 };

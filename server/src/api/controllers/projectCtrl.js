@@ -15,6 +15,8 @@ const {
   uploadPreviewVideo,
   getAllProject,
   changeThumbnail,
+  getNewestProjects,
+  getPopularProjects,
 } = require("../services/projectService");
 
 //// Create
@@ -204,6 +206,28 @@ const projectPreviewVideoUploadCtrl = expressAsyncHandler(async (req, res) => {
   }
 });
 
+//// Get newest projects
+const projectGetNewestCtrl = expressAsyncHandler(async (req, res) => {
+  try {
+    const projectList = await getNewestProjects();
+
+    res.status(200).json({ result: projectList });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//// Get popular projects
+const projectGetPopularCtrl = expressAsyncHandler(async (req, res) => {
+  try {
+    const projectList = await getPopularProjects();
+
+    res.status(200).json({ result: projectList });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //// [AD] Get all projects
 const projectGetAllCtrl = expressAsyncHandler(async (req, res) => {
   const { page } = req?.query;
@@ -230,4 +254,6 @@ module.exports = {
   projectDeleteCtrl,
   projectUpdateCtrl,
   projectGetByIdCtrl,
+  projectGetNewestCtrl,
+  projectGetPopularCtrl,
 };

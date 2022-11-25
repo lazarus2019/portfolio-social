@@ -20,6 +20,7 @@ const {
   userReplyFeedbackCtrl,
   userChangePasswordCtrl,
   userChangePrivateSettingCtrl,
+  userGetPopularCtrl,
 } = require("../controllers/userCtrl");
 const { passportAuthJwt } = require("../middleware/auth/passportAuthJwt");
 const adminMiddleware = require("../middleware/auth/adminMiddleware");
@@ -38,9 +39,15 @@ route.put("/profile", passportAuthJwt, userUpdateProfileCtrl);
 
 route.get("/profile/:username", userProfileCtrl);
 
+route.get("/popular", userGetPopularCtrl);
+
 route.put("/change-password", passportAuthJwt, userChangePasswordCtrl);
 
-route.put("/change-private-setting", passportAuthJwt, userChangePrivateSettingCtrl);
+route.put(
+  "/change-private-setting",
+  passportAuthJwt,
+  userChangePrivateSettingCtrl
+);
 
 route.put("/follow", passportAuthJwt, userFollowCtrl);
 

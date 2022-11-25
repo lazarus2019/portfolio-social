@@ -15,6 +15,8 @@ const {
   projectDeleteCtrl,
   projectUpdateCtrl,
   projectGetByIdCtrl,
+  projectGetNewestCtrl,
+  projectGetPopularCtrl,
 } = require("../controllers/projectCtrl");
 const {
   projectThumbnailMulter,
@@ -23,6 +25,10 @@ const {
 const { previewVideoMulter } = require("../middleware/uploads/videoUpload");
 
 route.get("/all", passportAuthJwt, adminMiddleware, projectGetAllCtrl);
+
+route.get("/newest", projectGetNewestCtrl);
+
+route.get("/popular", projectGetPopularCtrl);
 
 route.get("/saved", passportAuthJwt, projectGetSavedCtrl);
 

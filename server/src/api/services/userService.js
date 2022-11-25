@@ -6,6 +6,7 @@ const {
 const { paginationWithArray } = require("../utils/paginationResult");
 const { getPublicId } = require("../utils/uploadFile");
 const crypto = require("crypto");
+const Project = require("../models/projectModel");
 const { USERS_PER_PAGE } = process.env;
 
 const checkRegisterEmail = async (email) => {
@@ -334,6 +335,49 @@ const changeProfile = async (userId, file, oldProfilePhoto) => {
   return imgUploaded?.url;
 };
 
+const getPopularUsers = async () => {
+  const users = await Project.distinct("user");
+
+  let result = [];
+
+  // for (let i = 0; i < users.length; i++) {
+  //   const projectCount = await Project.find({ user: users[i] }).count();
+
+  //   const userInfo = await User.findById(users[i]);
+
+  //   if (userInfo)
+  //     result.push({
+  //       count: projectCount,
+  //       user: {
+  //         fullName: userInfo?.fullName,
+  //         username: userInfo?.username,
+  //         profilePhoto: userInfo?.profilePhoto,
+  //       },
+  //     });
+  // }
+
+  // Faster than for loop
+  for (let userId of users) {
+    const projectCount = await Project.find({ user: userId }).count();
+
+    const userInfo = await User.findById(userId);
+
+    result.push({
+      count: projectCount,
+      user: {
+        fullName: userInfo?.fullName,
+        username: userInfo?.username,
+        profilePhoto: userInfo?.profilePhoto,
+      },
+    });
+  }
+
+  // Sort to desc
+  result.sort((a, b) => (a.count > b.count ? -1 : b.count > a.count ? 1 : 0));
+
+  return result;
+};
+
 //// [ADMIN]
 const banUser = async (userId) => {
   if (!userId) throw new Error("userId is required || banUser");
@@ -386,4 +430,5 @@ module.exports = {
   login,
   changePassword,
   changePrivateSetting,
+  getPopularUsers,
 };

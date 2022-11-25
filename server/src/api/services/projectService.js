@@ -398,6 +398,26 @@ const uploadPreviewVideo = async (
   // }
 };
 
+const getNewestProjects = async ()=>{
+  const projectList = await Project.find({ isHide: false })
+    .sort({ createdAt: -1 })
+    .limit(10)
+    .select("slug thumbnail title starCount")
+    .populate("user", "username profilePhoto");
+
+  return projectList
+}
+
+const getPopularProjects = async () => {
+  const projectList = await Project.find({ isHide: false })
+    .sort({ starCount: -1 })
+    .limit(10)
+    .select("slug thumbnail title starCount")
+    .populate("user", "username profilePhoto");
+
+  return projectList;
+};
+
 //// [ADMIN]
 const getAllProject = async (page) => {
   const projectList = await Project.find()
@@ -423,4 +443,6 @@ module.exports = {
   uploadPreviewVideo,
   getAllProject,
   changeThumbnail,
+  getNewestProjects,
+  getPopularProjects,
 };
