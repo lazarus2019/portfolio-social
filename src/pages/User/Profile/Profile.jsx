@@ -53,15 +53,7 @@ function Profile(props) {
     };
   }, [location.search]);
 
-  const getProfile = async () => {
-    try {
-      const res = await userAPI.profile(username);
-      setProfile(res.user);
-      window.scrollTo(0, 0);
-    } catch (error) {
-      toast.error(getErrorMessage(error));
-    }
-  };
+  const getProfile = async () => {};
 
   const getProjects = async (queryParams) => {
     try {
@@ -236,13 +228,16 @@ function Profile(props) {
   };
 
   useEffect(() => {
-    const getUserProfile = async () => {
-      await getProfile();
-      getData();
-    };
-
+    setLoading(true);
     if (username) {
-      getUserProfile();
+      try {
+        const res = await userAPI.profile(username);
+        setProfile(res.user);
+        getData();
+        window.scrollTo(0, 0);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      }
     }
 
     setLoading(false);

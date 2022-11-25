@@ -8,8 +8,9 @@ import Loading from "components/Loading/Loading";
 import NotFound from "components/NotFound/NotFound";
 import { useEffect, useState } from "react";
 import {
-  BsChevronDoubleRight, BsFillBookmarkStarFill,
-  BsThreeDots
+  BsChevronDoubleRight,
+  BsFillBookmarkStarFill,
+  BsThreeDots,
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -33,25 +34,21 @@ function DetailProjectPage(props) {
 
   const currentUser = useSelector((store) => store?.user?.value);
 
-  const getProject = async (slug) => {
-    try {
-      const res = await projectAPI.getBySlug(slug);
-      console.log(res.result);
-      setProject(res?.result);
-      window.scrollTo(0, 0);
-      if (currentUser) {
-        const checkSave = currentUser.savedProject.indexOf(res.result.id) >= 0;
-        setSaved(checkSave);
-      }
-    } catch (error) {
-      toast.error(getErrorMessage(error));
-    }
-  };
-
   useEffect(() => {
     setLoading(true);
     if (slug) {
-      getProject(slug);
+      try {
+        const res = await projectAPI.getBySlug(slug);
+        setProject(res?.result);
+        window.scrollTo(0, 0);
+        if (currentUser) {
+          const checkSave =
+            currentUser.savedProject.indexOf(res.result.id) >= 0;
+          setSaved(checkSave);
+        }
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      }
     }
     setLoading(false);
   }, [slug]);

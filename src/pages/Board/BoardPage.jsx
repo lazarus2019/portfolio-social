@@ -35,26 +35,23 @@ function BoardPage(props) {
   const boards = useSelector((store) => store?.boards?.value);
   const favoriteList = useSelector((store) => store?.boardFavorite?.value);
 
-  const getBoard = async (signal) => {
-    try {
-      const res = await boardAPI.getById(boardId, { signal });
-      setBoardInfo({
-        icon: res?.results?.icon,
-        description: res?.results?.description,
-        title: res?.results?.title,
-        sections: res?.results?.sections,
-      });
-      setFavorite(res?.results?.isFavorite);
-    } catch (error) {
-      if (error.name !== "AbortError") toast.error(getErrorMessage(error));
-    }
-  };
-
   useEffect(() => {
+    setLoading(true);
     const controller = new AbortController();
     const signal = controller.signal;
     if (boardId) {
-      getBoard(signal);
+      try {
+        const res = await boardAPI.getById(boardId, { signal });
+        setBoardInfo({
+          icon: res?.results?.icon,
+          description: res?.results?.description,
+          title: res?.results?.title,
+          sections: res?.results?.sections,
+        });
+        setFavorite(res?.results?.isFavorite);
+      } catch (error) {
+        if (error.name !== "AbortError") toast.error(getErrorMessage(error));
+      }
     }
     setLoading(false);
     //cleanup function
