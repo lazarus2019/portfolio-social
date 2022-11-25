@@ -39,7 +39,7 @@ function BoardPage(props) {
     setLoading(true);
     const controller = new AbortController();
     const signal = controller.signal;
-    if (boardId) {
+    const getBoard = async (signal) => {
       try {
         const res = await boardAPI.getById(boardId, { signal });
         setBoardInfo({
@@ -52,6 +52,10 @@ function BoardPage(props) {
       } catch (error) {
         if (error.name !== "AbortError") toast.error(getErrorMessage(error));
       }
+    };
+
+    if (boardId) {
+      getBoard(signal);
     }
     setLoading(false);
     //cleanup function

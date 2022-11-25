@@ -1,70 +1,36 @@
+import projectAPI from "api/projectAPI";
 import classNames from "classnames/bind";
+import Loading from "components/Loading/Loading";
 import ProjectBox from "components/ProjectBox/ProjectBox";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
+import getErrorMessage from "utils/getErrorMessage";
 import styles from "./NewProjectSection.module.scss";
 
 const cx = classNames.bind(styles);
 
 function NewProjectSection(props) {
-  const projects = [
-    {
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      slug: "passport-local-jwt-11302",
-      title: "passport local jwt",
-      user: {
-        username: "laptrinhvien",
-        profilePhoto:
-          "https://res.cloudinary.com/amazona-app/image/upload/v1665804263/blank_profile_znhwkp.png",
-      },
-    },
-    {
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      slug: "passport-local-jwt-11302",
-      title: "passport local jwt",
-      user: {
-        username: "laptrinhvien",
-        profilePhoto:
-          "https://res.cloudinary.com/amazona-app/image/upload/v1665804263/blank_profile_znhwkp.png",
-      },
-    },
-    {
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      slug: "passport-local-jwt-11302",
-      title: "passport local jwt",
-      user: {
-        username: "laptrinhvien",
-        profilePhoto:
-          "https://res.cloudinary.com/amazona-app/image/upload/v1665804263/blank_profile_znhwkp.png",
-      },
-    },
-    {
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      slug: "passport-local-jwt-11302",
-      title: "Create a slug and add a slug to mongoose schema",
-      user: {
-        username: "laptrinhvien",
-        profilePhoto:
-          "https://res.cloudinary.com/amazona-app/image/upload/v1665804263/blank_profile_znhwkp.png",
-      },
-    },
-    {
-      thumbnail:
-        "https://res.cloudinary.com/amazona-app/image/upload/v1666262598/oyjam7slcee3ctz3y4xx.jpg",
-      slug: "passport-local-jwt-11302",
-      title: "JWT.IO allows you to decode, verify and generate JWT",
-      user: {
-        username: "laptrinhvien",
-        profilePhoto:
-          "https://res.cloudinary.com/amazona-app/image/upload/v1665804263/blank_profile_znhwkp.png",
-      },
-    },
-  ];
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    const getNewestProjects = async () => {
+      try {
+        const res = await projectAPI.newest();
+        setProjects(res.result);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      }
+    };
+
+    getNewestProjects();
+    setLoading(false);
+  }, []);
+
   return (
     <div className={cx("container wide section", "new-project-container")}>
       <div className={cx("new-project-header")}>
@@ -73,21 +39,25 @@ function NewProjectSection(props) {
           Newest Project
         </div>
       </div>
-      <Swiper
-        className={cx("mySwiper")}
-        grabCursor={true}
-        spaceBetween={30}
-        slidesPerView={3}
-        pagination={{
-          clickable: true,
-        }}
-      >
-        {projects.map((project, index) => (
-          <SwiperSlide className={cx("swiper-slide")} key={index}>
-            <ProjectBox project={project} maxHeight={true} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Swiper
+          className={cx("mySwiper")}
+          grabCursor={true}
+          spaceBetween={30}
+          slidesPerView={3}
+          pagination={{
+            clickable: true,
+          }}
+        >
+          {projects.map((project, index) => (
+            <SwiperSlide className={cx("swiper-slide")} key={index}>
+              <ProjectBox project={project} maxHeight={true} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </div>
   );
 }

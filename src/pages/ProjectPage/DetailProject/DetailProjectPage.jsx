@@ -35,8 +35,7 @@ function DetailProjectPage(props) {
   const currentUser = useSelector((store) => store?.user?.value);
 
   useEffect(() => {
-    setLoading(true);
-    if (slug) {
+    const getProject = async (slug) => {
       try {
         const res = await projectAPI.getBySlug(slug);
         setProject(res?.result);
@@ -49,6 +48,9 @@ function DetailProjectPage(props) {
       } catch (error) {
         toast.error(getErrorMessage(error));
       }
+    };
+    if (slug) {
+      getProject(slug);
     }
     setLoading(false);
   }, [slug]);

@@ -6,19 +6,19 @@ const cx = classNames.bind(styles);
 
 function UserBox({ user, isTop }) {
   return (
-    <Link to={`/@${user?.username}`} className={cx("user-box")}>
+    <Link to={`/@${user.user?.username}`} className={cx("user-box")}>
       {isTop && (
         <FaCrown size={15} className={cx("user-box__icon")} />
       )}
       <div className={cx("user-box__photo")}>
-        <img src={user?.profilePhoto} alt="" />
+        <img src={user.user?.profilePhoto} alt="" />
       </div>
       <div className={cx("user-box__content")}>
         <div className={cx("user-box__content__name")}>
-          {user?.fullName}
+          {user.user?.fullName}
         </div>
         <div className={cx("user-box__content__username")}>
-          {user?.username}
+          {user.user?.username}
         </div>
       </div>
     </Link>

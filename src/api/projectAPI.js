@@ -75,6 +75,14 @@ const projectAPI = {
     const url = "project/update";
     return axiosClient.put(url, data);
   },
+  newest: () => {
+    const url = "project/newest";
+    return axiosClient.get(url);
+  },
+  popular: () => {
+    const url = "project/popular";
+    return axiosClient.get(url);
+  },
   //// ADMIN
   getAll: () => {
     const url = "project/all";

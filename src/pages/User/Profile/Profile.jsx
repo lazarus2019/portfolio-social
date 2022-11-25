@@ -53,8 +53,6 @@ function Profile(props) {
     };
   }, [location.search]);
 
-  const getProfile = async () => {};
-
   const getProjects = async (queryParams) => {
     try {
       if (username === currentUser?.username) {
@@ -229,7 +227,7 @@ function Profile(props) {
 
   useEffect(() => {
     setLoading(true);
-    if (username) {
+    const getProfile = async (username) => {
       try {
         const res = await userAPI.profile(username);
         setProfile(res.user);
@@ -238,6 +236,9 @@ function Profile(props) {
       } catch (error) {
         toast.error(getErrorMessage(error));
       }
+    };
+    if (username) {
+      getProfile(username);
     }
 
     setLoading(false);

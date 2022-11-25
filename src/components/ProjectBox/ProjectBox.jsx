@@ -9,11 +9,14 @@ function ProjectBox({ project, maxHeight }) {
     backgroundImage: `url(${project.thumbnail})`,
   };
   return (
-    <Link to={`/project/${project?.slug}`} className={cx(`project-box`)}>
-      <div className={cx("project-box__star")}>
-        3.4k
-        <BsFillStarFill size={10} />
-      </div>
+    <Link to={`/p/${project?.slug}`} className={cx(`project-box`)}>
+      {project.starCount > 0 ? (
+        <div className={cx("project-box__star")}>
+          {project.starCount}
+          <BsFillStarFill size={10} />
+        </div>
+      ) : null}
+
       <div className={cx("project-box__thumbnail")} style={style}></div>
       <div className={cx("project-box__wrapper")}>
         <div className={cx("project-box__userPhoto")}>

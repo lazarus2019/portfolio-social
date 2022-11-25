@@ -75,6 +75,10 @@ const userAPI = {
     const url = "user/send-feedback";
     return axiosClient.post(url, data);
   },
+  popular: ()=>{
+    const url = "user/popular";
+    return axiosClient.get(url);
+  },
   //// ADMIN
   banUser: (data) => {
     const url = "user/banning";
