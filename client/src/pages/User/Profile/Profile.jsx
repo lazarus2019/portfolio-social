@@ -228,6 +228,7 @@ function Profile(props) {
   };
 
   useLayoutEffect(() => {
+    setLoading(true);
     if (username) {
       getProfile();
       getData();
@@ -315,7 +316,7 @@ function Profile(props) {
         // Replace get project by change value to save or not save
       }
     } catch (error) {
-      console.log({error})
+      console.log({ error });
       toast.error(getErrorMessage(error));
     }
   };

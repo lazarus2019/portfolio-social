@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import { useParams } from "react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import getErrorMessage from "@/utils/getErrorMessage";
 import projectAPI from "@/api/projectAPI";
@@ -39,7 +39,6 @@ function DetailProjectPage(props) {
   const getProject = async (slug) => {
     try {
       const res = await projectAPI.getBySlug(slug);
-      console.log(res.result);
       setProject(res?.result);
       window.scrollTo(0, 0);
       if (currentUser) {

@@ -19,7 +19,7 @@ const formSchema = yup.object({
       "Please enter a real name (ex: Tobias Fate)",
       (value) => {
         if (value) {
-          return /^[a-zA-Z]{2,}(?: [a-zA-Z]{2,})$/.test(value);
+          return /^[a-zA-Z]{2,}(?: [a-zA-Z]{2,})+$/.test(value);
         }
       }
     ),

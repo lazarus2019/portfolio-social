@@ -53,6 +53,7 @@ function BoardPage(props) {
   };
 
   useEffect(() => {
+    setLoading(true);
     const controller = new AbortController();
     const signal = controller.signal;
     if (boardId) {

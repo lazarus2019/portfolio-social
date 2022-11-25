@@ -12,13 +12,16 @@ import RegisterForm from "@/components/Forms/RegisterForm";
 import userAPI from "@/api/userAPI";
 import { toast } from "react-toastify";
 import getErrorMessage from "@/utils/getErrorMessage";
+import { useState } from "react";
 
 function Register(props) {
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = useState(false)
   const { user_email } = queryString.parse(location.search);
 
   const handleSubmit = async (values) => {
+    setLoading(true)
     try {
       delete values?.retypePassword;
       const result = await userAPI.register(values);
@@ -29,6 +32,7 @@ function Register(props) {
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
+    setLoading(false)
   };
 
   return (
@@ -47,7 +51,11 @@ function Register(props) {
 
       <div className={cx("flex", "login-form-wrapper")}>
         <div className={cx("login-form-container")}>
-          <RegisterForm onSubmit={handleSubmit} userEmail={user_email} />
+          <RegisterForm
+            onSubmit={handleSubmit}
+            userEmail={user_email}
+            loading={loading}
+          />
         </div>
       </div>
     </div>

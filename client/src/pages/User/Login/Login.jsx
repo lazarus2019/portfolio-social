@@ -14,12 +14,15 @@ import authUtils from "@/utils/authUtils";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
 import getErrorMessage from "@/utils/getErrorMessage";
+import { useState } from "react";
 
 function Login() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (values) => {
+    setLoading(true)
     try {
       const result = await userAPI.login(values);
       if (result?.status) {
@@ -33,6 +36,7 @@ function Login() {
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
+    setLoading(false)
   };
 
   return (
@@ -50,7 +54,7 @@ function Login() {
       </div>
 
       <div className={cx("login-form-container")}>
-        <LoginForm onSubmit={handleSubmit} />
+        <LoginForm onSubmit={handleSubmit} loading={loading} />
       </div>
     </div>
   );
