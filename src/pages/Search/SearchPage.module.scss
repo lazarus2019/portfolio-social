@@ -1,0 +1,8 @@
+.search-container {
+  display: flex;
+  margin-top: 2rem;
+
+  &__content {
+    flex-grow: 1;
+  }
+}

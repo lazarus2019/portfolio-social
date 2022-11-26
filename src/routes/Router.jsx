@@ -5,6 +5,7 @@ import NotFoundPage from "pages/NotFoundPage/NotFoundPage";
 import CreateProjectPage from "pages/ProjectPage/CreateProject/CreateProjectPage";
 import DetailProjectPage from "pages/ProjectPage/DetailProject/DetailProjectPage";
 import EditProjectPage from "pages/ProjectPage/EditProject/EditProjectPage";
+import SearchPage from "pages/Search/SearchPage";
 import Login from "pages/User/Login/Login";
 import Register from "pages/User/Login/Register";
 import Profile from "pages/User/Profile/Profile";
@@ -25,6 +26,7 @@ function Router() {
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route element={<AuthLayout />}>
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />

@@ -1,5 +1,6 @@
 import assets from "assets";
 import classNames from "classnames/bind";
+import { useState } from "react";
 import { BsFillCaretDownFill, BsPlusLg } from "react-icons/bs";
 import { FaRegSmile } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,15 +11,24 @@ import Navigation from "../Navigation/Navigation";
 import styles from "./Header.module.scss";
 const cx = classNames.bind(styles);
 
-
-function Header({ hasBg }) {
+function Header({ hasBg, searchQuery = "" }) {
   const user = useSelector((store) => store?.user?.value);
+  const [searchValue, setSearchValue] = useState(searchQuery);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSignOut = () => {
     dispatch(logout());
     navigate("/login");
+  };
+
+  const handleKeyUp = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (searchValue.trim() !== "") {
+        navigate(`/search?q=${searchValue}`);
+      }
+    }
   };
 
   return (
@@ -31,8 +41,11 @@ function Header({ hasBg }) {
           <div>
             <input
               className={cx("search-box")}
+              value={searchValue}
               type="text"
               placeholder="Search Project"
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyUp={handleKeyUp}
             />
           </div>
         </div>

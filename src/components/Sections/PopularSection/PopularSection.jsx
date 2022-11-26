@@ -44,7 +44,6 @@ function PopularSection(props) {
     const getPopularUsers = async () => {
       try {
         const res = await userAPI.popular();
-        console.log(res);
         setUsers(res.result);
         setLoading(false);
       } catch (error) {

@@ -1,0 +1,49 @@
+@use "scss/variables" as *;
+
+.search-sidebar {
+  width: 250px;
+  padding-right: 2rem;
+
+  &__filter {
+    border: 1px solid #1b1f2426;
+    border-radius: 0.5rem;
+    &__item {
+      display: flex;
+      color: $black;
+      font-weight: 500;
+      padding: 1rem 1.5rem;
+      font-size: 1.2rem;
+      position: relative;
+      user-select: none;
+
+      &:hover {
+        cursor: pointer;
+        background-color: #f0f2f4;
+      }
+
+      &.active {
+        cursor: default;
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 2px;
+          background-color: #fd967f;
+        }
+      }
+
+      &__amount {
+        margin-left: auto;
+        padding: 0.2rem 0.5rem;
+        background-color: #e3e7ea;
+        border-radius: 0.75rem;
+      }
+    }
+
+    &__item + &__item {
+      border-top: 1px solid #1b1f2426;
+    }
+  }
+}
