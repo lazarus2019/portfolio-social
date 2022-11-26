@@ -15,6 +15,7 @@ function ProjectSidebar(props) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const getRecentProjects = async () => {
       try {
         const res = await projectAPI.newest();
@@ -22,13 +23,13 @@ function ProjectSidebar(props) {
       } catch (error) {
         toast.error(getErrorMessage(error));
       }
+      setLoading(false);
     };
 
     if (userId) {
       getRecentProjects();
     }
 
-    setLoading(false);
   }, [userId]);
 
   return (
@@ -43,7 +44,7 @@ function ProjectSidebar(props) {
         <div className={cx("project-sidebar__list")}>
           {projects?.length > 0
             ? projects.map((project) => (
-                <ProjectBox project={project} small={true} />
+                <ProjectBox project={project} small={true} key={project?._id} />
               ))
             : null}
         </div>
@@ -57,7 +58,7 @@ function ProjectSidebar(props) {
         <div className={cx("project-sidebar__list")}>
           {projects?.length > 0
             ? projects.map((project) => (
-                <ProjectBox project={project} small={true} />
+                <ProjectBox project={project} small={true} key={project?._id} />
               ))
             : null}
         </div>

@@ -235,6 +235,7 @@ function Profile(props) {
         window.scrollTo(0, 0);
       } catch (error) {
         toast.error(getErrorMessage(error));
+        return <NotFound desc="User not found" />;
       }
     };
     if (username) {
@@ -403,8 +404,8 @@ function Profile(props) {
       <Header hasBg={true} />
       {loading ? (
         <Loading fullHeight />
-      ) : profile ? (
-        <>
+      ) : 
+        (<>
           <ProfileTab
             user={profile}
             isCurrentUser={currentUser && currentUser?.id === profile?.id}
@@ -431,10 +432,8 @@ function Profile(props) {
               {renderTab(searchQueryParams?.tab)}
             </div>
           </div>
-        </>
-      ) : (
-        <NotFound desc="User not found" />
-      )}
+        </>)
+      }
       <div className={cx("container", "profile-bottom")}>
         <div className="separate"></div>
       </div>

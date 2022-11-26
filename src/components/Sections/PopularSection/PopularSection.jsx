@@ -34,6 +34,7 @@ function PopularSection(props) {
       try {
         const res = await projectAPI.popular();
         setProjects(res.result);
+        setLoading(false);
       } catch (error) {
         toast.error(getErrorMessage(error));
       }
@@ -45,13 +46,12 @@ function PopularSection(props) {
         const res = await userAPI.popular();
         console.log(res);
         setUsers(res.result);
+        setLoading(false);
       } catch (error) {
         toast.error(getErrorMessage(error));
       }
     };
     getPopularUsers();
-
-    setLoading(false);
   }, []);
 
   const renderTab = (tab) => {

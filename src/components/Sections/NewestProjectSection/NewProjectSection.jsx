@@ -25,10 +25,10 @@ function NewProjectSection(props) {
       } catch (error) {
         toast.error(getErrorMessage(error));
       }
+      setLoading(false);
     };
 
     getNewestProjects();
-    setLoading(false);
   }, []);
 
   return (
@@ -40,7 +40,7 @@ function NewProjectSection(props) {
         </div>
       </div>
       {loading ? (
-        <Loading />
+        <Loading color="#fff" />
       ) : (
         <Swiper
           className={cx("mySwiper")}

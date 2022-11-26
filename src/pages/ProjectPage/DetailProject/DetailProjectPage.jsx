@@ -22,15 +22,15 @@ const cx = classnames.bind(styles);
 function DetailProjectPage(props) {
   const dispatch = useDispatch();
   const { slug } = useParams();
-  const [loading, setLoading] = useState(true);
   const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [isSaved, setSaved] = useState(false);
   // const inputClipboardRef = useRef(null);
 
   const currentUser = useSelector((store) => store?.user?.value);
 
   useEffect(() => {
-      setLoading(true);
+    setLoading(true);
     const getProject = async (slug) => {
       try {
         const res = await projectAPI.getBySlug(slug);
@@ -43,12 +43,16 @@ function DetailProjectPage(props) {
         }
       } catch (error) {
         toast.error(getErrorMessage(error));
+        return <NotFound desc="Project Not Found" />;
       }
+      setLoading(false);
     };
     if (slug) {
       getProject(slug);
+    } else {
+      setLoading(false);
+      return <NotFound desc="Project Not Found" />;
     }
-    setLoading(false);
   }, [slug]);
 
   const handleFollow = async () => {
@@ -106,24 +110,22 @@ function DetailProjectPage(props) {
       <div className={cx("detail-project-container", "container")}>
         {loading ? (
           <Loading fullHeight />
-        ) : project ? (
+        ) : (
           <Grid col={4} gap={30}>
             <ProjectContent
               project={project}
-              onGetShareLink={handleGetShareLink} 
+              onGetShareLink={handleGetShareLink}
               onSaving={handleSavingProject}
               onFollow={handleFollow}
               isSaved={isSaved}
             />
             <div className={cx("project-sidebar")}>
               <ProjectSidebar
-                userId={project.user?._id}
-                userFullName={project.user?.fullName}
+                userId={project?.user?._id}
+                userFullName={project?.user?.fullName}
               />
             </div>
           </Grid>
-        ) : (
-          <NotFound desc="Project Not Found" />
         )}
       </div>
       <div className="container p-15">
